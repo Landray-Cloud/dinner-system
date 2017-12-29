@@ -3,22 +3,30 @@ const express = require('express');
 const app = express();
 
 app.get('/getData', (req, res) => {
-  utils.getData(data => {
-    res.send(data)
-  })
+    utils.getData(dbRes => {
+        res.send(dbRes)
+    })
 })
 
 app.get('/insertData', (req, res) => {
-  let query = req.query
+    let query = req.query
 
-  utils.insertData({
-    name: query.name,
-    isOrder: query.isOrder
-  })
+    utils.insertData({
+        name: query.name,
+        isOrder: query.isOrder,
+    }, dbRes => {
+        res.send(dbRes)
+    })
+})
 
-  res.end()
+app.get('/cleanData', (req, res) => {
+    let query = req.query
+
+    utils.cleanData(dbRes => {
+        res.send(dbRes)
+    })
 })
 
 app.listen(3000, _ => {
-  console.log('listening on port 3000!');
+    console.log('listening on port 3000!');
 });

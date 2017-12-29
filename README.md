@@ -22,3 +22,9 @@ yarn run build
 # build for production and view the bundle analyzer report
 yarn run build --report
 ```
+
+# Server
+``` bash
+# Start Server
+node server/app.js
+```

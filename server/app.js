@@ -27,6 +27,6 @@ app.get('/cleanData', (req, res) => {
     })
 })
 
-app.listen(3000, _ => {
-    console.log('listening on port 3000!');
+app.listen(3001, _ => {
+    console.log('listening on port 3001!');
 });

@@ -2,13 +2,13 @@ const utils = require('./utils')
 const express = require('express');
 const app = express();
 
-app.get('/getData', (req, res) => {
+app.get('/node/dinner/getData', (req, res) => {
     utils.getData(dbRes => {
         res.send(dbRes)
     })
 })
 
-app.get('/insertData', (req, res) => {
+app.get('/node/dinner/insertData', (req, res) => {
     let query = req.query
 
     utils.insertData({
@@ -19,7 +19,7 @@ app.get('/insertData', (req, res) => {
     })
 })
 
-app.get('/cleanData', (req, res) => {
+app.get('/node/dinner/cleanData', (req, res) => {
     let query = req.query
 
     utils.cleanData(dbRes => {

@@ -1,7 +1,7 @@
 'use strict'
 
 const fs = require('fs')
-const path = './'
+const path = '../'
 const dbPath = path + 'db/data.json'
 
 function getData(cb) {

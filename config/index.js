@@ -9,7 +9,7 @@ module.exports = {
     proxyTable: {
         '/node/': {
             // target: 'https://yun.ywork.me',
-            target: 'http://test.ywork.me',
+            target: 'https://test.ywork.me',
             // target: 'https://test.ywork.me',
             // secure: false,
             changeOrigin: true // 必须加了这个才能代理
@@ -27,7 +27,7 @@ module.exports = {
     notifyOnErrors: true,
     poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
 
-    
+
     /**
      * Source Maps
      */

@@ -28,7 +28,7 @@ export default {
   },
   methods: {
     getData() {
-      let ajaxURL = 'http://test.ywork.me/node/dinner/getData'
+      let ajaxURL = 'https://test.ywork.me/node/dinner/getData'
 
       this.$http.get(ajaxURL).then(response => {
         let body = response.data

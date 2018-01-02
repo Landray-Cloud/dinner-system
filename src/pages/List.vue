@@ -1,10 +1,10 @@
 <template>
   <div class="listwarp">
     <el-table :data="tableData" stripe class="table">
-      <el-table-column prop="num" label="序号" width="100%">
+      <!-- <el-table-column prop="num" label="序号" width="100%">
       </el-table-column>
       <el-table-column prop="date" label="日期" width="100%">
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column prop="name" label="姓名" width="100%">
       </el-table-column>
       <el-table-column prop="isOrder" label="是否点晚餐">
@@ -23,13 +23,21 @@ export default {
     }
 
   },
-  mounted(){
-  	this.$http.get('http://test.ywork.me/node/dinner/getData').then(res => {
-  		console.log(res)
-  		// this.$set('tableData', res.data);
-  	}, err => {
-  		console.log(err.data)
-  	})
+  mounted() {
+    this.getData()
+  },
+  methods: {
+    getData() {
+      let ajaxURL = 'http://test.ywork.me/node/dinner/getData'
+
+      this.$http.get(ajaxURL).then(response => {
+        let body = response.data
+        let data = body.data
+        this.tableData = data
+      }, err => {
+        console.error(err)
+      })
+    }
   }
 }
 

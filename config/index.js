@@ -6,11 +6,18 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
+    proxyTable: {
+        '/node/': {
+            // target: 'https://yun.ywork.me',
+            target: 'http://test.ywork.me',
+            // target: 'https://test.ywork.me',
+            // secure: false,
+            changeOrigin: true // 必须加了这个才能代理
+        }
+    },
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

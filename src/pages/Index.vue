@@ -182,7 +182,7 @@ h3 {
   font-size: 24px;
   font-weight: normal;
   text-align: center;
-  padding: 40px 0 20%;
+  padding: 40px 0 15%;
 }
 
 .list {

@@ -1,12 +1,18 @@
 <template>
   <div class="list" id="myList">
     <canvas id="myCanvas" width="100%"></canvas>
-    <div class="myform">
+    <div class="myform" :data="createItem" v-show="myform">
       <h3>{{ msg  }}</h3>
-      <el-input v-model="name" placeholder="你的名字" class="winput"></el-input>
-      <el-switch v-model="isOrder" active-color="#dcdfe6" inactive-color="#13ce66" active-text="是否点餐" class="g-weitch">
-      </el-switch>
-      <el-button type="primary" @click="sub" class="btn">提交</el-button>
+      <!-- <p v-model="dataTime">{{dataTime |dataTime}}</p> -->
+      <div class="myform-box">
+        <el-input v-model="name" placeholder="你的名字" class="winput"></el-input>
+        <el-switch v-model="isOrder" active-color="#13ce66" inactive-color="#dcdfe6" class="g-weitch">
+        </el-switch>
+        <el-button type="primary" @click="sub" class="btn">提交</el-button>
+      </div>
+    </div>
+    <div class="mythank" v-show="myThank">
+      <h3>感谢你参与投票！</h3>
     </div>
   </div>
 </template>
@@ -14,9 +20,11 @@
 window.onload = function() {
   var w = window.innerWidth;
   var h = window.innerHeight;
-  var canvas = document.getElementById('myCanvas');
+  // var mylist = document.querySelector('#myList');
+  var canvas = document.querySelector('#myCanvas');
   canvas.width = w;
   canvas.height = h;
+  // mylist.height = h;
 
   var ctx = canvas.getContext('2d');
   var zhongX = 750; //画布中点横坐标(鼠标位置x)
@@ -149,26 +157,81 @@ export default {
   data() {
     return {
       msg: '点餐小系统',
+      createItem: [],
       name: '',
-      isOrder: false
+      isOrder: false,
+      orderTime: '',
+      myform: true,
+      myThank: false,
+      num: 0
     }
+  },
+  mounted() {
+    this.name = window.localStorage ? localStorage.getItem('username') : Cookie.read("username");
+
   },
   methods: {
     sub() {
-      console.log(this.name)
-      console.log(this.isOrder)
+      if (this.name === '' || this.name === 'null') {
+        alert('请输入有效姓名');
+        return false;
+      }
+      this.orderTime = new Date().getTime();
+      var username = this.name;
+      if (window.localStorage) {
+        localStorage.setItem('username', username);
+      } else {
+        Cookie.write('username', username)
+      }
+
+      let ajax = 'https://test.ywork.me/node/dinner/insertData?name=' + this.name + '&isOrder=' + this.isOrder + '&orderTime=' + this.orderTime;
+      this.$http.get(ajax).then(res => {
+        let body = res.data
+        if (typeof res === 'undefined' || res === null) {
+          alert('集合返回失败，请联系管理员')
+        }
+        let errcode = res.data.errcode;
+        if (typeof errcode === 'undefined' || errcode === null || errcode !== 0) {
+          let toastMsg = '系统繁忙'
+          let errmsg = res.data.errmsg
+
+          if (typeof errcode !== 'undefined' && errmsg !== null || errmsg !== '') {
+            toastMsg = errmsg
+          }
+          if (typeof errcode === 'number') {
+            toastMsg += '返回码：' + errcode
+          }
+        }
+        let data = body.data
+        this.createItem = data;
+        this.myform = false;
+        this.myThank = true;
+
+      }, err => {
+        console.log(err)
+      })
     }
   }
+  // filters: {
+  //   dataTime(val) {
+  //     if (val) {
+  //       return new Date(val).Format('yyyy-MM-dd');
+  //     }
+  //   }
+  // }
 
 };
+console.log('  :::                                :::   ');
+console.log(' :::::::                             ::::: ');
+console.log(':::::::::                          ::::::::');
+console.log(':::::::::::::::::::::::::::::::::::::::::::');
+console.log('::::    :::    ::::::::::::::::   :::  ::::');
+console.log(':::    Smart    :::::cool::::    Crazy  :::');
+console.log(':::::   :::    :::::::::::::::    :::   :::');
+console.log(':::::::::::::::::::::::::::::::::::::::::::');
 
 </script>
 <style type="text/css">
-* {
-  margin: 0;
-  padding: 0;
-}
-
 #myCanvas {
   background-color: black;
   display: block;
@@ -178,17 +241,13 @@ export default {
   left: 0;
 }
 
-h3 {
-  font-size: 24px;
-  font-weight: normal;
-  text-align: center;
-  padding: 40px 0 15%;
-}
+
 
 .list {
   width: 100%;
   height: 100%;
   position: relative;
+  margin: 0 auto;
 }
 
 .warp {
@@ -197,9 +256,10 @@ h3 {
   margin: 0 auto;
 }
 
-.myform {
-  width: 600px;
-  height: 400px;
+.myform,
+.mythank {
+  width: 500px;
+  height: 200px;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -210,23 +270,48 @@ h3 {
   padding: 20px;
 }
 
-.g-weitch {
+.mythank h3 {
+  font-size: 24px;
+  font-weight: normal;
+  text-align: center;
+  line-height: 200px;
+  margin: 0;
+}
+
+.myform h3 {
+  font-size: 24px;
+  font-weight: normal;
+  text-align: center;
+  padding-top: 25px;
+}
+
+.myform-box {
+  display: box;
+  display: flex;
+  display: box-flex;
+}
+
+.myform-box .winput {
+  flex: 1;
+  width: 60%;
+}
+
+.myform-box .g-weitch {
+  /*flex: 1;*/
+  display: inline;
+  width: 20%;
   height: 40px;
-  position: absolute;
-  left: 60%;
+  line-height: 40px;
 }
 
-.winput {
 
-  width: 50%;
-  display: inline-block;
-  text-align: left;
-  float: left;
-}
-
-.btn {
-  position: absolute;
-  right: 40px;
+@media (max-width: 480px) {
+  .myform,
+  .mythank {
+    width: 80%;
+    height: 200px;
+    margin: 200px 0 0 -45%;
+  }
 }
 
 </style>

@@ -23,8 +23,8 @@ yarn run build
 yarn run build --report
 ```
 
-# Server
-``` bash
 # Start Server
-node server/app.js
+``` bash
+1. cd 进 server 目录
+2. node server/app.js
 ```

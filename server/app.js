@@ -20,10 +20,12 @@ app.get(path + 'getData', (req, res) => {
 
 app.get(path + 'insertData', (req, res) => {
   let query = req.query
+  let isOrder = true
+  if (query.isOrder === 'false') isOrder = false
 
   utils.insertData({
     name: query.name,
-    isOrder: query.isOrder,
+    isOrder: isOrder,
     orderTime: query.orderTime
   }, dbRes => {
     res.send(dbRes)

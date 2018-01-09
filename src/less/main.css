@@ -1,0 +1,100 @@
+body {
+  height: 100%;
+}
+
+#home {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  position: relative;
+  background: rgba(7, 17, 27, 0.95);
+}
+
+#myCanvas {
+  background-color: black;
+  display: block;
+  margin: 0 auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+
+.list {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center center;
+  background-size: cover;
+}
+
+.warp {
+  width: 80%;
+  position: relative;
+  margin: 0 auto;
+}
+
+.myform,
+.mythank {
+  width: 500px;
+  height: 200px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -100px 0 0 -250px;
+  background: #fff;
+  border: 1px solid #fff;
+  border-radius: 6px;
+  padding: 20px;
+}
+
+.mythank h3 {
+  font-size: 24px;
+  font-weight: normal;
+  text-align: center;
+  line-height: 200px;
+  margin: 0;
+}
+
+.myform h3 {
+  font-size: 24px;
+  font-weight: normal;
+  text-align: center;
+  padding-top: 25px;
+}
+
+.myform-box {
+  position: relative;
+}
+
+.myform-box .winput {
+  width: 70%;
+  margin-right: 10%;
+}
+
+@media (max-width: 480px) {
+  .myform,
+  .mythank {
+    width: 80%;
+    height: 200px;
+    margin: 200px 0 0 -45%;
+  }
+}
+.userform-box {
+  position: relative;
+  margin: 0 auto;
+  width: 40%;
+}
+
+.userform-box button {
+  float: left;
+}
+
+.userform-box button:last-child {
+  float: right;
+}
+.succ h3{
+  padding-top: 55px;
+}

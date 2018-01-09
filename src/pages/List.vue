@@ -1,29 +1,39 @@
 <template>
-  <div class="listwarp">
-    <p class="datep">{{orderTime}}</p>
-    <el-button type="primary" @click="cleanList">清除数据</el-button>
-    <div class="listwarp-box">
-      <el-table :data="tableData" stripe class="table">
-        <el-table-column prop="orderTime" label="日期" width="100%">
-        </el-table-column>
-        <el-table-column prop="name" label="姓名" width="100%">
-        </el-table-column>
-        <el-table-column  label="是否点晚餐">
-          <template scope="scope">
-            {{tableData[scope.$index].isOrder == 'true' ? '是' : '否'}}
-          </template>
-        </el-table-column>
-      </el-table>
+  <div id="home">
+    <my-bg></my-bg>
+    <div class="listwarp">
+      <el-button type="primary" @click="cleanList">清除数据</el-button>
+      <div class="listwarp-box">
+        <el-table :data="tableData" stripe class="table" >
+          <el-table-column label="日期">
+            <template slot-scope="scope">
+              {{tableData[scope.$index].orderTime | status}}
+            </template>
+          </el-table-column>
+          <el-table-column prop="name" label="姓名">
+          </el-table-column>
+          <el-table-column label="是否点晚餐">
+            <template slot-scope="scope">
+              {{tableData[scope.$index].isOrder ? '是' : '否'}}
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
   </div>
 </template>
 <script>
+import Util from '@/util.js';
+import myBg from '@/components/myBg'
 export default {
   name: 'list',
+  components: {
+    myBg
+  },
   data() {
     return {
       tableData: [],
-      orderTime: ''
+      // orderTime: ''
     }
   },
   mounted() {
@@ -33,11 +43,6 @@ export default {
   methods: {
     // 获取数据列表
     getData() {
-      let d = new Date()
-      let day = d.getDate()
-      let month = d.getMonth() + 1
-      let year = d.getFullYear()
-      this.listwarp = year + '-' + month + '-' + day
       let ajaxURL = 'https://test.ywork.me/node/dinner/getData'
 
       this.$http.get(ajaxURL).then(res => {
@@ -80,16 +85,30 @@ export default {
 
       })
     }
+  },
+  filters: {
+
+    status(val) {
+      val = Number(val);
+      if (val) {
+        return new Date(val).Format('yyyy-MM-dd hh:mm:ss');
+      }
+    }
   }
 }
 
 </script>
 <style>
+@import "../less/main.css";
 .listwarp {
-  margin: 8px;
-  box-sizing: border-box;
-  position: relative;
+  /*margin: 8px;*/
+  position: absolute;
+  left:25%;
+  top: 0;
+  margin: 0 auto;
+  width: 50%;
 }
+
 
 .datep {
   display: inline-block;
@@ -108,8 +127,8 @@ export default {
 .listwarp-box {
   position: relative;
   top: 80px;
-  margin: 0 auto;
-  width: 50%;
+  margin: 0 auto 40px;
+  width: 100%;
   border: 1px solid #c2c2c2;
 }
 
@@ -121,12 +140,23 @@ export default {
 }
 
 @media (max-width: 480px) {
+  .listwarp {
+    width: 92%;
+    height: 100%;
+    position:absolute;
+    left:4%;
+    top:0;
+  }
   .listwarp-box {
+    box-sizing: border-box;
     width: 100%;
   }
 }
-
-.el-table th {
+.el-table th{
+  background: #ecf5ff;
+}
+.el-table th,
+td {
   text-align: center;
 }
 

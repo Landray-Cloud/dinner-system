@@ -5,6 +5,8 @@
       <el-button type="primary" @click="cleanList">清除数据</el-button>
       <div class="listwarp-box">
         <el-table :data="tableData" stripe class="table" >
+          <el-table-column type="index"  label="序号">
+          </el-table-column>
           <el-table-column label="日期">
             <template slot-scope="scope">
               {{tableData[scope.$index].orderTime | status}}
@@ -12,10 +14,12 @@
           </el-table-column>
           <el-table-column prop="name" label="姓名">
           </el-table-column>
-          <el-table-column label="是否点晚餐">
+          <el-table-column label="是否点晚餐" sortable>
             <template slot-scope="scope">
               {{tableData[scope.$index].isOrder ? '是' : '否'}}
             </template>
+          </el-table-column>
+          <el-table-column prop="mac" label="Mac地址">
           </el-table-column>
         </el-table>
       </div>

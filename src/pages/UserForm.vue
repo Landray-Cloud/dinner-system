@@ -1,9 +1,9 @@
 <template>
-  <div class="list" id="home">
+  <div class="list" id="home" v-show="bodyShow">
     <my-bg></my-bg>
     <div class="myform" :data="createItem">
       <p>今天是{{orderDate | status}} {{week | getWeek}}</p>
-      <h3>{{ userName  }}是否点餐？</h3>
+      <h3>{{ userName  }} 是否点餐？</h3>
       <div class="userform-box">
         <el-button type="primary" @click="sub(true)" class="btn">是</el-button>
         <el-button type="primary" @click="sub(false)" class="btn">否</el-button>
@@ -20,26 +20,22 @@ export default {
   },
   data() {
     return {
+      bodyShow: false,
       orderDate: '',
-      userName: '',
+      userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
       week: '', //星期
       createItem: []
     }
   },
   created() { // created 组件创建完毕属性已经绑定但dom还未生成的状态
-    this.userName = window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName");
-    // console.log(this.userName);
-    if (this.userName === null || this.userName === 'undefined' || this.userName === '') {
-      this.$router.push('/');
-    } else {
-      this.$router.push({
-        name: 'UserForm'
-      });
-    }
+    this.getIsOrder()
+    if (!this.userName) this.$router.push('/')
   },
   mounted() {
-    this.orderDate = new Date();
-    this.week = this.orderDate.getDay();
+    // this.orderDate = new Date();
+    // this.week = this.orderDate.getDay();
+    // 
+
     // this.userName = window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName");
 
   },
@@ -47,11 +43,11 @@ export default {
     sub(isOrder) {
       let orderTime = Date.parse(new Date());
       let userName = this.userName;
-      if (window.localStorage) {
-        localStorage.setItem('userName', userName);
-      } else {
-        Cookie.write('userName', userName)
-      }
+      // if (window.localStorage) {
+      //   localStorage.setItem('userName', userName);
+      // } else {
+      //   Cookie.write('userName', userName)
+      // }
       // if (this.week === 2 || this.week !== 4) {
       //   this.$router.push({
       //     name: 'UserFail'
@@ -59,6 +55,7 @@ export default {
       //   return;
       // }
       let ajax = 'https://test.ywork.me/node/dinner/insertData?name=' + userName + '&isOrder=' + isOrder + '&orderTime=' + orderTime;
+
       this.$http.get(ajax).then(res => {
         let body = res.data
         if (typeof res === 'undefined' || res === null) {
@@ -84,6 +81,18 @@ export default {
 
       }, err => {
         console.log(err)
+      })
+    },
+    // 判断是否点餐
+    getIsOrder() {
+      let ajax = "https://test.ywork.me/node/dinner/isOrder"
+      this.$http.get(ajax).then(res => {
+        let body = res.data;
+        this.bodyShow = true
+        if (body.isOrder) this.$router.push('UserReset')
+      }, err => {
+        this.bodyShow = true
+        console.log(err);
       })
     }
   },

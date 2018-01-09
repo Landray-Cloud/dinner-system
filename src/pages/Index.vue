@@ -4,14 +4,15 @@
     <div class="myform">
       <h3>{{ msg  }}</h3>
       <div class="myform-box">
-        <el-input v-model="name" placeholder="你的名字" class="winput" @keyup.13="showUserForm" @change="changeInput"></el-input>
+        <el-input v-model="userName" placeholder="你的名字" class="winput" @keyup.13="showUserForm"></el-input>
         <el-button type="primary" @click="showUserForm" class="btn">提交</el-button>
       </div>
     </div>
   </div>
 </template>
 <script type="text/javascript">
-import myBg from '@/components/myBg';
+import myBg from '@/components/myBg'
+
 export default {
   name: 'Index',
   components: {
@@ -20,38 +21,19 @@ export default {
   data() {
     return {
       msg: '点餐小系统',
-      name: '',
-      week: '' //星期
+      userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
+      week: new Date().getDay()
     }
   },
   created() {
-    this.week = new Date().getDay();
-    console.log(this.week);
-    if (this.week === 2 || this.week === 4) {
-      this.$router.push({
-        name: 'Index'
-      })
-    } else {
-      this.$router.push({
-        name: 'UserFail'
-      });
-    }
-    if (this.userName === null || this.userName === 'undefined' || this.userName === '') {
-      this.$router.push('/');
-    } else {
-      this.$router.push({
-        name: 'UserForm'
-      });
-    }
+    if (this.userName) this.$router.push('UserForm')
+
+    let week = this.week
+    if (week !== 2 && week !== 4) this.$router.push('UserFail')
   },
   mounted() {
-
-    this.name = window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName");
   },
   methods: {
-    changeInput() {
-
-    },
     checkNum(val) {
       var regx = /^[0-9]*$/;
       if (regx.test(val)) {
@@ -61,32 +43,24 @@ export default {
       }
     },
     showUserForm() {
-      if (this.name === '' || this.name === null) {
-        this.$message.error('请输入姓名');
-        return false;
-      }
-      if (this.checkNum(this.name)) {
-        this.$message.error('请不要输入数字或者字母！');
-        return false;
-      }
-      if (this.name.length > 8) {
-        this.$message.error('请不要胡乱输入');
-        return false;
-      }
+      let userName = this.userName;
 
-      var orderTime = this.orderTime;
-      orderTime = Date.parse(new Date());
-      console.log(orderTime);
-      var userName = this.name;
+      if (userName === '' || userName === null) return this.$message.error('请输入姓名');
+
+      if (this.checkNum(userName)) return this.$message.error('请不要输入数字或者字母！');
+
+      if (userName.length > 8) return this.$message.error('请不要胡乱输入');
+
+      var orderTime = Date.parse(new Date());
+      // console.log(orderTime);
+      
       if (window.localStorage) {
         localStorage.setItem('userName', userName);
       } else {
         Cookie.write('userName', userName);
       }
 
-      this.$router.push({
-        name: 'UserForm'
-      })
+      this.$router.push('UserForm')
     }
   }
 };

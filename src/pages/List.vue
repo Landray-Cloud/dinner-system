@@ -4,8 +4,9 @@
     <div class="listwarp">
       <el-button type="primary" @click="cleanList">清除数据</el-button>
       <div class="listwarp-box">
-        <el-table :data="tableData" stripe class="table" >
-          <el-table-column type="index"  label="序号">
+        <!-- show-summary 合计 -->
+        <el-table :data="tableData" stripe class="table" :default-sort="{prop:'isOrder'}">
+          <el-table-column type="index" label="序号">
           </el-table-column>
           <el-table-column label="日期">
             <template slot-scope="scope">
@@ -14,7 +15,8 @@
           </el-table-column>
           <el-table-column prop="name" label="姓名">
           </el-table-column>
-          <el-table-column label="是否点晚餐" sortable>
+          <!-- sortable -->
+          <el-table-column label="是否点晚餐">
             <template slot-scope="scope">
               {{tableData[scope.$index].isOrder ? '是' : '否'}}
             </template>
@@ -89,6 +91,10 @@ export default {
 
       })
     }
+    // 点餐排序
+    // changeIsOrder(){
+
+    // }
   },
   filters: {
 
@@ -107,7 +113,7 @@ export default {
 .listwarp {
   /*margin: 8px;*/
   position: absolute;
-  left:25%;
+  left: 25%;
   top: 0;
   margin: 0 auto;
   width: 50%;
@@ -147,18 +153,20 @@ export default {
   .listwarp {
     width: 92%;
     height: 100%;
-    position:absolute;
-    left:4%;
-    top:0;
+    position: absolute;
+    left: 4%;
+    top: 0;
   }
   .listwarp-box {
     box-sizing: border-box;
     width: 100%;
   }
 }
-.el-table th{
+
+.el-table th {
   background: #ecf5ff;
 }
+
 .el-table th,
 td {
   text-align: center;

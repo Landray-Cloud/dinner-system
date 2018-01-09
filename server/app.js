@@ -2,7 +2,6 @@ const utils = require('./utils')
 const express = require('express')
 const app = express()
 const path = '/node/dinner/'
-const getmac = require('getmac')
 
 app.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
@@ -26,32 +25,27 @@ app.get(path + 'insertData', (req, res) => {
   let isOrder = true
   if (query.isOrder === 'false') isOrder = false
 
-  getmac.getMac((err, macAddress) => {
-    if (err) throw err
-    utils.insertData({
-      name: query.name,
-      isOrder: isOrder,
-      orderTime: query.orderTime,
-      mac: macAddress
-    }, dbRes => {
-      res.send(dbRes)
-    })
+  utils.insertData({
+    name: query.name,
+    isOrder: isOrder,
+    orderTime: query.orderTime
+  }, dbRes => {
+    res.send(dbRes)
   })
 })
 
 // 用户当天是否点餐
 app.get(path + 'isOrder', (req, res) => {
-  getmac.getMac((err, macAddress) => {
-    if (err) throw err
-    utils.getData(dbRes => {
-      let data = dbRes.data
-      let isOrder = false
-      for (let item of data) {
-        if (item.mac === macAddress) isOrder = true
-        break
-      }
-      return res.send({ isOrder, errmsg: 'ok', errcode: 0 })
-    })
+  let query = req.query
+  let qName = query.name
+  utils.getData(dbRes => {
+    let data = dbRes.data
+    let isOrder = false
+    for (let item of data) {
+      if (item.name === qName) isOrder = true
+      break
+    }
+    return res.send({ isOrder, errmsg: 'ok', errcode: 0 })
   })
 })
 

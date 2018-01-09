@@ -1,14 +1,11 @@
 {
-  "name": "点餐系统nodejs服务",
+  "name": "dinner-node-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
+  "main": "app.js",
+  "author": "Leo",
+  "license": "MIT",
   "dependencies": {
-      "express": "^4.16.2"
+    "express": "^4.16.2",
+    "getmac": "^1.2.1"
   }
 }

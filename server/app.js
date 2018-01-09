@@ -2,6 +2,7 @@ const utils = require('./utils')
 const express = require('express')
 const app = express()
 const path = '/node/dinner/'
+const getmac = require('getmac')
 
 app.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
@@ -23,12 +24,16 @@ app.get(path + 'insertData', (req, res) => {
   let isOrder = true
   if (query.isOrder === 'false') isOrder = false
 
-  utils.insertData({
-    name: query.name,
-    isOrder: isOrder,
-    orderTime: query.orderTime
-  }, dbRes => {
-    res.send(dbRes)
+  getmac.getMac((err, macAddress) => {
+    if (err) throw err
+    utils.insertData({
+      name: query.name,
+      isOrder: isOrder,
+      orderTime: query.orderTime,
+      mac: macAddress
+    }, dbRes => {
+      res.send(dbRes)
+    })
   })
 })
 

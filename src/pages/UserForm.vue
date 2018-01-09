@@ -23,7 +23,7 @@ export default {
       bodyShow: false,
       orderDate: new Date(),
       userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
-      week: this.orderDate.getDay(), //星期
+      week: new Date().getDay(), //星期
       createItem: []
     }
   },
@@ -31,26 +31,10 @@ export default {
     this.getIsOrder()
     if (!this.userName) this.$router.push('/')
   },
-  mounted() {
-
-    // this.userName = window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName");
-
-  },
   methods: {
     sub(isOrder) {
       let orderTime = Date.parse(new Date());
       let userName = this.userName;
-      // if (window.localStorage) {
-      //   localStorage.setItem('userName', userName);
-      // } else {
-      //   Cookie.write('userName', userName)
-      // }
-      // if (this.week === 2 || this.week !== 4) {
-      //   this.$router.push({
-      //     name: 'UserFail'
-      //   })
-      //   return;
-      // }
       let ajax = 'https://test.ywork.me/node/dinner/insertData?name=' + userName + '&isOrder=' + isOrder + '&orderTime=' + orderTime;
 
       this.$http.get(ajax).then(res => {
@@ -82,7 +66,7 @@ export default {
     },
     // 判断是否点餐
     getIsOrder() {
-      let ajax = "https://test.ywork.me/node/dinner/isOrder"
+      let ajax = "https://test.ywork.me/node/dinner/isOrder?name="+this.userName
       this.$http.get(ajax).then(res => {
         let body = res.data;
         this.bodyShow = true

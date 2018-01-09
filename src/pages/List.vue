@@ -21,8 +21,6 @@
               {{tableData[scope.$index].isOrder ? '是' : '否'}}
             </template>
           </el-table-column>
-          <el-table-column prop="mac" label="Mac地址">
-          </el-table-column>
         </el-table>
       </div>
     </div>

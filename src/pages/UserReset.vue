@@ -36,19 +36,10 @@ export default {
     // this.getIsOrder();
     this.orderDate = new Date();
     this.week = this.orderDate.getDay();
-    // this.userName = window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName");
+
 
   },
   methods: {
-    // getIsOrder() {
-    //   let ajax = "https://test.ywork.me/node/dinner/isOrder";
-    //   this.$http.get(ajax).then(res => {
-    //     let body = res.data;
-    //   }, err => {
-    //     console.log(err);
-    //   })
-
-    // }
   },
   filters: {
     status(val) {

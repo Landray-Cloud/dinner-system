@@ -36,14 +36,15 @@ app.get(path + 'insertData', (req, res) => {
 
 // 用户当天是否点餐
 app.get(path + 'isOrder', (req, res) => {
-  let query = req.query
-  let qName = query.name
+  let qName = req.query.name
+
   utils.getData(dbRes => {
-    let data = dbRes.data
     let isOrder = false
-    for (let item of data) {
-      if (item.name === qName) isOrder = true
-      break
+    for (let item of dbRes.data) {
+      if (item.name === qName) {
+        isOrder = true
+        break
+      }
     }
     return res.send({ isOrder, errmsg: 'ok', errcode: 0 })
   })

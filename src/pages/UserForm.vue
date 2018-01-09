@@ -27,10 +27,14 @@ export default {
     }
   },
   created() { // created 组件创建完毕属性已经绑定但dom还未生成的状态
-  	this.userName = window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName");
-    console.log(this.userName);
-    if (this.userName === 'null' || this.userName === 'undefined' || this.userName === '') {
-    	this.$router.push('/');
+    this.userName = window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName");
+    // console.log(this.userName);
+    if (this.userName === null || this.userName === 'undefined' || this.userName === '') {
+      this.$router.push('/');
+    } else {
+      this.$router.push({
+        name: 'UserForm'
+      });
     }
   },
   mounted() {

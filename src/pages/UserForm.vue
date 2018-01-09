@@ -21,9 +21,9 @@ export default {
   data() {
     return {
       bodyShow: false,
-      orderDate: '',
+      orderDate: new Date(),
       userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
-      week: '', //星期
+      week: this.orderDate.getDay(), //星期
       createItem: []
     }
   },
@@ -32,9 +32,6 @@ export default {
     if (!this.userName) this.$router.push('/')
   },
   mounted() {
-    // this.orderDate = new Date();
-    // this.week = this.orderDate.getDay();
-    // 
 
     // this.userName = window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName");
 

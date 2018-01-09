@@ -13,12 +13,14 @@ app.all('*', function(req, res, next) {
   next()
 })
 
+// 获取列表
 app.get(path + 'getData', (req, res) => {
   utils.getData(dbRes => {
     res.send(dbRes)
   })
 })
 
+// 插入数据
 app.get(path + 'insertData', (req, res) => {
   let query = req.query
   let isOrder = true
@@ -37,6 +39,23 @@ app.get(path + 'insertData', (req, res) => {
   })
 })
 
+// 用户当天是否点餐
+app.get(path + 'isOrder', (req, res) => {
+  getmac.getMac((err, macAddress) => {
+    if (err) throw err
+    utils.getData(dbRes => {
+      let data = dbRes.data
+      let isOrder = false
+      for (let item of data) {
+        if (item.mac === macAddress) isOrder = true
+        break
+      }
+      return res.send({ isOrder, errmsg: 'ok', errcode: 0 })
+    })
+  })
+})
+
+// 清空数据
 app.get(path + 'cleanData', (req, res) => {
   let query = req.query
 
@@ -46,5 +65,5 @@ app.get(path + 'cleanData', (req, res) => {
 })
 
 app.listen(3001, _ => {
-  console.log('listening on port 3001!')
+  console.log('Dinner System is listening on port 3001!')
 })

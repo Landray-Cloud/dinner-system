@@ -46,12 +46,12 @@ APP.get(PATH + 'updateData', async(req, res) => {
 })
 
 
-// 用户当天是否点餐
-APP.get(PATH + 'isOrder', async(req, res) => {
+// 用户当前是否已操作
+APP.get(PATH + 'isAction', async(req, res) => {
   let name = req.query.name
 
   try {
-    res.send(await UTILS.isOrder(name))
+    res.send(await UTILS.isAction(name))
   } catch (err) {
     res.send(err)
   }

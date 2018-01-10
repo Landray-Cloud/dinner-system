@@ -69,8 +69,8 @@ async function updateData(options) {
 }
 
 
-// 用户当前是否点餐
-async function isOrder(name) {
+// 用户当前是否已操作
+async function isAction(name) {
   let dbRes = await getList()
 
   return new Promise((resolve, reject) => {
@@ -81,13 +81,13 @@ async function isOrder(name) {
     if (!data) return reject(ERROR_CB)
 
     let cb = SUCC_CB
-    cb.data = { isOrder: false }
+    cb.data = { isAction: false }
 
     if (!data.length) return reject(cb)
 
     for (let item of data) {
       if (item.name === name) {
-        cb.data.isOrder = true
+        cb.data.isAction = true
         break
       }
     }
@@ -101,5 +101,5 @@ module.exports = {
   getList,
   updateData,
   cleanList,
-  isOrder
+  isAction
 }

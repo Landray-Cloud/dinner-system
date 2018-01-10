@@ -1,64 +1,64 @@
-const utils = require('./utils')
+const UTILS = require('./utils')
 const express = require('express')
-const app = express()
-const path = '/node/dinner/'
+const APP = express()
+const PATH = '/node/dinner/'
 
-app.all('*', function(req, res, next) {
+APP.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Headers', 'X-Requested-With')
   res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS')
   res.header('X-Powered-By', ' 3.2.1')
-  res.header('Content-Type', 'application/json;charset=utf-8')
+  res.header('Content-Type', 'APPlication/json;charset=utf-8')
   next()
 })
 
 // 获取列表
-app.get(path + 'getData', (req, res) => {
-  utils.getData(dbRes => {
-    res.send(dbRes)
-  })
-})
-
-// 插入数据
-app.get(path + 'insertData', (req, res) => {
-  let query = req.query
-  let isOrder = true
-  if (query.isOrder === 'false') isOrder = false
-
-  utils.insertData({
-    name: query.name,
-    isOrder: isOrder,
-    orderTime: query.orderTime
-  }, dbRes => {
-    res.send(dbRes)
-  })
-})
-
-// 用户当天是否点餐
-app.get(path + 'isOrder', (req, res) => {
-  let qName = req.query.name
-
-  utils.getData(dbRes => {
-    let isOrder = false
-    for (let item of dbRes.data) {
-      if (item.name === qName) {
-        isOrder = true
-        break
-      }
-    }
-    return res.send({ isOrder, errmsg: 'ok', errcode: 0 })
-  })
+APP.get(PATH + 'getList', async(req, res) => {
+  try {
+    res.send(await UTILS.getList())
+  } catch (err) {
+    res.send(err)
+  }
 })
 
 // 清空数据
-app.get(path + 'cleanData', (req, res) => {
-  let query = req.query
-
-  utils.cleanData(dbRes => {
-    res.send(dbRes)
-  })
+APP.get(PATH + 'cleanList', async(req, res) => {
+  try {
+    res.send(await UTILS.cleanList())
+  } catch (err) {
+    res.send(err)
+  }
 })
 
-app.listen(3001, _ => {
+
+// 插入数据
+APP.get(PATH + 'updateData', async(req, res) => {
+  let query = req.query
+  let name = query.name
+  let orderTime = query.orderTime
+  let isOrder = query.isOrder === 'false' ? false : true
+
+  try {
+    res.send(await UTILS.updateData({ name, isOrder, orderTime }))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
+
+// 用户当天是否点餐
+APP.get(PATH + 'isOrder', async(req, res) => {
+  let name = req.query.name
+
+  try {
+    res.send(await UTILS.isOrder(name))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
+
+
+APP.listen(3001, _ => {
   console.log('Dinner System is listening on port 3001!')
 })

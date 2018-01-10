@@ -43,7 +43,21 @@ async function updateData(options) {
 
     if (!data) return reject(ERROR_CB)
 
-    data.push(options)
+    let index = -1
+
+    // 判断该人是否存在 ? 存在覆盖 : 否则push
+    for (let i in data) {
+      if (data[i].name === options.name) {
+        index = i
+        break
+      }
+    }
+
+    if (index !== -1) {
+      data.splice(index, 1, options)
+    } else {
+      data.push(options)
+    }
 
     data = JSON.stringify(data)
 

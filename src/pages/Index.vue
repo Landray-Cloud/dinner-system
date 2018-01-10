@@ -29,7 +29,8 @@ export default {
     if (this.userName) this.$router.push('UserForm')
 
     let week = this.week
-    if (week !== 2 && week !== 4) this.$router.push('UserFail')
+    // if (week !== 2 && week !== 4) this.$router.push('UserFail')
+    if (week === 2 && week === 4) this.$router.push('UserFail')
   },
   mounted() {
   },
@@ -52,7 +53,6 @@ export default {
       if (userName.length > 8) return this.$message.error('请不要胡乱输入');
 
       var orderTime = Date.parse(new Date());
-      // console.log(orderTime);
       
       if (window.localStorage) {
         localStorage.setItem('userName', userName);

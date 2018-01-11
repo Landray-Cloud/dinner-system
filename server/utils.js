@@ -69,7 +69,7 @@ async function updateData(options) {
 }
 
 
-// 用户当前是否已操作
+// 用户今天是否已做了选择
 async function isAction(name) {
   let dbRes = await getList()
 
@@ -91,7 +91,32 @@ async function isAction(name) {
         break
       }
     }
+    resolve(cb)
+  })
+}
 
+// 用户今天是否已点餐
+async function isOrder(name) {
+  let dbRes = await getList()
+
+  return new Promise((resolve, reject) => {
+    if (!dbRes) return reject(ERROR_CB)
+
+    let data = dbRes.data
+
+    if (!data || !data.length) return reject(ERROR_CB)
+
+    let cb = SUCC_CB
+    let _isOrder = false
+
+    for (let item of data) {
+      if (item.name === name) {
+        _isOrder = item.isOrder
+        break
+      }
+    }
+
+    cb.data = { isOrder: _isOrder }
     resolve(cb)
   })
 }
@@ -101,5 +126,6 @@ module.exports = {
   getList,
   updateData,
   cleanList,
-  isAction
+  isAction,
+  isOrder
 }

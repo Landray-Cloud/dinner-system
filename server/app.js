@@ -37,7 +37,6 @@ APP.get(PATH + 'updateData', async(req, res) => {
   let name = query.name
   let orderTime = query.orderTime
   let isOrder = query.isOrder === 'false' ? false : true
-
   try {
     res.send(await UTILS.updateData({ name, isOrder, orderTime }))
   } catch (err) {
@@ -49,7 +48,6 @@ APP.get(PATH + 'updateData', async(req, res) => {
 // 用户当前是否已操作
 APP.get(PATH + 'isAction', async(req, res) => {
   let name = req.query.name
-
   try {
     res.send(await UTILS.isAction(name))
   } catch (err) {
@@ -58,7 +56,17 @@ APP.get(PATH + 'isAction', async(req, res) => {
 })
 
 
+// 用户当前是否已点餐
+APP.get(PATH + 'isOrder', async(req, res) => {
+  let name = req.query.name
+  try {
+    res.send(await UTILS.isOrder(name))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
 
 APP.listen(3001, _ => {
-  console.log('Dinner System is listening on port 3001!')
+  console.log('Dinner System is listening on port 3001 !')
 })

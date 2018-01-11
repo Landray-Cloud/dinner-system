@@ -60,15 +60,14 @@ let Util = {
   },
   // 统一成功回调验证（不检查data）
   commAjaxNoDataCB: res => {
-    if (typeof res === 'undefined' || res === null) return this.$message.error('集合返回失败，请联系管理员')
+    if (typeof res === 'undefined' || res === null) return VM.$message.error('集合返回失败，请联系管理员')
     let errcode = res.errcode
-
     if (typeof errcode === 'undefined' || errcode === null || errcode !== 0) {
       let toastMsg = '系统繁忙'
-      let errmsg = res.data.errmsg
+      let errmsg = res.errmsg
       if (typeof errmsg !== 'undefined' || errmsg !== null && errmsg !== '') return toastMsg = errmsg
       if (typeof errcode === 'number') return toastMsg += ',返回码：' + errcode
-      if (errcode === -1001) return this.$router.push('/')
+      if (errcode === -1001) return VM.$router.push('/')
       return false
     }
     return true
@@ -78,7 +77,7 @@ let Util = {
   CommAjaxCB: res => {
     if (!Util.commAjaxNoDataCB((res))) return false
     let data = res.data
-    if (typeof data === 'undefined' || data === null) return this.$message.error('返回数据错误')
+    if (typeof data === 'undefined' || data === null) return VM.$message.error('返回数据错误')
     return true
   }
 }

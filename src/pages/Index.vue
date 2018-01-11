@@ -29,8 +29,7 @@ export default {
     if (this.userName) this.$router.push('UserForm')
 
     let week = this.week
-    // if (week !== 2 && week !== 4) this.$router.push('UserFail')
-    if (week === 2 && week === 4) this.$router.push('UserFail')
+    if (week !== 2 && week !== 4) this.$router.push('UserFail')
   },
   mounted() {
   },

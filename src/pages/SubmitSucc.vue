@@ -2,7 +2,7 @@
   <div class="list" id="home">
     <my-bg></my-bg>
     <div class="myform succ">
-      <h3>感谢您的投票！</h3>
+      <h3>感谢您的付出！</h3>
     </div>
   </div>
 </template>

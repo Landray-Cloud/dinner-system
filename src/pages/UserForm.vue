@@ -5,8 +5,8 @@
       <p>今天是{{orderDate}} {{week}}</p>
       <h3>{{ userName  }} 是否点餐？</h3>
       <div class="userform-box">
-        <el-button type="primary" @click="sub(true)" class="btn">是</el-button>
-        <el-button type="primary" @click="sub(false)" class="btn">否</el-button>
+        <el-button type="primary" @click="sub(true)" class="btn">要点，我爱加班！</el-button>
+        <el-button  @click="sub(false)" class="btn">不点，给我也不吃！</el-button>
       </div>
     </div>
   </div>
@@ -30,11 +30,6 @@ export default {
   },
   created() { // created 组件创建完毕属性已经绑定但dom还未生成的状态
     this.getIsOrder()
-    // if (this.isOrder) {
-    //   this.bodyShow = true
-    //   return 
-    // }
-
     this.week = Util.getWeek(this.week);
     this.orderDate = Util.getDate(this.orderDate, 'yyyy-MM-dd');
     if (!this.userName) this.$router.push('/')
@@ -51,13 +46,11 @@ export default {
         this.$router.push({
           name: 'SubmitSucc'
         })
-
-
       }, err => {
         console.log(err)
       })
     },
-    // 判断是否点餐
+    // 判断是否已操作
     getIsOrder() {
       let ajax = Util.ajaxHost + "isAction?name=" + this.userName
       this.$http.get(ajax).then(succ => {

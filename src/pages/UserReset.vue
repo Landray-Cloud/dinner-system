@@ -1,23 +1,17 @@
 <template>
   <div id="home">
     <my-bg></my-bg>
-    <div class="myform reset-warp" v-show="showOrder">
+    <div class="myform reset-warp">
       <p>今天是{{orderDate}} {{week}}</p>
-      <h3>{{ userName  }}&nbsp;&nbsp;你今天已经点过餐了!<br/>是不是改变主意了？</h3>
-      <div class="userform-box reset-btn">
-        <el-button type="primary" @click="sub(true)" class="btn">是的我不想点餐了</el-button>
-        <el-button type="primary" @click="sub(false)" class="btn">那我还是不改了</el-button>
+      <h3>{{ userName }}，你今天已选择<span class="pink">{{ isOrder ? '点餐' : '不点餐' }}</span> !<br/>是不是改变主意了？</h3>
+      <div class=" reset-btn">
+        <!-- 已点餐 -->
+        <el-button v-if="isOrder" type="primary" @click="sub(false)" class="reset-btn">不点，给我也不吃！</el-button>
+        <!-- 没点餐 -->
+        <el-button v-else type="primary" @click="sub(true)" class="reset-btn">要点，我爱加班！</el-button>
       </div>
     </div>
-    <!-- 没点餐 -->
-    <div class="myform reset-warp" v-show="nOrder">
-      <p>今天是{{orderDate}} {{week}}</p>
-      <h3>{{ userName  }}&nbsp;&nbsp;你今天还没有点过餐!<br/>是不是改变主意了？</h3>
-      <div class="userform-box reset-btn">
-        <el-button type="primary" @click="sub(true)" class="btn">是的工作使我快乐</el-button>
-        <el-button type="primary" @click="sub(false)" class="btn">我还是不想点</el-button>
-      </div>
-    </div>
+  </div>
   </div>
 </template>
 <script>
@@ -30,32 +24,26 @@ export default {
   },
   data() {
     return {
+      userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
       orderDate: new Date(),
       week: new Date().getDay(),
-      showOrder: true,
-      nOrder: false
-
+      isOrder: false
     }
   },
   created() { // created 组件创建完毕属性已经绑定但dom还未生成的状态
-    let userName = this.userName = window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName");
+    this.getIsOrder()
+    let userName = this.userName
     this.orderDate = Util.getDate(this.orderDate, 'yyyy-MM-dd')
     this.week = Util.getWeek(this.week)
     if (userName === null || userName === 'undefined') return this.$router.push('/')
-
-
   },
   methods: {
     getIsOrder() {
-      let ajax = Util.ajaxHost + 'isOrder?name=' + userName;
+      let ajax = Util.ajaxHost + 'isOrder?name=' + this.userName;
       this.$http.get(ajax).then(succ => {
         let res = succ.data
-        if (Util.CommAjaxCB(res)) return
-        if (!res.data.isOrder) {
-          this.nOrder = true
-          this.showOrder = false
-        }
-
+        if (!Util.CommAjaxCB(res)) return
+        this.isOrder = res.data.isOrder
       })
     },
     // 更新提交数据

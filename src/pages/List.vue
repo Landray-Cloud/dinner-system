@@ -2,7 +2,7 @@
   <div id="home">
     <my-bg></my-bg>
     <div class="listwarp">
-      <el-button type="primary" @click="cleanList">清除数据</el-button>
+      <el-button type="primary" @click="dialogCleanList = true">清除数据</el-button>
       <div class="listwarp-box">
         <el-table :data="tableData" stripe class="table" show-summary>
           <el-table-column type="index" label="序号">
@@ -22,6 +22,13 @@
         </el-table>
       </div>
     </div>
+    <!-- 清除数据弹出框 -->
+    <el-dialog title="清除数据" :visible.sync="dialogCleanList">
+      <el-input v-model="cleanPass" placeholder="输入总统安全密码"></el-input>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="danger" @click="cleanList">全部清除！</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 <script src="//unpkg.com/element-ui@1.3.4/lib/index.js"></script>
@@ -35,6 +42,8 @@ export default {
   },
   data() {
     return {
+      dialogCleanList: false,
+      cleanPass: '',
       tableData: []
     }
   },
@@ -59,87 +68,24 @@ export default {
     },
     // 清除数据
     cleanList() {
-      let ajaxURL = Util.ajaxHost + 'cleanList'
+      let cleanPass = this.cleanPass
+      if (!cleanPass) return this.dialogCleanList = false
+      let ajaxURL = Util.ajaxHost + 'cleanList?pass=' + cleanPass
       this.$http.get(ajaxURL).then(succ => {
         let res = succ.data
         if (!Util.CommAjaxCB(res)) return
         this.tableData = res.data
-
       }, err => {
         console.log(err)
-
       })
     },
     filterIsOrder(value, row) {
       return row.isOrder === value;
     }
-
   }
 }
 
 </script>
 <style>
 @import "../less/main.css";
-.listwarp {
-  /*margin: 8px;*/
-  position: absolute;
-  left: 25%;
-  top: 0;
-  margin: 0 auto;
-  width: 50%;
-}
-
-
-.datep {
-  display: inline-block;
-  font-size: 20px;
-  text-align: left;
-  float: left;
-  margin: 20px 0 0 10px;
-}
-
-.listwarp button {
-  position: absolute;
-  right: 0;
-  top: 20px;
-}
-
-.listwarp-box {
-  position: relative;
-  top: 80px;
-  margin: 0 auto 40px;
-  width: 100%;
-  border: 1px solid #c2c2c2;
-}
-
-@media screen (min-width: 1200px) {
-  .listwarp {
-    width: 50%;
-    border: 1px solid red;
-  }
-}
-
-@media (max-width: 480px) {
-  .listwarp {
-    width: 92%;
-    height: 100%;
-    position: absolute;
-    left: 4%;
-    top: 0;
-  }
-  .listwarp-box {
-    box-sizing: border-box;
-    width: 100%;
-  }
-}
-
-.el-table th {
-  background: #ecf5ff;
-}
-
-.el-table th,
-td {
-  text-align: center;
-}
-
 </style>

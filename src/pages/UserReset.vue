@@ -42,7 +42,7 @@ export default {
       let ajax = Util.ajaxHost + 'isOrder?name=' + this.userName;
       this.$http.get(ajax).then(succ => {
         let res = succ.data
-        if (!Util.CommAjaxCB(res)) return
+        if (!Util.commAjaxCB(res)) return
         this.isOrder = res.data.isOrder
       })
     },
@@ -53,7 +53,7 @@ export default {
       let ajax = Util.ajaxHost + 'updateData?name=' + userName + '&isOrder=' + isOrder + '&orderTime=' + orderTime;
       this.$http.get(ajax).then(succ => {
         let res = succ.data;
-        if (!Util.CommAjaxCB(res)) return;
+        if (!Util.commAjaxCB(res)) return;
         this.createItem = res.data;
 
         this.$router.push({

@@ -41,7 +41,7 @@ export default {
       let ajax = Util.ajaxHost + 'updateData?name=' + userName + '&isOrder=' + isOrder + '&orderTime=' + orderTime;
       this.$http.get(ajax).then(succ => {
         let res = succ.data;
-        if (!Util.CommAjaxCB(res)) return;
+        if (!Util.commAjaxCB(res)) return;
         let createItem = res.data;
         this.$router.push({
           name: 'SubmitSucc'
@@ -55,7 +55,7 @@ export default {
       let ajax = Util.ajaxHost + "isAction?name=" + this.userName
       this.$http.get(ajax).then(succ => {
         let res = succ.data;
-        if (!Util.CommAjaxCB(res)) return
+        if (!Util.commAjaxCB(res)) return
         this.bodyShow = true
         if (res.data.isAction) this.$router.push('UserReset')
       }, err => {

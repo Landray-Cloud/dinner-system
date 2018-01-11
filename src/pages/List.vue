@@ -56,7 +56,7 @@ export default {
       let ajaxURL = Util.ajaxHost + 'getList'
       this.$http.get(ajaxURL).then(succ => {
         let res = succ.data
-        if (!Util.CommAjaxCB(res)) return
+        if (!Util.commAjaxCB(res)) return
         let data = res.data
         for (var i in data) {
           data[i].orderTime = Util.getDate(data[i].orderTime, 'yyyy-MM-dd hh:ss');
@@ -73,8 +73,13 @@ export default {
       let ajaxURL = Util.ajaxHost + 'cleanList?pass=' + cleanPass
       this.$http.get(ajaxURL).then(succ => {
         let res = succ.data
-        if (!Util.CommAjaxCB(res)) return
-        this.tableData = res.data
+        if (!Util.commAjaxNoDataCB(res)) return
+        this.tableData = []
+        this.$message({
+          message: '删除成功',
+          type: 'success'
+        });
+        this.dialogCleanList = false
       }, err => {
         console.log(err)
       })
@@ -88,4 +93,5 @@ export default {
 </script>
 <style>
 @import "../less/main.css";
+
 </style>

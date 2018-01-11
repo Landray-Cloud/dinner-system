@@ -23,6 +23,8 @@ APP.get(PATH + 'getList', async(req, res) => {
 
 // 清空数据
 APP.get(PATH + 'cleanList', async(req, res) => {
+  let pass = req.query.pass
+  if (pass !== 'leo') return res.send({ errcode: -1, errmsg: '干嘛呢?' })
   try {
     res.send(await UTILS.cleanList())
   } catch (err) {

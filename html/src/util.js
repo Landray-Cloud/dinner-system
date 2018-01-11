@@ -1,6 +1,6 @@
 let Util = {
-  ajaxHost: '//test.ywork.me/node/dinner/',
-  // ajaxHost: 'http://localhost:3001/node/dinner/',
+  // ajaxHost: '//test.ywork.me/node/dinner/',
+  ajaxHost: 'http://localhost:3001/node/dinner/',
   // 转换日期
   Format: (timeObj, fmt) => {
     var o = {

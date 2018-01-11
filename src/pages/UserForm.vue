@@ -21,15 +21,20 @@ export default {
   },
   data() {
     return {
-      bodyShow: true, // false
+      bodyShow: false, // false
       orderDate: new Date(),
       userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
       week: new Date().getDay(), //星期
-      createItem: []
+      createItem: [],
     }
   },
   created() { // created 组件创建完毕属性已经绑定但dom还未生成的状态
-    // this.getIsOrder()
+    this.getIsOrder()
+    // if (this.isOrder) {
+    //   this.bodyShow = true
+    //   return 
+    // }
+
     this.week = Util.getWeek(this.week);
     this.orderDate = Util.getDate(this.orderDate, 'yyyy-MM-dd');
     if (!this.userName) this.$router.push('/')
@@ -38,16 +43,15 @@ export default {
     sub(isOrder) {
       let orderTime = Date.parse(new Date());
       let userName = this.userName;
-      let ajax = Util.ajaxHost + 'insertData?name=' + userName + '&isOrder=' + isOrder + '&orderTime=' + orderTime;
-
-      this.$http.get(ajax).then(res => {
-        let body = res.data
-        if (!Util.CommAjaxCB(res)) return
-        let data = body.data
-        this.createItem = data;
+      let ajax = Util.ajaxHost + 'updateData?name=' + userName + '&isOrder=' + isOrder + '&orderTime=' + orderTime;
+      this.$http.get(ajax).then(succ => {
+        let res = succ.data;
+        if (!Util.CommAjaxCB(res)) return;
+        let createItem = res.data;
         this.$router.push({
           name: 'SubmitSucc'
         })
+
 
       }, err => {
         console.log(err)
@@ -55,12 +59,12 @@ export default {
     },
     // 判断是否点餐
     getIsOrder() {
-      let ajax = Util.ajaxHost + "isOrder?name=" + this.userName
-      this.$http.get(ajax).then(res => {
-        let body = res.data;
+      let ajax = Util.ajaxHost + "isAction?name=" + this.userName
+      this.$http.get(ajax).then(succ => {
+        let res = succ.data;
         if (!Util.CommAjaxCB(res)) return
         this.bodyShow = true
-        if (body.isOrder) this.$router.push('UserReset')
+        if (res.data.isAction) this.$router.push('UserReset')
       }, err => {
         this.bodyShow = true
         console.log(err);

@@ -61,7 +61,7 @@ let Util = {
   // 统一成功回调验证（不检查data）
   commAjaxNoDataCB: res => {
     if (typeof res === 'undefined' || res === null) return this.$message.error('集合返回失败，请联系管理员')
-    let errcode = res.data.errcode
+    let errcode = res.errcode
 
     if (typeof errcode === 'undefined' || errcode === null || errcode !== 0) {
       let toastMsg = '系统繁忙'

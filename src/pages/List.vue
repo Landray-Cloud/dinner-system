@@ -4,7 +4,7 @@
     <div class="listwarp">
       <el-button type="primary" @click="cleanList">清除数据</el-button>
       <div class="listwarp-box">
-        <el-table :data="tableData" stripe class="table"  show-summary>
+        <el-table :data="tableData" stripe class="table" show-summary>
           <el-table-column type="index" label="序号">
           </el-table-column>
           <el-table-column label="日期">
@@ -14,9 +14,9 @@
           </el-table-column>
           <el-table-column prop="name" label="姓名">
           </el-table-column>
-          <el-table-column label="是否点晚餐" sortable>
+          <el-table-column prop="isOrder" label="是/否点晚餐" :filters="[{ text: '是', value: true }, { text: '否', value: false }]" :filter-method="filterIsOrder">
             <template slot-scope="scope">
-              {{tableData[scope.$index].isOrder ? '是' : '否'}}
+              <el-tag :type="scope.row.isOrder === true ? 'success' : 'primary'">{{scope.row.isOrder?'是':'否'}}</el-tag>
             </template>
           </el-table-column>
         </el-table>
@@ -44,11 +44,11 @@ export default {
   methods: {
     // 获取数据列表
     getData() {
-      let ajaxURL = Util.ajaxHost + 'getData'
-      this.$http.get(ajaxURL).then(res => {
-        let body = res.data
+      let ajaxURL = Util.ajaxHost + 'getList'
+      this.$http.get(ajaxURL).then(succ => {
+        let res = succ.data
         if (!Util.CommAjaxCB(res)) return
-        let data = body.data
+        let data = res.data
         for (var i in data) {
           data[i].orderTime = Util.getDate(data[i].orderTime, 'yyyy-MM-dd hh:ss');
         }
@@ -59,18 +59,21 @@ export default {
     },
     // 清除数据
     cleanList() {
-      let ajaxURL = Util.ajaxHost + 'cleanData'
-      this.$http.get(ajaxURL).then(res => {
-        let body = res.data
+      let ajaxURL = Util.ajaxHost + 'cleanList'
+      this.$http.get(ajaxURL).then(succ => {
+        let res = succ.data
         if (!Util.CommAjaxCB(res)) return
-        let data = body.data
-        this.tableData = data
+        this.tableData = res.data
 
       }, err => {
         console.log(err)
 
       })
+    },
+    filterIsOrder(value, row) {
+      return row.isOrder === value;
     }
+
   }
 }
 

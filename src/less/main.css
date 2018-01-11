@@ -98,3 +98,10 @@ body {
 .succ h3{
   padding-top: 55px;
 }
+.reset-btn{
+  width: 80%;
+}
+.reset-warp h3{
+  padding-top: 0;
+
+}

@@ -1,26 +1,84 @@
 'use strict'
-
 const FS = require('fs')
 const PATH = '../'
 const DB_PATH = PATH + 'db/data.json'
 const SUCC_CB = { errmsg: 'ok', errcode: 0 }
 const ERROR_CB = { errmsg: 'error', errcode: -1 }
+const connectionDatabase = require('./dao/connectionDatabase')
+const $list = require('./dao/list')
+const log4js = require('log4js')
+const logger = log4js.getLogger()
+
+// By default, log4js will not output any logs (so that it can safely be used in libraries). The level for the default category is set to OFF.
+logger.level = 'debug'
+
+
+Object.prototype.parseSqlResult = function() {
+  return JSON.parse(JSON.stringify(this))
+}
+
+
+Date.prototype.Format = function(fmt) {
+  var o = {
+    'M+': this.getMonth() + 1, //月份
+    'd+': this.getDate(), //日
+    'h+': this.getHours(), //小时
+    'm+': this.getMinutes(), //分
+    's+': this.getSeconds(), //秒
+    'q+': Math.floor((this.getMonth() + 3) / 3), //季度
+    'S': this.getMilliseconds() //毫秒
+  }
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length))
+    for (var k in o) {
+      if (new RegExp('(' + k + ')').test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+      }
+    }
+    return fmt
+  }
+}
+
+// 统一布尔处理
+// const booleanFormat =  => {}
+
+// 统一错误处理
+const _writeError = (echoMsg, logObj = echoMsg) => {
+  logger.error(logObj)
+  return { errcode: -1, errmsg: echoMsg }
+}
+
+// 统一成功处理
+const _writeSuccess = (data = {}) => { return { errmsg: 'ok', errcode: 0, data } }
+
 
 // 获取数据列表
-async function getList() {
+async function getList(options) {
+  let sqlExecute = $list.queryListAll
+  let sqlParam = null
+  let name = options.name
+  let orderDate = options.orderDate
+
+  if (name && orderDate) { // 同时查询名字 和 日期
+    sqlExecute = $list.queryListByNameAndDate
+    sqlParam = [name, orderDate]
+  } else if (name) { // 查询名字
+    sqlExecute = $list.queryListByName
+    sqlParam = name
+  } else if (orderDate) { // 查询日期
+    sqlExecute = $list.queryListByDate
+    sqlParam = orderDate
+  }
+
   return new Promise((resolve, reject) => {
-    FS.readFile(DB_PATH, 'utf-8', (err, content) => {
-      if (err) return reject(ERROR_CB)
-
-      let data = content ? JSON.parse(content) : []
-
-      let cb = SUCC_CB
-      cb.data = data
-
-      resolve(cb)
+    connectionDatabase(sqlExecute, sqlParam).then(succRes => {
+      resolve(_writeSuccess(succRes))
+    }).catch(errRes => {
+      reject(_writeError('getList - 失败', errRes))
     })
   })
 }
+
 
 // 清空列表
 async function cleanList() {
@@ -32,92 +90,95 @@ async function cleanList() {
   })
 }
 
-// 插入一条数据
+// 更新订餐数据
+// orderStatus
+// name
 async function updateData(options) {
-  let dbRes = await getList()
+  let orderStatus = options.orderStatus
+  let name = options.name
 
+  let _Date = new Date()
+  let orderDate = _Date.Format('yyyy-MM-dd')
+  let orderTime = parseInt(_Date.getTime())
+  let sqlExecute = $list.insert
+  let sqlParam = [orderStatus, orderDate, orderTime, name]
+  // 只查今天
+  let dbRes = await getList({orderDate})
   return new Promise((resolve, reject) => {
-    if (!dbRes) return reject(ERROR_CB)
-
+    if (!dbRes) return reject(_writeError('getList - 集合返回失败'))
     let data = dbRes.data
+    if (!data) return reject(_writeError('getList - 数据返回失败'))
+    if (!data.length) return resolve(_writeSuccess()) 
 
-    if (!data) return reject(ERROR_CB)
-
-    let index = -1
-
-    // 判断该人是否存在 ? 存在覆盖 : 否则push
-    for (let i in data) {
-      if (data[i].name === options.name) {
-        index = i
+    // 判断该人是否存在 ? 存在update : 否则insert
+    let isUpdate = false
+    for (let item of data) {
+      if (item.name === name) {
+        isUpdate = true
         break
       }
     }
+    if (isUpdate) sqlExecute = $list.update
 
-    if (index !== -1) {
-      data.splice(index, 1, options)
-    } else {
-      data.push(options)
-    }
-
-    data = JSON.stringify(data)
-
-    FS.writeFile(DB_PATH, data, err => {
-      if (err) return reject(ERROR_CB)
-      resolve(SUCC_CB)
+    connectionDatabase(sqlExecute, sqlParam).then(succRes => {
+      resolve(_writeSuccess())
+    }).catch(errRes => {
+      reject(_writeError('updateData - 失败', errRes))
     })
   })
 }
 
 
-// 用户今天是否已做了选择
-async function isAction(name) {
-  let dbRes = await getList()
+// 某用户某天是否已做了选择
+async function isAction(options) {
+  let name = options.name
+  let orderDate = options.orderDate
 
+  if (!name || !orderDate) return _writeError('name和orderDate是必须参数')
+
+  let dbRes = await getList(options)
   return new Promise((resolve, reject) => {
-    if (!dbRes) return reject(ERROR_CB)
-
+    if (!dbRes) return reject(_writeError('isAction - 集合返回失败'))
     let data = dbRes.data
+    if (!data) return reject(_writeError('isAction - 数据返回失败'))
+    if (!data.length) return resolve(_writeSuccess())
 
-    if (!data) return reject(ERROR_CB)
-
-    let cb = SUCC_CB
-    cb.data = { isAction: false }
-
-    if (!data.length) return reject(cb)
-
+    let obj = { isAction: false }
     for (let item of data) {
       if (item.name === name) {
-        cb.data.isAction = true
+        obj.isAction = true
         break
       }
     }
-    resolve(cb)
+    resolve(_writeSuccess(obj))
   })
 }
 
-// 用户今天是否已点餐
-async function isOrder(name) {
-  let dbRes = await getList()
+// 某用户某天的点餐状态
+// 1: 加班点餐
+// 2: 加班不点餐
+// 3: 不加班不点餐
+async function orderStatus(options) {
+  let name = options.name
+  let orderDate = options.orderDate
 
+  if (!name || !orderDate) return _writeError('name和orderDate是必须参数')
+
+  let dbRes = await getList(options)
   return new Promise((resolve, reject) => {
-    if (!dbRes) return reject(ERROR_CB)
-
+    if (!dbRes) return reject(_writeError('orderStatus - 集合返回失败'))
     let data = dbRes.data
+    if (!data) return reject(_writeError('orderStatus - 数据返回失败'))
+    if (!data.length) return resolve(_writeSuccess())
 
-    if (!data || !data.length) return reject(ERROR_CB)
-
-    let cb = SUCC_CB
-    let _isOrder = false
-
+    let obj = { orderStatus: 0 }
     for (let item of data) {
       if (item.name === name) {
-        _isOrder = item.isOrder
+        obj.orderStatus = item.orderStatus
         break
       }
     }
-
-    cb.data = { isOrder: _isOrder }
-    resolve(cb)
+    resolve(_writeSuccess(obj))
   })
 }
 
@@ -127,5 +188,5 @@ module.exports = {
   updateData,
   cleanList,
   isAction,
-  isOrder
+  orderStatus
 }

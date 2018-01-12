@@ -12,14 +12,15 @@ APP.all('*', function(req, res, next) {
   next()
 })
 
-// 获取列表
+// 获取数据列表
 APP.get(PATH + 'getList', async(req, res) => {
   try {
-    res.send(await UTILS.getList())
+    res.send(await UTILS.getList(req.query))
   } catch (err) {
     res.send(err)
   }
 })
+
 
 // 清空数据
 APP.get(PATH + 'cleanList', async(req, res) => {
@@ -35,23 +36,18 @@ APP.get(PATH + 'cleanList', async(req, res) => {
 
 // 插入数据
 APP.get(PATH + 'updateData', async(req, res) => {
-  let query = req.query
-  let name = query.name
-  let orderTime = query.orderTime
-  let isOrder = query.isOrder === 'false' ? false : true
   try {
-    res.send(await UTILS.updateData({ name, isOrder, orderTime }))
+    res.send(await UTILS.updateData(req.query))
   } catch (err) {
     res.send(err)
   }
 })
 
 
-// 用户当前是否已操作
+// 某用户某天是否已做了选择
 APP.get(PATH + 'isAction', async(req, res) => {
-  let name = req.query.name
   try {
-    res.send(await UTILS.isAction(name))
+    res.send(await UTILS.isAction(req.query))
   } catch (err) {
     res.send(err)
   }
@@ -59,10 +55,9 @@ APP.get(PATH + 'isAction', async(req, res) => {
 
 
 // 用户当前是否已点餐
-APP.get(PATH + 'isOrder', async(req, res) => {
-  let name = req.query.name
+APP.get(PATH + 'orderStatus', async(req, res) => {
   try {
-    res.send(await UTILS.isOrder(name))
+    res.send(await UTILS.orderStatus(req.query))
   } catch (err) {
     res.send(err)
   }

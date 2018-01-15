@@ -23,7 +23,7 @@ APP.get(PATH + 'getList', async(req, res) => {
 
 
 // 插入数据
-APP.get(PATH + 'updateData', async(req, res) => {
+APP.post(PATH + 'updateData', async(req, res) => {
   try {
     res.send(await UTILS.updateData(req.query))
   } catch (err) {
@@ -53,7 +53,7 @@ APP.get(PATH + 'orderStatus', async(req, res) => {
 
 
 // 后台登录
-APP.get(PATH + 'login', async(req, res) => {
+APP.post(PATH + 'login', async(req, res) => {
   try {
     res.send(await UTILS.login(req.query))
   } catch (err) {

@@ -35,7 +35,7 @@ orderTime | Number | 订餐时间戳： 1516000813994
 
 ## 2.更新订餐数据
 *   方法名: updateData
-*   请求: GET
+*   请求: POST
 *   示例: http://localhost:3001/node/dinner/updateData?name=leo666&orderStatus=1
 
 ### 请求参数
@@ -99,7 +99,7 @@ orderStatus | Number | 1:加班订餐; 2:加班不订餐; 3:不加班不订餐
 
 ## 5.后台管理员登录
 *   方法名: login
-*   请求: GET
+*   请求: POST
 *   示例: http://localhost:3001/node/dinner/login?user=leo&pass=123
 
 ### 请求参数

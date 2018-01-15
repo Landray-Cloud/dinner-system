@@ -92,7 +92,7 @@ async function updateData(options) {
     if (!data) return reject(_writeError('getList - 数据返回失败'))
 
     // 判断该人是否存在 ? 存在update : 否则insert
-    if (!data.length) {
+    if (data.length) {
       let isUpdate = false
       for (let item of data) {
         if (item.name === name) {

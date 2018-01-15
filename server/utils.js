@@ -2,8 +2,6 @@
 const FS = require('fs')
 const PATH = '../'
 const DB_PATH = PATH + 'db/data.json'
-const SUCC_CB = { errmsg: 'ok', errcode: 0 }
-const ERROR_CB = { errmsg: 'error', errcode: -1 }
 const connectionDatabase = require('./dao/connectionDatabase')
 const $list = require('./dao/list')
 const log4js = require('log4js')
@@ -11,7 +9,6 @@ const logger = log4js.getLogger()
 
 // By default, log4js will not output any logs (so that it can safely be used in libraries). The level for the default category is set to OFF.
 logger.level = 'debug'
-
 
 Object.prototype.parseSqlResult = function() {
   return JSON.parse(JSON.stringify(this))
@@ -38,9 +35,6 @@ Date.prototype.Format = function(fmt) {
     return fmt
   }
 }
-
-// 统一布尔处理
-// const booleanFormat =  => {}
 
 // 统一错误处理
 const _writeError = (echoMsg, logObj = echoMsg) => {
@@ -79,17 +73,6 @@ async function getList(options) {
   })
 }
 
-
-// 清空列表
-async function cleanList() {
-  return new Promise((resolve, reject) => {
-    FS.writeFile(DB_PATH, [], err => {
-      if (err) return reject(ERROR_CB)
-      resolve(SUCC_CB)
-    })
-  })
-}
-
 // 更新订餐数据
 // orderStatus
 // name
@@ -109,23 +92,19 @@ async function updateData(options) {
     if (!dbRes) return reject(_writeError('getList - 集合返回失败'))
     let data = dbRes.data
     if (!data) return reject(_writeError('getList - 数据返回失败'))
-    // if (!data.length) return resolve(_writeSuccess()) 
 
     // 判断该人是否存在 ? 存在update : 否则insert
-
     if (!data.length) {
       let isUpdate = false
-
       for (let item of data) {
         if (item.name === name) {
           isUpdate = true
           break
         }
       }
-
       if (isUpdate) sqlExecute = $list.update
     }
-  
+
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
       resolve(_writeSuccess())
     }).catch(errRes => {
@@ -192,7 +171,6 @@ async function orderStatus(options) {
 module.exports = {
   getList,
   updateData,
-  cleanList,
   isAction,
   orderStatus
 }

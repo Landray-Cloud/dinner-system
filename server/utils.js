@@ -102,24 +102,30 @@ async function updateData(options) {
   let orderTime = parseInt(_Date.getTime())
   let sqlExecute = $list.insert
   let sqlParam = [orderStatus, orderDate, orderTime, name]
+
   // 只查今天
-  let dbRes = await getList({orderDate})
+  let dbRes = await getList({ name, orderDate })
   return new Promise((resolve, reject) => {
     if (!dbRes) return reject(_writeError('getList - 集合返回失败'))
     let data = dbRes.data
     if (!data) return reject(_writeError('getList - 数据返回失败'))
-    if (!data.length) return resolve(_writeSuccess()) 
+    // if (!data.length) return resolve(_writeSuccess()) 
 
     // 判断该人是否存在 ? 存在update : 否则insert
-    let isUpdate = false
-    for (let item of data) {
-      if (item.name === name) {
-        isUpdate = true
-        break
-      }
-    }
-    if (isUpdate) sqlExecute = $list.update
 
+    if (!data.length) {
+      let isUpdate = false
+
+      for (let item of data) {
+        if (item.name === name) {
+          isUpdate = true
+          break
+        }
+      }
+
+      if (isUpdate) sqlExecute = $list.update
+    }
+  
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
       resolve(_writeSuccess())
     }).catch(errRes => {

@@ -52,6 +52,16 @@ APP.get(PATH + 'orderStatus', async(req, res) => {
 })
 
 
+// 后台登录
+APP.get(PATH + 'login', async(req, res) => {
+  try {
+    res.send(await UTILS.login(req.query))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
+
 APP.listen(3001, _ => {
   console.log('Dinner System is listening on port 3001 !')
 })

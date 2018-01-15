@@ -1,9 +1,7 @@
 'use strict'
 const FS = require('fs')
-const PATH = '../'
-const DB_PATH = PATH + 'db/data.json'
 const connectionDatabase = require('./dao/connectionDatabase')
-const $list = require('./dao/list')
+const $sql = require('./dao/sql')
 const log4js = require('log4js')
 const logger = log4js.getLogger()
 
@@ -48,19 +46,19 @@ const _writeSuccess = (data = {}) => { return { errmsg: 'ok', errcode: 0, data }
 
 // 获取数据列表
 async function getList(options) {
-  let sqlExecute = $list.queryListAll
+  let sqlExecute = $sql.queryListAll
   let sqlParam = null
   let name = options.name
   let orderDate = options.orderDate
 
   if (name && orderDate) { // 同时查询名字 和 日期
-    sqlExecute = $list.queryListByNameAndDate
+    sqlExecute = $sql.queryListByNameAndDate
     sqlParam = [name, orderDate]
   } else if (name) { // 查询名字
-    sqlExecute = $list.queryListByName
+    sqlExecute = $sql.queryListByName
     sqlParam = name
   } else if (orderDate) { // 查询日期
-    sqlExecute = $list.queryListByDate
+    sqlExecute = $sql.queryListByDate
     sqlParam = orderDate
   }
 
@@ -83,7 +81,7 @@ async function updateData(options) {
   let _Date = new Date()
   let orderDate = _Date.Format('yyyy-MM-dd')
   let orderTime = parseInt(_Date.getTime())
-  let sqlExecute = $list.insert
+  let sqlExecute = $sql.insert
   let sqlParam = [orderStatus, orderDate, orderTime, name]
 
   // 只查今天
@@ -102,7 +100,7 @@ async function updateData(options) {
           break
         }
       }
-      if (isUpdate) sqlExecute = $list.update
+      if (isUpdate) sqlExecute = $sql.update
     }
 
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
@@ -167,10 +165,32 @@ async function orderStatus(options) {
   })
 }
 
+// 管理员登录
+async function login(options) {
+  let user = options.user
+  let pass = options.pass
+
+  if (!user || !user) return _writeError('user和pass是必须参数')
+
+  let sqlExecute = $sql.login
+  let sqlParam = [user, pass]
+
+  return new Promise((resolve, reject) => {
+    connectionDatabase(sqlExecute, sqlParam).then(succRes => {
+      logger.debug(succRes)
+      if (!succRes.length) return reject(_writeError('用户名或密码错误'))
+      resolve(_writeSuccess({ isLogin: true }))
+    }).catch(errRes => {
+      reject(_writeError('login - 失败', errRes))
+    })
+  })
+}
+
 
 module.exports = {
   getList,
   updateData,
   isAction,
-  orderStatus
+  orderStatus,
+  login
 }

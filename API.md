@@ -93,3 +93,23 @@ name | true | String | 名字
 参数 | 类型 | 描述
 ---|---|---|---
 orderStatus | Number | 1:加班订餐; 2:加班不订餐; 3:不加班不订餐
+
+
+---
+
+## 5.后台管理员登录
+*   方法名: login
+*   请求: GET
+*   示例: http://localhost:3001/node/dinner/login?user=leo&pass=123
+
+### 请求参数
+参数 | 是否必须 | 类型 | 描述
+---|---|---|---
+user | true | String | 用户名
+pass | true | String | 密码
+
+
+### 返回参数
+参数 | 类型 | 描述
+---|---|---|---
+errcode | Number | -1: 登陆不成功, 0: 登陆成功

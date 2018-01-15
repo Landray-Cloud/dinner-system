@@ -5,7 +5,8 @@ let list = {
     queryListAll: 'SELECT * FROM list',
     queryListByName: 'SELECT * FROM list WHERE name=?',
     queryListByDate: 'SELECT * FROM list WHERE orderDate=?',
-    queryListByNameAndDate: 'SELECT * FROM list WHERE name=? AND orderDate=?'
+    queryListByNameAndDate: 'SELECT * FROM list WHERE name=? AND orderDate=?',
+    login: 'SELECT * FROM admin WHERE user=? AND pass=?'
 }
  
 module.exports = list

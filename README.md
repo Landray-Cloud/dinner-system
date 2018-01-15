@@ -1,9 +1,9 @@
 # dinner-system
-晚上加班点餐系统
+晚上加班订餐系统
 
 # About
-*   数据库: 使用本地data.json文件进行存储数据（目前第一版没有数据库）
-*   后端: nodejs + express
+*   数据库: mysql
+*   后端: nodejs + express 4.16.2 + log4js 2.4.1
 *   前端: webpack 3.6.0 + vue 2.5.2 + vue-router 3.0.1 + element-ui 2.0.9
 *   脚手架: vue-cli
 *   包管理: yarn
@@ -23,8 +23,11 @@ yarn run build
 yarn run build --report
 ```
 
-# Start Server
+# Server
 ``` bash
 1. cd 进 server 目录
-2. node app.js
+2. node app.js or pm2 start app.js
 ```
+
+# API Document
+[API.md](API.md)

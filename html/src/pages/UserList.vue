@@ -37,7 +37,6 @@
               <el-tag v-if="scope.row.orderStatus === 1">加班点餐</el-tag>
               <el-tag type="success" v-if="scope.row.orderStatus === 2">加班不点餐</el-tag>
               <el-tag type="warning" v-if="scope.row.orderStatus === 3">不加班不点餐</el-tag>
-              <el-tag type="danger" v-if="scope.row.orderStatus === 4">不加班点餐</el-tag>
             </template>
           </el-table-column>
         </el-table>
@@ -66,7 +65,7 @@ export default {
   name: 'UserList',
   data() {
     return {
-      filters: [{ text: '加班点餐', value: 1 }, { text: '加班不点餐', value: 2 }, { text: '不加班不点餐', value: 3 }, { text: '不加班点餐', value: 4 }],
+      filters: [{ text: '加班点餐', value: 1 }, { text: '加班不点餐', value: 2 }, { text: '不加班不点餐', value: 3 }],
       tableData: [],
       pages: 1,
       newDate: Util.getDate(new Date(), 'yyyy-MM-dd'),

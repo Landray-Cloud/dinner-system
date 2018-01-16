@@ -113,3 +113,38 @@ pass | true | String | 密码
 参数 | 类型 | 描述
 ---|---|---|---
 errcode | Number | -1: 登陆不成功, 0: 登陆成功
+
+
+
+
+---
+
+## 6.获取某日是否可以提交加班订餐记录
+*   方法名: getSubmit
+*   请求: GET
+*   示例: http://localhost:3001/node/dinner/getSubmit?date=2018-01-16
+
+### 请求参数
+参数 | 是否必须 | 类型 | 描述
+---|---|---|---
+date | true | String | 日期，格式：2018-01-16
+
+
+### 返回参数
+参数 | 类型 | 描述
+---|---|---|---
+status | Number | 0: 不允许, 1: 允许
+
+
+---
+
+## 7.设置某日是否可以提交加班订餐记录
+*   方法名: setSubmit
+*   请求: GET
+*   示例: http://localhost:3001/node/dinner/setSubmit?date=2018-01-16&status=1
+
+### 请求参数
+参数 | 是否必须 | 类型 | 描述
+---|---|---|---
+date | true | String | 日期
+status | true | Number | 0: 不允许, 1: 允许

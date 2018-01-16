@@ -177,11 +177,58 @@ async function login(options) {
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
-      // logger.debug(succRes)
       if (!succRes.length) return reject(_writeError('用户名或密码错误'))
       resolve(_writeSuccess({ isLogin: true }))
     }).catch(errRes => {
       reject(_writeError('login - 失败', errRes))
+    })
+  })
+}
+
+
+// 获取某日是否可以提交加班订餐记录
+async function getSubmit(options) {
+  let date = options.date
+
+  if (!date) return _writeError('getSubmit: date是必须参数')
+
+  let sqlExecute = $sql.getSubmit
+  let sqlParam = [date]
+  return new Promise((resolve, reject) => {
+    connectionDatabase(sqlExecute, sqlParam).then(succRes => {
+      let status = 0
+      // 没有数据，则帮他插入一条status为0的
+      if (!succRes.length || succRes.length === 0) {
+        connectionDatabase($sql.setSubmitInsert, [ status, date])
+      } else {
+        status = succRes[0].status
+      }
+      resolve(_writeSuccess({ status }))
+    }).catch(errRes => {
+      reject(_writeError('getSubmit - 失败', errRes))
+    })
+  })
+}
+
+
+// 设置某日是否可以提交加班订餐记录
+async function setSubmit(options) {
+  let date = options.date
+  let status = options.status
+
+  if (!date || typeof status === 'undefined') return _writeError('setSubmit: date和status是必须参数')
+
+  // 这里为何直接是UPDATE而不是INSERT呢？
+  // 因为下面调用getSubmit的时候，如果遇到没有数据，则可以先insert了
+  let sqlExecute = $sql.setSubmitUpdate
+  let sqlParam = [status, date]
+  let getSub = await getSubmit({ date })
+
+  return new Promise((resolve, reject) => {
+    connectionDatabase(sqlExecute, sqlParam).then(succRes => {
+      resolve(_writeSuccess())
+    }).catch(errRes => {
+      reject(_writeError('setSubmit - 失败', errRes))
     })
   })
 }
@@ -192,5 +239,7 @@ module.exports = {
   updateData,
   isAction,
   orderStatus,
-  login
+  login,
+  getSubmit,
+  setSubmit
 }

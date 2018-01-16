@@ -97,6 +97,16 @@ APP.get(PATH + 'setSubmit', async(req, res) => {
 })
 
 
+// 删除某条订餐信息记录
+APP.post(PATH + 'deleteOrder', async(req, res) => {
+  try {
+    res.send(await UTILS.deleteOrder(req.body))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
+
 APP.listen(3001, _ => {
   console.log('Dinner System is listening on port 3001 !')
 })

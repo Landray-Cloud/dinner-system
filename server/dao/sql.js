@@ -2,7 +2,7 @@ let list = {
     insert: 'INSERT INTO list(orderStatus, orderDate, orderTime, name) VALUES(?,?,?,?)',
     update: 'UPDATE list SET orderStatus=?, orderDate=?, orderTime=? WHERE name=?',
     updateById: 'UPDATE list SET orderStatus=?, orderDate=?, orderTime=?, name=? WHERE id=?',
-    delete: 'DELETE from list where id=?',
+    deleteById: 'DELETE from list where id=?',
     queryListAll: 'SELECT * FROM list',
     queryListByName: 'SELECT * FROM list WHERE name=?',
     queryListByDate: 'SELECT * FROM list WHERE orderDate=?',

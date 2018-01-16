@@ -175,3 +175,19 @@ name | String | 名字
 orderStatus | Number | 订餐状态
 orderDate | String | 订餐日期："2018-01-15"
 orderTime | Number | 订餐时间戳： 1516000813994
+
+
+
+
+---
+
+## 9.删除某条订餐信息记录
+*   方法名: deleteOrder
+*   请求: POST
+*   示例: http://localhost:3001/node/dinner/deleteOrder
+
+
+### 请求参数
+参数 | 是否必须 | 类型 | 描述
+---|---|---|---
+id | true | Number | 记录ID

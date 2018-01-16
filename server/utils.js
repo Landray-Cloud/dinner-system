@@ -137,6 +137,22 @@ async function updateDataById(options) {
 }
 
 
+// 删除某条订餐信息记录
+async function deleteOrder(options) {
+  let id = options.id
+  let sqlExecute = $sql.deleteById
+  let sqlParam = [id]
+
+  return new Promise((resolve, reject) => {
+    connectionDatabase(sqlExecute, sqlParam).then(succRes => {
+      resolve(_writeSuccess())
+    }).catch(errRes => {
+      reject(_writeError('deleteOrder - 失败', errRes))
+    })
+  })
+}
+
+
 // 某用户某天是否已做了选择
 async function isAction(options) {
   let name = options.name
@@ -267,5 +283,6 @@ module.exports = {
   orderStatus,
   login,
   getSubmit,
-  setSubmit
+  setSubmit,
+  deleteOrder
 }

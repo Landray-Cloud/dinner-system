@@ -148,3 +148,30 @@ status | Number | 0: 不允许, 1: 允许
 ---|---|---|---
 date | true | String | 日期
 status | true | Number | 0: 不允许, 1: 允许
+
+
+
+---
+
+## 8.根据ID更新订餐数据 (管理用)
+*   方法名: updateDataById
+*   请求: POST
+*   示例: http://localhost:3001/node/dinner/updateDataById
+
+### 请求参数
+参数 | 是否必须 | 类型 | 描述
+---|---|---|---
+id | true | Number | 记录ID
+orderStatus | true | String | 订餐状态
+name | true | String | 名字
+
+
+
+### 返回参数
+参数 | 类型 | 描述
+---|---|---|---
+id | Number | 
+name | String | 名字
+orderStatus | Number | 订餐状态
+orderDate | String | 订餐日期："2018-01-15"
+orderTime | Number | 订餐时间戳： 1516000813994

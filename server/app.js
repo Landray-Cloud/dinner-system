@@ -37,6 +37,16 @@ APP.post(PATH + 'updateData', async(req, res) => {
 })
 
 
+// 根据ID更新单条数据
+APP.post(PATH + 'updateDataById', async(req, res) => {
+  try {
+    res.send(await UTILS.updateDataById(req.body))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
+
 // 某用户某天是否已做了选择
 APP.get(PATH + 'isAction', async(req, res) => {
   try {

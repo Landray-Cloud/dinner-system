@@ -2,6 +2,10 @@ const UTILS = require('./utils')
 const express = require('express')
 const APP = express()
 const PATH = '/node/dinner/'
+const bodyParser = require('body-parser')
+
+APP.use(bodyParser.json())  // 解析 application/json
+APP.use(bodyParser.urlencoded({ extended: false }))
 
 APP.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
@@ -24,8 +28,9 @@ APP.get(PATH + 'getList', async(req, res) => {
 
 // 插入数据
 APP.post(PATH + 'updateData', async(req, res) => {
+  let param = req.body
   try {
-    res.send(await UTILS.updateData(req.query))
+    res.send(await UTILS.updateData(param))
   } catch (err) {
     res.send(err)
   }
@@ -55,7 +60,7 @@ APP.get(PATH + 'orderStatus', async(req, res) => {
 // 后台登录
 APP.post(PATH + 'login', async(req, res) => {
   try {
-    res.send(await UTILS.login(req.query))
+    res.send(await UTILS.login(req.body))
   } catch (err) {
     res.send(err)
   }

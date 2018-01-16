@@ -14,3 +14,4 @@ yarn-error.log*
 *.sln
 data.json
 /server/config/index.js
+/html/dist

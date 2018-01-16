@@ -23,8 +23,7 @@ export default {
     if (this.userName) this.$router.push('UserForm')
 
     let week = this.week
-    // if (week !== 2 && week !== 4) this.$router.push('UserFail')
-    if (week === 2 && week === 4) this.$router.push('UserFail')
+    if (week !== 2 && week !== 4) this.$router.push('UserFail')
   },
   mounted() {},
   methods: {
@@ -38,22 +37,28 @@ export default {
     },
     showUserForm() {
       let userName = this.userName;
+      let msg = '乖！输入你的真实姓名好不好?'
 
-      if (userName === '' || userName === null) return this.$message.error('请输入姓名');
+      if (userName === '' || userName === null) return this.$message.error(msg)
 
-      if (this.checkNum(userName)) return this.$message.error('请不要输入数字或者字母！');
+      if (this.checkNum(userName)) return this.$message.error(msg)
 
-      if (userName.length > 4) return this.$message.error('姓名最长不能超过4个字符');
+      if (userName.length > 4) return this.$message.error(msg)
 
       var orderTime = Date.parse(new Date());
+      this.$confirm('姓名不要乱输，一旦提交不可修改?', '温馨提示', {
+        confirmButtonText: '这是我的真名！',
+        cancelButtonText: '我还是改一下吧',
+        type: 'warning'
+      }).then(() => {
+        if (window.localStorage) {
+          localStorage.setItem('userName', userName);
+        } else {
+          Cookie.write('userName', userName);
+        }
+        this.$router.push('UserForm')
+      }).catch(() => { });
 
-      if (window.localStorage) {
-        localStorage.setItem('userName', userName);
-      } else {
-        Cookie.write('userName', userName);
-      }
-
-      this.$router.push('UserForm')
     }
   }
 };

@@ -112,6 +112,47 @@ async function updateData(options) {
 }
 
 
+// 根据ID更新订餐数据 (管理用)
+// orderStatus
+// name
+// id
+async function updateDataById(options) {
+  let orderStatus = options.orderStatus
+  let name = options.name
+  let id = options.id
+
+  let _Date = new Date()
+  let orderDate = _Date.Format('yyyy-MM-dd')
+  let orderTime = parseInt(_Date.getTime())
+  let sqlExecute = $sql.updateById
+  let sqlParam = [orderStatus, orderDate, orderTime, name, id]
+
+  return new Promise((resolve, reject) => {
+    connectionDatabase(sqlExecute, sqlParam).then(succRes => {
+      resolve(_writeSuccess())
+    }).catch(errRes => {
+      reject(_writeError('updateDataById - 失败', errRes))
+    })
+  })
+}
+
+
+// 删除某条订餐信息记录
+async function deleteOrder(options) {
+  let id = options.id
+  let sqlExecute = $sql.deleteById
+  let sqlParam = [id]
+
+  return new Promise((resolve, reject) => {
+    connectionDatabase(sqlExecute, sqlParam).then(succRes => {
+      resolve(_writeSuccess())
+    }).catch(errRes => {
+      reject(_writeError('deleteOrder - 失败', errRes))
+    })
+  })
+}
+
+
 // 某用户某天是否已做了选择
 async function isAction(options) {
   let name = options.name
@@ -237,9 +278,11 @@ async function setSubmit(options) {
 module.exports = {
   getList,
   updateData,
+  updateDataById,
   isAction,
   orderStatus,
   login,
   getSubmit,
-  setSubmit
+  setSubmit,
+  deleteOrder
 }

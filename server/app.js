@@ -37,6 +37,16 @@ APP.post(PATH + 'updateData', async(req, res) => {
 })
 
 
+// 根据ID更新单条数据
+APP.post(PATH + 'updateDataById', async(req, res) => {
+  try {
+    res.send(await UTILS.updateDataById(req.body))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
+
 // 某用户某天是否已做了选择
 APP.get(PATH + 'isAction', async(req, res) => {
   try {
@@ -81,6 +91,16 @@ APP.get(PATH + 'getSubmit', async(req, res) => {
 APP.get(PATH + 'setSubmit', async(req, res) => {
   try {
     res.send(await UTILS.setSubmit(req.query))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
+
+// 删除某条订餐信息记录
+APP.post(PATH + 'deleteOrder', async(req, res) => {
+  try {
+    res.send(await UTILS.deleteOrder(req.body))
   } catch (err) {
     res.send(err)
   }

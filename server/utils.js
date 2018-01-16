@@ -177,7 +177,7 @@ async function login(options) {
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
-      logger.debug(succRes)
+      // logger.debug(succRes)
       if (!succRes.length) return reject(_writeError('用户名或密码错误'))
       resolve(_writeSuccess({ isLogin: true }))
     }).catch(errRes => {

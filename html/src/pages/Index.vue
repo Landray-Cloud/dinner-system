@@ -14,7 +14,7 @@ export default {
   name: 'Index',
   data() {
     return {
-      msg: '点餐小系统',
+      msg: '加班订餐系统',
       userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
       week: new Date().getDay()
     }

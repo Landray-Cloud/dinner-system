@@ -9,7 +9,7 @@
       </ul>
     </div>
     <div class="usertable" v-if="pages===1">
-      div.
+      
       <el-table :data="tableData" stripe show-summary v-show="showGetList" :summary-method="getTotal">
         <el-table-column type="index" label="序号">
         </el-table-column>

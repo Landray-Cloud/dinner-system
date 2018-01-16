@@ -22,7 +22,7 @@ export default {
   name: 'UserForm',
   data() {
     return {
-      bodyShow: false, // false
+      bodyShow: true, // false
       orderDate: Util.getDate(new Date(), 'yyyy-MM-dd'),
       userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
       week: new Date().getDay(), //星期

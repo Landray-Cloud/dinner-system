@@ -1,11 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Index from '@/pages/Index';
-import List from '@/pages/List';
 import UserForm from '@/pages/UserForm';
 import SubmitSucc from '@/pages/SubmitSucc';
 import UserFail from '@/pages/UserFail';
-import UserReset from '@/pages/UserReset'
 import UserList from '@/pages/UserList'
 Vue.use(Router);
 
@@ -14,10 +12,6 @@ export default new Router({
     path: '/',
     name: 'Index',
     component: Index
-  }, {
-    path: '/List',
-    name: 'List',
-    component: List
   }, {
     path: '/UserForm',
     name: 'UserForm',
@@ -30,10 +24,6 @@ export default new Router({
     path:'/UserFail',
     name:'UserFail',
     component:UserFail
-  },{
-    path:'/UserReset',
-    name:'UserReset',
-    component:UserReset
   },{
     path:'/UserList',
     name:'UserList',

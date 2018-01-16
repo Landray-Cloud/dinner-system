@@ -232,17 +232,18 @@ body {
   position: absolute;
   bottom: 25px;
   left: 0;
-  padding: 0 40px;
-  text-align: center;
 }
 
 .userform-box button {
-  float: left;
+  float: none;
+  display: block;
+  text-align: center;
+  margin:0 auto;
 }
 
 
 .userform-box button:last-child {
-  float: right;
+  float: none;
 }
 
 .succ h3 {
@@ -473,6 +474,22 @@ body {
     height: 600px;
     border: 1px solid #eee;
   }
+  .userbox {
+  width: 90%;
+  height: 340px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  margin: -170px 0 0 -45%;
+  background: #fff;
+  border: 1px solid #fff;
+  border-radius: 6px;
+  padding: 20px;
+}
+.el-select{
+  margin-bottom: 20px;
+
+}
 }
 
 .el-table th {

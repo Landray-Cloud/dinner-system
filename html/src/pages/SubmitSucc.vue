@@ -17,7 +17,7 @@ export default {
   },
   methods: {
     getReturn() {
-      this.$router.push('UserReset')
+      this.$router.push('UserForm')
     }
   }
 }

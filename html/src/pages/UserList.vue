@@ -22,7 +22,7 @@
             <el-button icon="el-icon-search" @click="getReset">重置</el-button>
           </li>
         </ul>
-        <el-table :data="tableData" stripe show-summary :summary-method="getTotal">
+        <el-table :data="tableData" stripe show-summary :summary-method="getTotal" class="el-table" height="640">
           <el-table-column type="index" label="序号">
           </el-table-column>
           <el-table-column label="日期">

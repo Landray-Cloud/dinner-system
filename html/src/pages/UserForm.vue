@@ -1,7 +1,7 @@
 <template>
   <div id="home" v-show="bodyShow" class="mainBg">
     <div class="userbox" :data="createItem">
-      <p class="datap">今天是{{orderDate}} {{week}}</p>
+      <p class="datap">今天是{{orderDate}} <span @click="addClick">{{week}}</span></p>
       <h3 class="userFormTitle" v-if="!isAction"><p class="title">{{ userName  }} 是否加班订餐？</p></h3>
       <h3 class="maintitle" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderText }}</span>！是不是改变主意了？</p></h3>
       <div class="checkbox">
@@ -43,7 +43,8 @@ export default {
       //   value: 4,
       //   label: '不加班订餐'
       // }
-      isAction: false
+      isAction: false,
+      clickCount: 0
     }
   },
   created() { // created 组件创建完毕属性已经绑定但dom还未生成的状态
@@ -120,6 +121,13 @@ export default {
         this.bodyShow = true
         console.log(err);
       })
+    },
+    // 隐藏功能，连续点击10次“星期几”，则可以修改个人名字
+    addClick() {
+      this.clickCount = this.clickCount + 1
+      if (this.clickCount < 10) return
+      localStorage.removeItem('userName')
+      location.reload()
     }
   }
 }

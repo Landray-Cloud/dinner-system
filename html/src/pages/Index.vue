@@ -29,7 +29,7 @@ export default {
   mounted() {},
   methods: {
     checkNum(val) {
-      var regx = /^[0-9]*$/;
+      var regx = /^[A-Za-z0-9]*$/;
       if (regx.test(val)) {
         return true;
       } else {
@@ -43,7 +43,7 @@ export default {
 
       if (this.checkNum(userName)) return this.$message.error('请不要输入数字或者字母！');
 
-      if (userName.length > 8) return this.$message.error('姓名最长不能超过8个字符');
+      if (userName.length > 4) return this.$message.error('姓名最长不能超过4个字符');
 
       var orderTime = Date.parse(new Date());
 

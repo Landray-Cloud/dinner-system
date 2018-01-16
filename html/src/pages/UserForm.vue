@@ -3,7 +3,7 @@
     <div class="userbox" :data="createItem">
       <p class="datap">今天是{{orderDate}} {{week}}</p>
       <h3 class="userFormTitle" v-if="!isAction"><p class="title">{{ userName  }} 是否加班订餐？</p></h3>
-      <h3 class="maintitle" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderStatus | filterOrderStatus  }}</span>！是不是改变主意了？</p></h3>
+      <h3 class="maintitle" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderStatus | filterOrderStatus }}</span>！是不是改变主意了？</p></h3>
       <div class="checkbox">
         <el-select v-model="selectWork" placeholder="请选择">
           <el-option v-for="item in workList" :key="item.value" :label="item.label" :value="item.value">
@@ -13,13 +13,9 @@
           <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
-        <!-- <p>{{selectWork}}</p> -->
       </div>
       <div class="userform-box">
-        <!-- <el-button type="primary" @click="sub(true)" class="btn">要点，我爱加班！</el-button>
-        <el-button @click="sub(false)" class="btn">不点，给我也不吃！</el-button> -->
         <el-button type="primary" @click="sub" class="btn">{{ isAction ? '改变主意' : '提交' }}</el-button>
-        <!-- <el-button @click="sub" class="btn">不点，给我也不吃！</el-button> -->
       </div>
     </div>
   </div>
@@ -35,9 +31,9 @@ export default {
       userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
       week: new Date().getDay(), //星期
       createItem: [], // 数据列表
-      selectWork: 0, // 下拉框列表  加班/不加班
-      selectOrder: 2, // 下拉框列表  点餐/不点餐
-      orderStatus: 0, // 订餐状态
+      selectWork: '', // 下拉框列表  加班/不加班
+      selectOrder: '', // 下拉框列表  点餐/不点餐
+      orderStatus: -1, // 订餐状态
       workList: [{
         value: 0,
         label: '加班'
@@ -62,8 +58,28 @@ export default {
   },
   filters: {
     filterOrderStatus(orderStatus) {
-      return orderStatus
-      // sw
+      let text = '返回数据失败'
+      switch (orderStatus) {
+        case 1:
+          text = '加班点餐';
+          break;
+        case 2:
+          text = "加班不点餐";
+          break;
+        case 3:
+          text = "不加班不点餐";
+          break;
+        case 4:
+          text = "不加班点餐";
+          break;
+        case -1:
+          text = "获取失败";
+          break;
+        default:
+          text = "数据失败"
+          break;
+      }
+      return text
     }
   },
   methods: {
@@ -88,8 +104,7 @@ export default {
       }
 
       let ajax = Util.ajaxHost + 'updateData'
-      let params = {name, orderStatus}
-      // this.$http.post(ajax, JSON.stringify(dataObj)).then(succ => {
+      let params = { name, orderStatus }
       this.$http.post(ajax, params).then(succ => {
         let res = succ.data;
         if (!Util.commAjaxCB(res)) return;
@@ -104,15 +119,13 @@ export default {
     // 用户今天是否已做了选择
     getIsAction() {
       let ajax = Util.ajaxHost + "isAction?name=" + this.userName + '&orderDate=' + this.orderDate
-      // let ajax = Util.ajaxHost + "orderStatus?name=" + this.userName + '&orderDate=' + this.orderDate
       this.$http.get(ajax).then(succ => {
         let res = succ.data;
         if (!Util.commAjaxCB(res)) return
-        this.bodyShow = true
-        // if (res.data.isAction) this.$router.push('UserReset')
         let _isAction = res.data.isAction || false
         this.isAction = _isAction
-        if (_isAction) getOrderStatus()
+        if (_isAction) this.getOrderStatus()
+        this.bodyShow = true
       }, err => {
         this.bodyShow = true
         console.log(err);

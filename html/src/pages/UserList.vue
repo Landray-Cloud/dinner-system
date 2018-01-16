@@ -19,6 +19,7 @@
           </li>
           <li>
             <el-button type="primary" icon="el-icon-search" @click="getDate">查询</el-button>
+            <el-button icon="el-icon-search" @click="getReset">重置</el-button>
           </li>
         </ul>
         <el-table :data="tableData" stripe show-summary :summary-method="getTotal">
@@ -31,7 +32,7 @@
           </el-table-column>
           <el-table-column prop="name" label="姓名">
           </el-table-column>
-          <el-table-column prop="orderStatus" sortable label="是/否订餐" :filters="filters" :filter-method="filterIsOrder">
+          <el-table-column prop="orderStatus" label="是/否订餐" :filters="filters" :filter-method="filterIsOrder">
             <template slot-scope="scope">
               <el-tag v-if="scope.row.orderStatus === 1">加班点餐</el-tag>
               <el-tag type="success" v-if="scope.row.orderStatus === 2">加班不点餐</el-tag>
@@ -94,14 +95,13 @@ export default {
       let ajaxURL = Util.ajaxHost + 'getList'
 
       if (selectInp && selectDate) {
-      	ajaxURL += '?name=' + selectDate + '&selectDate=' + selectDate
-      }else if (selectInp) {
-      	ajaxURL += '?name=' + selectInp
+        ajaxURL += '?name=' + selectInp + '&orderDate=' + selectDate
+      } else if (selectInp) {
+        ajaxURL += '?name=' + selectInp
       } else if (selectDate) {
-      	ajaxURL += '?selectDate=' + selectDate
+        ajaxURL += '?orderDate=' + selectDate
       }
 
-      // let ajaxURL = Util.ajaxHost + 'getList?name=' + this.selectInp + '&orderDate=' + selectDate
       this.$http.get(ajaxURL).then(succ => {
         let res = succ.data
         if (!Util.commAjaxCB(res)) return
@@ -114,12 +114,17 @@ export default {
         console.error(err)
       })
     },
+    getReset() {
+      this.selectInp = ''
+      this.selectDate = ''
+
+    },
     // 统计
     getTotal(param) {
       return ['合计', '', '', param.data.length]
     },
     // 点餐设置提交
-    getOrderSet(){
+    getOrderSet() {
 
     },
     // 筛选

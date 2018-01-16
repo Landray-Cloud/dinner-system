@@ -298,19 +298,125 @@ body {
   border: 1px solid #c2c2c2;
 }
 
-/*.userListBox {
-  height: 600px;
+.userListBox {
+  height: 98%;
   border: 1px solid #eee;
-}*/
+}
+
+
+
+
+/* userlist */
+
+.userListBox {
+  border: 1px solid #f3f4f3;
+  position: relative;
+  background-color: #fafafa;
+}
+
+.usertable {
+  padding-left: 160px;
+}
+
+.userListNav {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 160px;
+  height: 100%;
+  background-color: #FAFAFA;
+  border-right: 1px solid #ebeef2;
+}
+
+.userListNav li {
+  height: 48px;
+  line-height: 48px;
+  padding-left: 10px;
+  border-bottom: 1px solid #ebeef2;
+  font-size: 14px;
+  color: #606266;
+  cursor: pointer;
+  background-color: #FAFAFA;
+}
+
+.userListNav li.active {
+  color: #409eff;
+}
+
+.selectList {
+  position: relative;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.selectList-title {
+  font-weight: normal;
+  font-size: 18px;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 20px;
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #ebeef2;
+}
+
+.selectList ul {
+  text-align: center;
+  padding-top: 30px;
+  font-size: 0;
+  position: relative;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.selectList ul li {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #222;
+}
+
+.selectTitle {
+  display: inline-block;
+}
+
+.selectName {
+  display: inline-block;
+  width: 220px;
+}
+
+.usertable {
+  height: 100%;
+}
+
+.orderSet {
+  width: 400px;
+  height: 240px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -120px 0 0 -200px;
+}
+
+.orderSet p {
+  font-size: 18px;
+  line-height: 24px;
+  margin-bottom: 14px;
+}
+
+.orderSetBtn {
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 10%;
+  width: 40%;
+  display: block;
+}
 
 @media screen (min-width: 1200px) {
   .listwarp {
     width: 50%;
     border: 1px solid red;
-  }
-  .userListBox {
-    height: 800px;
-    border: 1px solid #eee;
   }
 }
 

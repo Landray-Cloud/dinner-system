@@ -1,33 +1,139 @@
-body {
+@charset "utf-8";
+body,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+form,
+thead,
+tbody,
+tfoot,
+div,
+input,
+textarea,
+button,
+span {
+  margin: 0;
+  padding: 0;
+}
+
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+html {
+  font-size: 20px;
+  font-family: "Microsoft Yahei", "Î¢ÈíÑÅºÚ", "Helvetica Neue", "Hiragino Sans GB", Tahoma, Arial, STHeiti, sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  width: 100%;
   height: 100%;
 }
 
-#home {
+body {
+  font-size: 15px;
+  corlor: #222;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  /* -webkit-touch-callout:none;*/
   width: 100%;
   height: 100%;
   overflow-x: hidden;
-  position: relative;
-  background: rgba(7, 17, 27, 0.95);
+  box-sizing: border-box;
+  -webkit-text-size-adjust: none;
+  -moz-text-size-adjust: none;
+  -ms-text-size-adjust: none;
+  -o-text-size-adjust: none;
+  text-size-adjust: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  /*È¥³ý¸ßÁÁ*/
 }
 
-#myCanvas {
-  background-color: black;
+div,
+input,
+textarea,
+button,
+ul,
+li,
+span,
+ ::before,
+ ::after {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border: none;
+  outline: none;
+}
+
+input,
+textarea {
+  resize: none;
+  padding: 0;
+  word-break: break-all;
+  word-wrap: break-word;
+  border-radius: 0;
+  -webkit-appearance: none;
+}
+
+label {
   display: block;
-  margin: 0 auto;
-  position: absolute;
-  top: 0;
-  left: 0;
 }
 
+::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #e0e0e0;
+  font-size: 1em;
+  line-height: normal;
+}
 
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #e0e0e0;
+  font-size: 1em;
+  line-height: normal;
+}
 
-.list {
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #e0e0e0;
+  font-size: 1em;
+  line-height: normal;
+}
+
+:-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #e0e0e0;
+  font-size: 1em;
+  line-height: normal;
+}
+
+.nocopy {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  background: url("../assets/main-bg.png")no-repeat center center;
+  background-size: 100% 100%;
+  padding: 1rem 10%;
+}
+
+.mainBg {
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  background-size: cover;
-  background-position: center center;
-  background-size: cover;
+  position: relative;
+  display: block;
+  margin: 0 auto;
 }
 
 .warp {
@@ -37,12 +143,13 @@ body {
 }
 
 .myform,
-.mythank {
+.mainbox {
   width: 500px;
   height: 200px;
-  position: absolute;
-  left: 50%;
+  position: relative;
   top: 50%;
+  left: 50%;
+  /*margin: -100px 0 0 0;*/
   margin: -100px 0 0 -250px;
   background: #fff;
   border: 1px solid #fff;
@@ -50,43 +157,83 @@ body {
   padding: 20px;
 }
 
-.mythank h3 {
-  font-size: 24px;
-  font-weight: normal;
-  text-align: center;
-  line-height: 200px;
-  margin: 0;
+.userbox {
+  width: 500px;
+  height: 270px;
+  position: relative;
+  top: 50%;
+  left: 50%;
+  /*margin: -100px 0 0 0;*/
+  margin: -135px 0 0 -250px;
+  background: #fff;
+  border: 1px solid #fff;
+  border-radius: 6px;
+  padding: 20px;
 }
 
-.myform h3 {
+.checkbox {
+  /*width: 40%;*/
+  margin: 0 auto;
+  text-align: center;
+}
+
+.el-checkbox__label {
+  font-size: 18px;
+}
+
+.myform,
+.failtitle {
   font-size: 24px;
   font-weight: normal;
   text-align: center;
-  padding-top: 25px;
+  line-height: 24px;
+}
+
+.maintitle,
+.userFormTitle {
+  text-align: center;
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 24px;
+  padding: 20px 0;
+}
+
+.userFormTitle {
+  padding: 30px 0;
+}
+
+.failtitle {
+  line-height: 100px;
+}
+
+.datap {
+  font-size: 18px;
+  text-align: left;
+}
+
+.title {
+  font-size: 18px;
+  text-align: left;
+  display: inline-block;
 }
 
 .myform-box {
   position: relative;
+  top: 30px;
 }
 
-.myform-box .winput {
+.winput {
   width: 70%;
   margin-right: 10%;
 }
 
-@media (max-width: 480px) {
-  .myform,
-  .mythank {
-    width: 80%;
-    height: 200px;
-    margin: 200px 0 0 -45%;
-  }
-}
-
 .userform-box {
-  position: relative;
-  margin: 0 auto;
-  width: 80%;
+  width: 100%;
+  position: absolute;
+  bottom: 25px;
+  left: 0;
+  padding: 0 40px;
+  text-align: center;
 }
 
 .userform-box button {
@@ -99,17 +246,21 @@ body {
 }
 
 .succ h3 {
-  padding-top: 55px;
+  padding: 40px;
 }
 
 .reset-btn {
-  position: relative;
-  display: block;
-  margin: 0 auto;
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  margin: 0 0 0 -40%;
+  width: 80%;
+  text-align: center;
 }
 
 .reset-warp h3 {
-  padding-top: 0;
+  padding: 0;
+  margin: 18px 0 10px;
 }
 
 .pink {
@@ -117,7 +268,6 @@ body {
 }
 
 .listwarp {
-  /*margin: 8px;*/
   position: absolute;
   left: 25%;
   top: 0;
@@ -148,14 +298,50 @@ body {
   border: 1px solid #c2c2c2;
 }
 
+/*.userListBox {
+  height: 600px;
+  border: 1px solid #eee;
+}*/
+
 @media screen (min-width: 1200px) {
   .listwarp {
     width: 50%;
     border: 1px solid red;
   }
+  .userListBox {
+    height: 800px;
+    border: 1px solid #eee;
+  }
 }
 
-@media (max-width: 480px) {
+@media screen and (max-width: 414px) {
+  body {
+    padding: 1rem 3%;
+  }
+  .myform {
+    width: 100%;
+    height: 240px;
+    margin: -120px 0 0 -50%;
+  }
+  .userform-box {
+    padding: 0 20px;
+  }
+  .userFormTitle {
+    padding: 50px 0;
+  }
+  .mainbox {
+    width: 100%;
+    height: 200px;
+    margin: -100px 0 0 -50%;
+  }
+  .reset-warp h3 {
+    padding: 0;
+    margin: 30px 0 10px;
+  }
+  .failtitle {
+    font-size: 20px;
+    line-height: 90px;
+  }
   .listwarp {
     width: 92%;
     height: 100%;
@@ -166,6 +352,20 @@ body {
   .listwarp-box {
     box-sizing: border-box;
     width: 100%;
+  }
+
+  /* 首页 */
+  .myform-box {
+    position: relative;
+    top: 15%;
+  }
+  .myform-box .winput {
+    width: 70%;
+    margin-right: 0;
+  }
+  .userListBox {
+    height: 600px;
+    border: 1px solid #eee;
   }
 }
 

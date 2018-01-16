@@ -6,7 +6,7 @@ import UserForm from '@/pages/UserForm';
 import SubmitSucc from '@/pages/SubmitSucc';
 import UserFail from '@/pages/UserFail';
 import UserReset from '@/pages/UserReset'
-
+import UserList from '@/pages/UserList'
 Vue.use(Router);
 
 export default new Router({
@@ -34,5 +34,9 @@ export default new Router({
     path:'/UserReset',
     name:'UserReset',
     component:UserReset
+  },{
+    path:'/UserList',
+    name:'UserList',
+    component:UserList
   }]
 })

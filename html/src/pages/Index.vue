@@ -1,8 +1,7 @@
 <template>
-  <div class="list" id="home">
-    <my-bg></my-bg>
-    <div class="myform">
-      <h3>{{ msg  }}</h3>
+  <div class="mainBg" id="home">
+    <div class="mainbox">
+      <h3 class="maintitle">{{ msg  }}</h3>
       <div class="myform-box">
         <el-input v-model="userName" placeholder="你的名字" class="winput" @keyup.13="showUserForm"></el-input>
         <el-button type="primary" @click="showUserForm" class="btn">提交</el-button>
@@ -11,13 +10,8 @@
   </div>
 </template>
 <script type="text/javascript">
-import myBg from '@/components/myBg'
-
 export default {
   name: 'Index',
-  components: {
-    myBg
-  },
   data() {
     return {
       msg: '点餐小系统',
@@ -29,10 +23,10 @@ export default {
     if (this.userName) this.$router.push('UserForm')
 
     let week = this.week
-    if (week !== 2 && week !== 4) this.$router.push('UserFail')
+    // if (week !== 2 && week !== 4) this.$router.push('UserFail')
+    if (week === 2 && week === 4) this.$router.push('UserFail')
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     checkNum(val) {
       var regx = /^[0-9]*$/;
@@ -49,10 +43,10 @@ export default {
 
       if (this.checkNum(userName)) return this.$message.error('请不要输入数字或者字母！');
 
-      if (userName.length > 8) return this.$message.error('请不要胡乱输入');
+      if (userName.length > 8) return this.$message.error('姓名最长不能超过8个字符');
 
       var orderTime = Date.parse(new Date());
-      
+
       if (window.localStorage) {
         localStorage.setItem('userName', userName);
       } else {

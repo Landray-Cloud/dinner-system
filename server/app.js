@@ -67,6 +67,26 @@ APP.post(PATH + 'login', async(req, res) => {
 })
 
 
+// 获取某日是否可以提交加班订餐记录
+APP.get(PATH + 'getSubmit', async(req, res) => {
+  try {
+    res.send(await UTILS.getSubmit(req.query))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
+
+// 设置某日是否可以提交加班订餐记录
+APP.get(PATH + 'setSubmit', async(req, res) => {
+  try {
+    res.send(await UTILS.setSubmit(req.query))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
+
 APP.listen(3001, _ => {
   console.log('Dinner System is listening on port 3001 !')
 })

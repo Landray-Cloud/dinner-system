@@ -4,7 +4,8 @@ import Index from '@/pages/Index';
 import UserForm from '@/pages/UserForm';
 import SubmitSucc from '@/pages/SubmitSucc';
 import UserFail from '@/pages/UserFail';
-import UserList from '@/pages/UserList'
+import UserList from '@/pages/UserList';
+import UList from '@/pages/UList'
 Vue.use(Router);
 
 export default new Router({
@@ -28,5 +29,9 @@ export default new Router({
     path:'/UserList',
     name:'UserList',
     component:UserList
+  },{
+    path:'/UList',
+    name:'UList',
+    component:UList
   }]
 })

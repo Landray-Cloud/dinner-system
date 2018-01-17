@@ -95,5 +95,29 @@ let Util = {
     }
     return true;
   },
+  filterOrderStatus: orderStatus => {
+    let text = '返回数据失败'
+    switch (orderStatus) {
+      case 1:
+        text = '加班订餐';
+        break;
+      case 2:
+        text = "加班不订餐";
+        break;
+      case 3:
+        text = "不加班不订餐";
+        break;
+      case 4:
+        text = "不加班订餐";
+        break;
+      case '':
+        text = "获取失败";
+        break;
+      default:
+        text = "获取失败"
+        break;
+    }
+    return text
+  }
 }
 export default Util;

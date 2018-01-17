@@ -9,21 +9,23 @@
     </div>
   </div>
 </template>
-<script type="text/javascript">
+<script>
+import Util from '@/util.js';
 export default {
   name: 'Index',
   data() {
     return {
       msg: '加班订餐系统',
       userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
-      week: new Date().getDay()
+      week: new Date().getDay(),
+      date: Util.getDate(new Date(), 'yyyy-MM-dd'),
+      orderStatus: ''
     }
   },
   created() {
+    this.getSubmit()
     if (this.userName) this.$router.push('UserForm')
-
     let week = this.week
-    if (week !== 2 && week !== 4) this.$router.push('UserFail')
   },
   mounted() {},
   methods: {
@@ -35,6 +37,7 @@ export default {
         return false;
       }
     },
+    // 判断是否通过
     showUserForm() {
       let userName = this.userName;
       let msg = '乖！输入你的真实姓名好不好?'
@@ -57,8 +60,20 @@ export default {
           Cookie.write('userName', userName);
         }
         this.$router.push('UserForm')
-      }).catch(() => { });
+      }).catch(() => {});
 
+    },
+    // 获取某日是否可以提交加班订餐记录
+    getSubmit() {
+      let ajax = Util.ajaxHost + 'getSubmit?date=' + this.date
+      this.$http.get(ajax).then(succ => {
+        let res = succ.data
+        if (!Util.commAjaxCB(res)) return
+        this.orderStatus = res.data.status
+        if (!this.orderStatus) this.$router.push('UserFail')
+      }, err => {
+        console.log(err)
+      })
     }
   }
 };

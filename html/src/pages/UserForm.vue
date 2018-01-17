@@ -1,6 +1,6 @@
 <template>
-  <div id="home " v-show="bodyShow" class="mainBg main">
-    <div class="userbox" :data="createItem">
+  <div id="home " class="mainBg main">
+    <div class="userbox" :data="createItem" v-show="bodyShow">
       <p class="datap">今天是{{orderDate}} {{week}}</p>
       <h3 class="userFormTitle" v-if="!isAction"><p class="title">{{ userName  }} 是否加班订餐？</p></h3>
       <h3 class="maintitle macktitle" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderText }}</span>如有变动，请联系娜娜</p></h3>
@@ -14,6 +14,14 @@
         <el-button type="primary" @click="sub" class="btn">提交</el-button>
       </div>
     </div>
+    <el-card class="box-card" v-show="promptSucc">
+      <div class="box-cardbox">
+        <h3 class="maintitle macktitle">感谢您的付出！</h3>
+        <div class="reset-btn">
+          <el-button type="primary" @click="getReturn">返回</el-button>
+        </div>
+      </div>
+    </el-card>
   </div>
 </template>
 <script>
@@ -23,6 +31,7 @@ export default {
   data() {
     return {
       bodyShow: true, // false
+      promptSucc: false,
       orderDate: Util.getDate(new Date(), 'yyyy-MM-dd'),
       userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
       week: new Date().getDay(), //星期
@@ -39,10 +48,6 @@ export default {
         value: 3,
         label: '不加班不订餐'
       }],
-      // , {
-      //   value: 4,
-      //   label: '不加班订餐'
-      // }
       isAction: false
     }
   },
@@ -52,30 +57,6 @@ export default {
     if (!this.userName) this.$router.push('/')
   },
   methods: {
-    filterOrderStatus(orderStatus) {
-      let text = '返回数据失败'
-      switch (orderStatus) {
-        case 1:
-          text = '加班订餐';
-          break;
-        case 2:
-          text = "加班不订餐";
-          break;
-        case 3:
-          text = "不加班不订餐";
-          break;
-        case 4:
-          text = "不加班订餐";
-          break;
-        case '':
-          text = "获取失败";
-          break;
-        default:
-          text = "获取失败"
-          break;
-      }
-      return text
-    },
     sub() {
       let orderTime = Date.parse(new Date());
       let name = this.userName
@@ -87,7 +68,8 @@ export default {
         let res = succ.data
         if (!Util.commAjaxCB(res)) return
         let createItem = res.data
-        this.$router.push({ name: 'SubmitSucc' })
+        this.bodyShow = false
+        this.promptSucc = true
       }, err => {
         console.log(err)
       })
@@ -102,6 +84,7 @@ export default {
         this.isAction = _isAction
         if (_isAction) this.getOrderStatus()
         this.bodyShow = true
+
       }, err => {
         this.bodyShow = true
         console.log(err);
@@ -115,11 +98,16 @@ export default {
         if (!Util.commAjaxCB(res)) return
         let _orderStatus = res.data.orderStatus
         this.orderStatus = _orderStatus
-        this.orderText = this.filterOrderStatus(_orderStatus)
+        this.orderText = Util.filterOrderStatus(_orderStatus)
       }, err => {
         this.bodyShow = true
         console.log(err);
       })
+    },
+    // 返回
+    getReturn() {
+      this.getIsAction()
+      this.promptSucc = false
     }
   }
 }

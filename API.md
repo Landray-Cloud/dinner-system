@@ -36,7 +36,7 @@ orderTime | Number | 订餐时间戳： 1516000813994
 ## 2.更新订餐数据 (弃用)
 *   方法名: updateData
 *   请求: POST
-*   示例: /node/dinner/updateData?name=leo666&orderStatus=1
+*   示例: /node/dinner/updateData
 
 ### 请求参数
 参数 | 是否必须 | 类型 | 描述
@@ -89,7 +89,7 @@ orderStatus | Number | 1:加班订餐; 2:加班不订餐; 3:不加班不订餐
 ## 5.后台管理员登录
 *   方法名: login
 *   请求: POST
-*   示例: /node/dinner/manager/login?user=leo&pass=123
+*   示例: /node/dinner/manager/login
 
 ### 请求参数
 参数 | 是否必须 | 类型 | 描述
@@ -129,8 +129,8 @@ status | Number | 0: 不允许, 1: 允许
 
 ## 7.设置某日是否可以提交加班订餐记录
 *   方法名: setSubmit
-*   请求: GET
-*   示例: /node/dinner/manager/setSubmit?date=2018-01-16&status=1
+*   请求: POST
+*   示例: /node/dinner/manager/setSubmit
 
 ### 请求参数
 参数 | 是否必须 | 类型 | 描述
@@ -175,7 +175,7 @@ id | true | Number | 记录ID
 ## 10.添加订餐数据 (用户侧)
 *   方法名: addOrder
 *   请求: POST
-*   示例: /node/dinner/manager/addOrder
+*   示例: /node/dinner/addOrder
 
 ### 请求参数
 参数 | 是否必须 | 类型 | 描述

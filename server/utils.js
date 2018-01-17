@@ -117,6 +117,7 @@ async function updateData(options) {
 // name
 // id
 async function updateDataById(options) {
+  logger.debug('updateDataById', options)
   let orderStatus = options.orderStatus
   let name = options.name
   let id = options.id

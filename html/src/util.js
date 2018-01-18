@@ -65,6 +65,12 @@ let Util = {
       return false;
     }
 
+    let auth = res.auth;
+    if (typeof auth !== 'undefined' && Number(auth) == 0) {
+      VM.$router.push({ name: 'Login' });
+      return false;
+    }
+
     let errcode = res.errcode;
     if (typeof errcode === 'undefined' || errcode === null || errcode !== 0) {
       let toastMsg = '系统繁忙',

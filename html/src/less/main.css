@@ -337,6 +337,7 @@ body {
 
 
 
+
 /* userlist */
 
 .userListBox {
@@ -479,6 +480,7 @@ body {
 
 
 
+
 /* 开关样式 */
 
 .container {
@@ -563,14 +565,6 @@ body {
   text-shadow: 0 0 2px #ddd;
 }
 
-
-
-
-
-
-
-
-
 /* userform 卡片 */
 
 .box-card {
@@ -594,13 +588,23 @@ body {
     border: 1px solid red;
   }
 }
-
-@media screen and (max-width: 414px) {
+@media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){
+   .el-message-box {
+    width: 90%;
+  }
+}
+/*@media screen and (device-width:360px){*/
+/*@media (device-width:667px) and (-webkit-min-device-pixel-ratio:2){*/
+@media screen and (max-width: 414px){
   body {
     padding: 1rem 3%;
   }
+  .box-card {
+    width: 90%;
+    margin: -135px 0 0 -45%;
+  }
   .macktitle {
-    padding: 30px 0;
+    padding: 15px 0;
   }
   .myform {
     width: 100%;
@@ -653,11 +657,11 @@ body {
   }
   .userbox {
     width: 90%;
-    height: 45%;
+    height: 280px;
     position: relative;
     top: 50%;
     left: 50%;
-    margin: -100px 0 0 -45%;
+    margin: -140px 0 0 -45%;
     background: #fff;
     border: 1px solid #fff;
     border-radius: 6px;
@@ -667,7 +671,7 @@ body {
     margin-bottom: 20px;
   }
   .el-message-box {
-    width: 98%;
+    width: 86%;
   }
 }
 
@@ -691,6 +695,7 @@ td {
   border: 1px solid #dedede;
   border-radius: 6px;
 }
+
 
 
 
@@ -779,4 +784,5 @@ li.pwd:before {
   width: 70%;
   margin: 30px auto 0;
   display: block;
+  text-align: center;
 }

@@ -33,18 +33,18 @@ export default {
     setShowUserForm() {
       let userName = this.userName
       if (!Util.showUserForm(userName)) return
-      this.$confirm('姓名不要乱输，一旦提交不可修改?', '温馨提示', {
-        confirmButtonText: '这是我的真名！',
-        cancelButtonText: '我还是改一下吧',
-        type: 'warning'
-      }).then(() => {
+      // this.$confirm('姓名不要乱输，一旦提交不可修改?', '温馨提示', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   type: 'warning'
+      // }).then(() => {
         if (window.localStorage) {
           localStorage.setItem('userName', userName);
         } else {
           Cookie.write('userName', userName);
         }
         this.$router.push('UserForm')
-      }).catch(() => {});
+      // }).catch(() => {});
 
     },
     // 获取某日是否可以提交加班订餐记录

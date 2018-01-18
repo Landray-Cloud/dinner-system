@@ -1,9 +1,9 @@
 <template>
   <div id="home " class="mainBg main">
     <div class="userbox" :data="createItem" v-show="bodyShow">
-      <p class="datap">今天是{{orderDate}} {{week}}</p>
+      <p class="datap">今天是{{orderDate}}<span @click="addClick">{{week}}</span> </p>
       <h3 class="userFormTitle" v-if="!isAction"><p class="title">{{ userName  }} 是否加班订餐？</p></h3>
-      <h3 class="maintitle macktitle" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderText }}</span>，如有变动，请联系娜娜18923436667</p></h3>
+      <h3 class="maintitle macktitle" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderText }}</span>，如有变动，请联系娜娜</p></h3>
       <div class="checkbox" v-if="!isAction">
         <el-select v-model="orderStatus" placeholder="请选择">
           <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value">
@@ -48,9 +48,11 @@ export default {
         value: 3,
         label: '不加班不订餐'
       }],
-      isAction: false
+      isAction: false,
+      clickCount: 0
     }
   },
+
   created() { // created 组件创建完毕属性已经绑定但dom还未生成的状态
     this.getIsAction()
     this.week = Util.getWeek(this.week);
@@ -75,6 +77,12 @@ export default {
       }, err => {
         console.log(err)
       })
+    },
+    addClick() {
+      this.clickCount = this.clickCount + 1
+      if (this.clickCount < 10) return
+      localStorage.removeItem('userName')
+      location.reload()
     },
     // 用户今天是否已做了选择
     getIsAction() {

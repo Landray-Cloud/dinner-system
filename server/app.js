@@ -1,11 +1,14 @@
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
 const Index = require('./routes/Index')
 const Manager = require('./routes/Manager')
 
 app.use(bodyParser.json())  // 解析 application/json
 app.use(bodyParser.urlencoded({ extended: false }))
+
+app.use(cookieParser())
 
 app.all('*', function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')

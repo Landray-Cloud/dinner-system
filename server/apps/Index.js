@@ -1,8 +1,8 @@
 'use strict'
 const connectionDatabase = require('../dao/connectionDatabase')
 const $sql = require('../dao/Index')
-const log4js = require('log4js')
 const Utils = require('../utils')
+const log4js = require('log4js')
 const logger = log4js.getLogger()
 logger.level = 'debug'
 

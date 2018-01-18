@@ -1,10 +1,31 @@
 'use strict'
 const connectionDatabase = require('../dao/connectionDatabase')
 const $sql = require('../dao/Manager')
-const log4js = require('log4js')
 const Utils = require('../utils')
+const log4js = require('log4js')
 const logger = log4js.getLogger()
 logger.level = 'debug'
+
+
+// 管理员登录
+async function login(options) {
+  let user = options.user
+  let pass = options.pass
+
+  if (!user || !pass) return Utils.writeError('login: user和pass是必须参数')
+
+  let sqlExecute = $sql.login
+  let sqlParam = [user, pass]
+
+  return new Promise((resolve, reject) => {
+    connectionDatabase(sqlExecute, sqlParam).then(succRes => {
+      if (!succRes.length) return reject(Utils.writeError('用户名或密码错误'))
+      resolve(Utils.writeSuccess({ isLogin: true }))
+    }).catch(errRes => {
+      reject(Utils.writeError('login - 失败', errRes))
+    })
+  })
+}
 
 // 获取数据列表
 async function getList(options) {
@@ -72,27 +93,6 @@ async function deleteOrder(options) {
 }
 
 
-// 管理员登录
-async function login(options) {
-  let user = options.user
-  let pass = options.pass
-
-  if (!user || !user) return Utils.writeError('login: user和pass是必须参数')
-
-  let sqlExecute = $sql.login
-  let sqlParam = [user, pass]
-
-  return new Promise((resolve, reject) => {
-    connectionDatabase(sqlExecute, sqlParam).then(succRes => {
-      if (!succRes.length) return reject(Utils.writeError('用户名或密码错误'))
-      resolve(Utils.writeSuccess({ isLogin: true }))
-    }).catch(errRes => {
-      reject(Utils.writeError('login - 失败', errRes))
-    })
-  })
-}
-
-
 // 设置某日是否可以提交加班订餐记录
 async function setSubmit(options) {
   let date = options.date
@@ -116,9 +116,9 @@ async function setSubmit(options) {
 }
 
 module.exports = {
+  login,
   getList,
   updateDataById,
   deleteOrder,
-  login,
   setSubmit
 }

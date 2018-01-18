@@ -84,7 +84,9 @@ textarea {
   border-radius: 0;
   -webkit-appearance: none;
 }
-
+.fr{
+  float:right;
+}
 label {
   display: block;
 }
@@ -171,11 +173,12 @@ body {
   border-radius: 6px;
   padding: 20px;
 }
-
+.ufRemarks{
+  width: 217px;
+  display: inline-block;
+}
 .checkbox {
-  /*width: 40%;*/
-  margin: 0 auto;
-  text-align: center;
+  display: inline-block;
 }
 
 .el-checkbox__label {
@@ -208,12 +211,17 @@ body {
 }
 
 .failtitle {
-  /*line-height: 100px;*/
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  margin: -12px 0 0 -50%;
 }
 
 .datap {
   font-size: 18px;
   text-align: left;
+  padding-top: 10px;
 }
 
 .title {
@@ -310,7 +318,7 @@ body {
   position: absolute;
   left: 50%;
   margin: 0 0 0 -45%;
-  height: 100%;
+  height: 94%;
   padding: 40px 0;
 }
 
@@ -327,16 +335,6 @@ body {
 .el-ico-size {
   font-size: 18px;
 }
-
-
-
-
-
-
-
-
-
-
 
 
 /* userlist */
@@ -420,14 +418,14 @@ body {
   margin-right: 40px;
 }
 
-.selectTitle {
+/*.selectTitle {
   display: inline-block;
 }
-
-.selectName {
+*/
+/*.selectName {
   display: inline-block;
   width: 217px;
-}
+}*/
 
 .usertable {
   height: 100%;
@@ -471,6 +469,7 @@ body {
   margin-bottom: 14px;
   margin-left: 22%;
 }
+
 
 
 
@@ -568,6 +567,7 @@ body {
 }
 
 
+
 /* userform 卡片 */
 
 .box-card {
@@ -592,11 +592,12 @@ body {
   }
 }
 
-@media (device-height:568px) and (-webkit-min-device-pixel-ratio:2) {
+/*@media (device-height:568px) and (-webkit-min-device-pixel-ratio:2) {
   .el-message-box {
     width: 90%;
   }
-}
+}*/
+
 
 
 /*@media screen and (device-width:360px){*/
@@ -637,8 +638,6 @@ body {
   }
   .failtitle {
     font-size: 20px;
-    line-height: 20px;
-    margin: 80px auto 0;
   }
   .listwarp {
     width: 92%;
@@ -667,11 +666,11 @@ body {
   }
   .userbox {
     width: 90%;
-    height: 280px;
+    height: 320px;
     position: relative;
     top: 50%;
     left: 50%;
-    margin: -140px 0 0 -45%;
+    margin: -160px 0 0 -45%;
     background: #fff;
     border: 1px solid #fff;
     border-radius: 6px;
@@ -681,7 +680,7 @@ body {
     margin-bottom: 20px;
   }
   .el-message-box {
-    width: 86%;
+    width: 90% !important;
   }
 }
 
@@ -690,8 +689,8 @@ body {
 }
 
 .el-table th,
-td {
-  text-align: center;
+.el-table td {
+  text-align: center !important;
 }
 
 .addList {
@@ -705,6 +704,7 @@ td {
   border: 1px solid #dedede;
   border-radius: 6px;
 }
+
 
 
 
@@ -803,25 +803,26 @@ li.pwd:before {
   height: 40px;
   border-radius: 6px;
 }
-.unametext{
-    -webkit-appearance: none;
-    background-color: #fff;
-    border-radius: 4px;
-    border: 1px solid #dcdfe6;
-    box-sizing: border-box;
-    color: #606266;
-    display: inline-block;
-    font-size: inherit;
-    height: 40px;
-    line-height: 1;
-    outline: 0;
-    padding: 0 15px;
-    transition: border-color .2s cubic-bezier(.645,.045,.355,1);
-    position: relative;
-    width: 70%;
-    margin-right: 10px;
 
+.unametext {
+  -webkit-appearance: none;
+  background-color: #fff;
+  border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  box-sizing: border-box;
+  color: #606266;
+  display: inline-block;
+  font-size: inherit;
+  height: 40px;
+  line-height: 1;
+  outline: 0;
+  padding: 0 15px;
+  transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+  position: relative;
+  width: 67%;
+  margin-right: 10px;
 }
-.unametext:focus{
-  border:1px solid #409eff;
+
+.unametext:focus {
+  border: 1px solid #409eff;
 }

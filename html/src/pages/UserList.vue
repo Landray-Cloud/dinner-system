@@ -1,23 +1,24 @@
 <template>
   <div class="userList">
+    <el-button type="primary" class="exitLogin" @click="exitLogin">退出登录</el-button>
     <div class="userListBox">
       <div class="userListCon">
         <div class="userListCon-sub">
           <div v-if="pages===1" class="pagesbox">
             <h3 class="selectList-title">查数据</h3>
             <div class="selectList">
-              <ul>
-                <li><span class="selectTitle">名字：</span>
-                  <el-input v-model="selectInp" placeholder="请输入姓名" class="selectName"></el-input>
-                </li>
-                <li><span class="selectTitle">日期：</span>
+              <el-form :inline="true" class="demo-form-inline ul-elforminline">
+                <el-form-item label="名字：">
+                  <el-input v-model="selectInp" placeholder="请输入姓名"></el-input>
+                </el-form-item>
+                <el-form-item label="日期：">
                   <el-date-picker v-model="selectDate" type="date" placeholder="选择日期"></el-date-picker>
-                </li>
-                <li>
+                </el-form-item>
+                <el-form-item>
                   <el-button type="primary" icon="el-icon-search" @click="getDate">查询</el-button>
                   <el-button icon="el-icon-search" @click="getReset">重置</el-button>
-                </li>
-              </ul>
+                </el-form-item>
+              </el-form>
               <el-table :data="tableData" stripe show-summary :summary-method="getTotal" class="el-table">
                 <el-table-column type="index" label="序号">
                 </el-table-column>
@@ -27,6 +28,8 @@
                   </template>
                 </el-table-column>
                 <el-table-column prop="name" label="姓名">
+                </el-table-column>
+                <el-table-column prop="remarks" label="备注">
                 </el-table-column>
                 <el-table-column prop="orderStatus" label="是/否订餐" :filters="filters" :filter-method="filterIsOrder">
                   <template slot-scope="scope">
@@ -51,9 +54,7 @@
             <div class="selectList">
               <div class=" addList">
                 <p class="addList-p ">今天是{{newDate}}，{{week}}</p>
-                <p class="updateSet">今天点餐状态：
-                  <!-- <el-switch v-model="selectSwitch" active-color="#13ce66" inactive-color="#dcdfe6" active-value="启用" inactive-value="禁用" change="setSubmit">
-            </el-switch> -->
+                <p class="updateSet">点餐状态：
                   <div class="container">
                     <input type="checkbox" id="radio" name="switch" v-model="selectSwitch" @change="setSubmit">
                     <label for="radio" class="radio">
@@ -69,25 +70,27 @@
           <div v-if="pages===3" class="pagesbox">
             <h3 class="selectList-title">添加数据</h3>
             <div class="selectList">
-              <div class="addList" :data="addItem">
-                <ul>
-                  <li><span class="selectTitle">名字：</span>
-                    <el-input v-model="addName" placeholder="请输入姓名" class="selectName"></el-input>
-                  </li>
-                  <li><span class="selectTitle">订餐：</span>
-                    <el-select v-model="addOrderStatus" placeholder="请选择">
-                      <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value">
-                      </el-option>
-                    </el-select>
-                  </li>
-                </ul>
-                <el-button type="primary" class="orderSetBtn" @click="setAddList">提交</el-button>
-              </div>
+              <el-form ref="form" label-width="80px" class="ulist-frombox" :data="addItem">
+                <el-form-item label="名字：">
+                  <el-input v-model="addName" placeholder="请输入姓名"></el-input>
+                </el-form-item>
+                <el-form-item label="订餐：">
+                  <el-select v-model="addOrderStatus" placeholder="请选择">
+                    <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="备注：">
+                  <el-input v-model="addRemarks" placeholder="因什么项目而加班"></el-input>
+                </el-form-item>
+                <button class="orderSetBtn" click="setAddList">提交</button>
+                <!-- <el-button type="primary"  @click="setAddList">提交</el-button> -->
+              </el-form>
             </div>
           </div>
           <!-- 弹框编辑用户是否点餐 -->
           <el-dialog title="编辑用户是否订餐" :visible.sync="dialogFormVisible">
-            <el-form :data="tableData">
+            <el-form :data="tableData" class="ul-elform-edit">
               <el-form-item label="名字" :label-width="formLabelWidth">
                 <el-input v-model="editName" placeholder="请输入姓名" class="editFormName"></el-input>
               </el-form-item>
@@ -95,6 +98,9 @@
                 <el-select v-model="editOrderStatus" placeholder="请选择">
                   <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                 </el-select>
+              </el-form-item>
+              <el-form-item label="备注" :label-width="formLabelWidth">
+                <el-input v-model="remarks" placeholder="因什么项目而加班" class="editFormName"></el-input>
               </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
@@ -137,6 +143,7 @@ export default {
       }],
       addName: '', // 添加名字
       addOrderStatus: '', // 添加点餐状态
+      addRemarks: '',
       addItem: [],
       orderList: [{
         value: 1,
@@ -156,7 +163,8 @@ export default {
       dialogFormVisible: false,
       formLabelWidth: '120px',
       editFormId: '',
-      status: '' // 点餐设置状态
+      status: '', // 点餐设置状态
+      remarks: '' // 订餐备注
 
     }
   },
@@ -195,11 +203,11 @@ export default {
       let orderTime = Date.parse(new Date());
       let name = this.addName
       if (!Util.showUserForm(name)) return
-
+      let remarks = this.remarks
       let orderStatus = this.addOrderStatus
       if (!orderStatus) return this.$message({ message: '订餐状态不能为空', type: 'error' })
       let ajax = Util.ajaxHost + 'addOrder'
-      let params = { name, orderStatus }
+      let params = { name, orderStatus, remarks }
       this.$http.post(ajax, params).then(succ => {
         let res = succ.data
         if (!Util.commAjaxCB(res)) return
@@ -207,6 +215,7 @@ export default {
         this.$message({ message: '提交成功', type: 'success' })
         this.addName = ''
         this.addOrderStatus = ''
+        this.remarks = ''
       }, err => {
         console.log(err)
       })
@@ -215,6 +224,7 @@ export default {
     showEditBox(options) {
       this.editFormId = options.id
       this.editName = options.name
+      this.remarks = options.remarks
       this.editOrderStatus = options.orderStatus
       this.dialogFormVisible = true
     },
@@ -222,10 +232,11 @@ export default {
     updateDataList() {
       let id = this.editFormId
       let name = this.editName
+      let remarks = this.remarks
       if (!Util.showUserForm(name)) return
       let orderStatus = this.editOrderStatus
       let ajax = Util.ajaxHost + 'manager/updateDataById'
-      let params = { id, name, orderStatus }
+      let params = { id, name, orderStatus, remarks }
       this.$http.post(ajax, params).then(succ => {
         let res = succ.data
         if (!Util.commAjaxCB(res)) return
@@ -267,7 +278,7 @@ export default {
     },
     // 统计
     getTotal(param) {
-      return ['合计', '', '', param.data.length]
+      return ['合计', '', '','', param.data.length]
     },
     /* 获取是否提交加班订餐记录
      *  点餐设置开关提交
@@ -303,6 +314,19 @@ export default {
     // 筛选
     filterIsOrder(value, row) {
       return row.orderStatus === value;
+    },
+    // 退出登录
+    exitLogin() {
+      this.$confirm('是否退出登录?', '温馨提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (cookie.setAttribute('Angelebaby')) {
+          cookie.removeAttribute('Angelebaby')
+          this.$router.push('Login')
+        }
+      }).catch(() => {});
     }
   }
 }
@@ -310,5 +334,62 @@ export default {
 </script>
 <style>
 @import "../less/main.css";
+.exitLogin {
+  float: right;
+  margin-bottom: 20px;
+}
+
+.ulist-frombox {
+  width: 520px;
+  height: 300px;
+  border: 1px solid #ccc;
+  padding: 30px;
+  box-sizing: border-box;
+  border-radius: 6px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -150px 0 0 -260px;
+}
+
+.ulist-frombox .el-select {
+  width: 100%;
+}
+
+.ul-elforminline {
+  margin: 30px auto 0;
+  text-align: center;
+}
+
+.orderSetBtn {
+  display: block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  border: 1px solid #409eff;
+  color: #fff;
+  -webkit-appearance: none;
+  text-align: center;
+  box-sizing: border-box;
+  outline: 0;
+  margin: 0;
+  transition: .1s;
+  background: #409eff;
+  font-weight: 500;
+  padding: 12px 20px;
+  font-size: 14px;
+  border-radius: 4px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ul-elform-edit {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.ul-elform-edit .el-select {
+  width: 100%;
+}
 
 </style>

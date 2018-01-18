@@ -1,19 +1,23 @@
 <template>
   <div id="home " class="mainBg main">
-    <div class="userbox" :data="createItem" v-show="bodyShow">
+    <el-form ref="form" :data="createItem" label-width="80px" class="user-elform" v-show="bodyShow">
       <p class="datap">今天是{{orderDate}}<span @click="addClick">{{week}}</span> </p>
       <h3 class="userFormTitle" v-if="!isAction"><p class="title">{{ userName  }} 是否加班订餐？</p></h3>
       <h3 class="maintitle macktitle" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderText }}</span>，如有变动，请联系新梅！</p></h3>
-      <div class="checkbox" v-if="!isAction">
-        <el-select v-model="orderStatus" placeholder="请选择">
-          <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value">
-          </el-option>
-        </el-select>
+      <div class="elform-box">
+        <el-form-item label="操作" v-if="!isAction" class="ufelform-item">
+          <el-select v-model="orderStatus" placeholder="请选择">
+            <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="备注" v-if="!isAction" class="ufelform-item">
+          <el-input v-model="remarks" placeholder="因什么项目而加班"></el-input>
+        </el-form-item>
+        <div v-if="!isAction" class="ufelform-btn">
+          <el-button type="primary" @click="getAddList" class="btn">提交</el-button>
+        </div>
       </div>
-      <div class="userform-box" v-if="!isAction">
-        <el-button type="primary" @click="getAddList" class="btn">提交</el-button>
-      </div>
-    </div>
+    </el-form>
     <el-card class="box-card" v-show="promptSucc">
       <div class="box-cardbox">
         <h3 class="maintitle macktitle">感谢您的付出！</h3>
@@ -49,7 +53,8 @@ export default {
         label: '不加班不订餐'
       }],
       isAction: false,
-      clickCount: 0
+      clickCount: 0,
+      remarks: '' // 订餐备注
     }
   },
 
@@ -62,11 +67,12 @@ export default {
     getAddList() {
       let orderTime = Date.parse(new Date());
       let name = this.userName
+      let remarks = this.remarks
       if (!Util.showUserForm(name)) return
       let orderStatus = this.orderStatus
       if (!orderStatus) return this.$message({ message: '订餐状态不能为空', type: 'error' })
       let ajax = Util.ajaxHost + 'addOrder'
-      let params = { name, orderStatus }
+      let params = { name, orderStatus, remarks }
 
       this.$http.post(ajax, params).then(succ => {
         let res = succ.data
@@ -125,5 +131,79 @@ export default {
 </script>
 <style type="text/css">
 @import "../less/main.css";
+.user-elform {
+  background: #fff;
+  padding: 15px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-radius: 6px;
+  width: 500px;
+  height: 360px;
+  position: absolute;
+  top: 50%;
+  margin: -180px 0 0 -250px;
+  left: 50%;
+}
+
+.elform-box {
+  margin: 0 auto;
+  width: 80%;
+  margin: 0 auto;
+}
+
+
+.elform-box .el-select,
+.elform-box .el-input {
+  width: 300px;
+}
+
+
+.ufelform-btn {
+  width: 60%;
+  display: block;
+  margin: 0 auto;
+}
+
+.ufelform-btn button {
+  width: 60%;
+  display: block;
+  margin:20% auto 0;
+}
+
+@media screen and (max-width: 414px) {
+  .user-elform {
+    background: #fff;
+    padding: 15px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    border-radius: 6px;
+    position: absolute;
+    top: 50%;
+    margin: -50% 0 0 -50%;
+    left: 50%;
+    width: 100%;
+  }
+  .elform-box {
+    width: 100%;
+  }
+  .ufelform-btn {
+    width: 60%;
+    display: block;
+    margin: 0 auto;
+  }
+  /*  .elform-box .el-select{
+    width: 98%;
+  }*/
+  .ufelform-item {
+    width: 90%;
+  }
+  .elform-box .el-select,
+  .elform-box .el-input {
+    width: 100%;
+  }
+  /* .elform-box input{
+    width: 217px;
+  }*/
+}
 
 </style>

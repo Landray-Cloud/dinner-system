@@ -1,6 +1,6 @@
 <template>
   <div id="home" class="mainBg">
-    <div class="mainbox succ">
+    <div class="mainbox">
       <h3 class="failtitle">当前非点餐提交时间段！</h3>
     </div>
   </div>

@@ -5,7 +5,7 @@
       <div class="myform-box">
         <!-- <el-input v-model="userName" placeholder="你的名字" class="winput" @keyup.enter.native="setShowUserForm"></el-input> -->
         <input class="unametext" v-model="userName" placeholder="你的名字" @keyup.13="setShowUserForm" />
-        <el-button type="primary" @click="setShowUserForm" class="btn">提交</el-button>
+        <el-button type="primary" @click="setShowUserForm" class="btn fr">提交</el-button>
       </div>
     </div>
   </div>
@@ -34,18 +34,18 @@ export default {
     setShowUserForm() {
       let userName = this.userName
       if (!Util.showUserForm(userName)) return
-      // this.$confirm('姓名不要乱输，一旦提交不可修改?', '温馨提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(() => {
-      if (window.localStorage) {
-        localStorage.setItem('userName', userName);
-      } else {
-        Cookie.write('userName', userName);
-      }
-      this.$router.push('UserForm')
-      // }).catch(() => {});
+      this.$confirm('姓名不要乱输，一旦提交不可修改?', '温馨提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        if (window.localStorage) {
+          localStorage.setItem('userName', userName);
+        } else {
+          Cookie.write('userName', userName);
+        }
+        this.$router.push('UserForm')
+      }).catch(() => {});
 
     },
     // 获取某日是否可以提交加班订餐记录

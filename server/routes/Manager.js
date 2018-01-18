@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Manager = require('../module/Manager')
+const Manager = require('../modules/Manager')
 const auth = require('../components/auth')
 const AUTH_ERROR = { auth: 0 } // 统一登录失败
 

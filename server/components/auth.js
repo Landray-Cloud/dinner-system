@@ -14,7 +14,7 @@ const auth = {
         // })
 
         let decoded = jsonWebToken.decode(token, SECRET)
-        console.log('decoded', decoded)
+        // console.log('decoded', decoded)
         if (decoded.exp <= Date.now() / 1000) return false
         return true
     }

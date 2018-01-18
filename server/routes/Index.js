@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const Index = require('../apps/Index')
+const Index = require('../module/Index')
 
 // 插入数据 (用户侧)
 router.post('/addOrder', async(req, res, next) => {

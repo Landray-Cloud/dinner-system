@@ -13,7 +13,7 @@
             <input type="password" v-model="pwd" placeholder="请输入密码">
           </li>
         </ul>
-        <el-button type="primary" class="login-btn" @click="loginSub">登录</el-button>
+        <button class="login-btn" @click="loginSub">登录</button>
       </div>
     </el-card>
     <!--中部end-->

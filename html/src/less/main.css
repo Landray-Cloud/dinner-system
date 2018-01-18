@@ -338,6 +338,7 @@ body {
 
 
 
+
 /* userlist */
 
 .userListBox {
@@ -481,6 +482,7 @@ body {
 
 
 
+
 /* 开关样式 */
 
 .container {
@@ -565,6 +567,7 @@ body {
   text-shadow: 0 0 2px #ddd;
 }
 
+
 /* userform 卡片 */
 
 .box-card {
@@ -588,14 +591,20 @@ body {
     border: 1px solid red;
   }
 }
-@media (device-height:568px) and (-webkit-min-device-pixel-ratio:2){
-   .el-message-box {
+
+@media (device-height:568px) and (-webkit-min-device-pixel-ratio:2) {
+  .el-message-box {
     width: 90%;
   }
 }
+
+
 /*@media screen and (device-width:360px){*/
+
+
 /*@media (device-width:667px) and (-webkit-min-device-pixel-ratio:2){*/
-@media screen and (max-width: 414px){
+
+@media screen and (max-width: 414px) {
   body {
     padding: 1rem 3%;
   }
@@ -704,6 +713,7 @@ td {
 
 
 
+
 /*登录*/
 
 .login-item {
@@ -785,4 +795,10 @@ li.pwd:before {
   margin: 30px auto 0;
   display: block;
   text-align: center;
+  background: #66b1ff;
+  border-color: #66b1ff;
+  color: #fff;
+  text-align: center;
+  height: 40px;
+  border-radius: 6px;
 }

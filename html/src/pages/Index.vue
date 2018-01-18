@@ -3,7 +3,8 @@
     <div class="mainbox">
       <h3 class="maintitle">{{ msg  }}</h3>
       <div class="myform-box">
-        <el-input v-model="userName" placeholder="你的名字" class="winput" @keyup.enter.native="setShowUserForm"></el-input>
+        <!-- <el-input v-model="userName" placeholder="你的名字" class="winput" @keyup.enter.native="setShowUserForm"></el-input> -->
+        <input class="unametext" v-model="userName" placeholder="你的名字" @keyup.13="setShowUserForm" />
         <el-button type="primary" @click="setShowUserForm" class="btn">提交</el-button>
       </div>
     </div>
@@ -38,12 +39,12 @@ export default {
       //   cancelButtonText: '取消',
       //   type: 'warning'
       // }).then(() => {
-        if (window.localStorage) {
-          localStorage.setItem('userName', userName);
-        } else {
-          Cookie.write('userName', userName);
-        }
-        this.$router.push('UserForm')
+      if (window.localStorage) {
+        localStorage.setItem('userName', userName);
+      } else {
+        Cookie.write('userName', userName);
+      }
+      this.$router.push('UserForm')
       // }).catch(() => {});
 
     },

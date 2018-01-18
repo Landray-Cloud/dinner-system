@@ -83,6 +83,8 @@ async function orderStatus(options) {
 
 
 // 获取某日是否可以提交加班订餐记录
+// status:1 == 开
+// status:0 == 关
 async function getSubmit(options) {
   let date = options.date
 
@@ -93,8 +95,8 @@ async function getSubmit(options) {
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
-      let status = 0
-      // 没有数据，则帮他插入一条status为0的
+      let status = 1
+      // 没有数据，则帮他插入一条status为1的
       if (!succRes.length || succRes.length === 0) {
         connectionDatabase($sql.setSubmitInsert, [status, date])
       } else {

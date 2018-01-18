@@ -153,7 +153,7 @@ status | true | Number | 0: 不允许, 1: 允许
 id | true | Number | 记录ID
 orderStatus | true | String | 订餐状态
 name | true | String | 名字
-
+remarks | false | String | 备注
 
 ---
 
@@ -172,7 +172,7 @@ id | true | Number | 记录ID
 ---
 
 
-## 10.添加订餐数据 (用户侧)
+## 10.添加订餐数据
 *   方法名: addOrder
 *   请求: POST
 *   示例: /node/dinner/addOrder
@@ -182,6 +182,7 @@ id | true | Number | 记录ID
 ---|---|---|---
 name | true | String | 名字
 orderStatus | true | String | 订餐状态
+remarks | false | String | 备注
 
 
 ---

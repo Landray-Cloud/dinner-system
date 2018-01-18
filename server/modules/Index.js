@@ -52,14 +52,15 @@ logger.level = 'debug'
 async function addOrder(options) {
   let name = options.name
   let orderStatus = options.orderStatus
+
+  if (!name || !orderStatus) return Utils.writeError('addOrder: name和orderStatus是必须参数')
+
+  let remarks = options.remarks || ''
   let _Date = new Date()
   let orderDate = _Date.Format('yyyy-MM-dd')
   let orderTime = parseInt(_Date.getTime())
-
-  if (!name || !orderDate) return Utils.writeError('addOrder: name和orderStatus是必须参数')
-
   let sqlExecute = $sql.insertOrder
-  let sqlParam = [name, orderStatus, orderDate, orderTime]
+  let sqlParam = [name, orderStatus, orderDate, orderTime, remarks]
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {

@@ -60,11 +60,12 @@ async function updateDataById(options) {
   let orderStatus = options.orderStatus
   let name = options.name
   let id = options.id
+  let remarks = options.remarks || ''
   let _Date = new Date()
   let orderDate = _Date.Format('yyyy-MM-dd')
   let orderTime = parseInt(_Date.getTime())
   let sqlExecute = $sql.updateById
-  let sqlParam = [orderStatus, orderDate, orderTime, name, id]
+  let sqlParam = [orderStatus, orderDate, orderTime, name, remarks, id]
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {

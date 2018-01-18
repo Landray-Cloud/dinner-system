@@ -3,9 +3,9 @@
     <div class="userListBox">
       <div class="userListCon">
         <div class="userListCon-sub">
-          <div v-if="pages===1">
+          <div v-if="pages===1" class="pagesbox">
+            <h3 class="selectList-title">查数据</h3>
             <div class="selectList">
-              <h3 class="selectList-title">查数据</h3>
               <ul>
                 <li><span class="selectTitle">名字：</span>
                   <el-input v-model="selectInp" placeholder="请输入姓名" class="selectName"></el-input>
@@ -46,16 +46,16 @@
               </el-table>
             </div>
           </div>
-          <div v-if="pages===2">
+          <div v-if="pages===2" class="pagesbox">
+            <h3 class="selectList-title">点餐设置</h3>
             <div class="selectList">
-              <h3 class="selectList-title">点餐设置</h3>
-              <div class="orderSet">
-                <p class="newDate">今天是{{newDate}}，{{week}}</p>
+              <div class=" addList">
+                <p class="addList-p ">今天是{{newDate}}，{{week}}</p>
                 <p class="updateSet">今天点餐状态：
-                  <!-- <el-switch v-model="selectSwitch" active-color="#13ce66" inactive-color="#dcdfe6" active-value="启用" inactive-value="禁用" change="getSetSubmit">
+                  <!-- <el-switch v-model="selectSwitch" active-color="#13ce66" inactive-color="#dcdfe6" active-value="启用" inactive-value="禁用" change="setSubmit">
             </el-switch> -->
                   <div class="container">
-                    <input type="checkbox" id="radio" name="switch" v-model="selectSwitch" @change="getSetSubmit">
+                    <input type="checkbox" id="radio" name="switch" v-model="selectSwitch" @change="setSubmit">
                     <label for="radio" class="radio">
                       <span class="circle"></span>
                       <span class="text on">ON</span>
@@ -66,22 +66,22 @@
               </div>
             </div>
           </div>
-          <div v-if="pages===4">
+          <div v-if="pages===3" class="pagesbox">
+            <h3 class="selectList-title">添加数据</h3>
             <div class="selectList">
-              <h3 class="selectList-title">添加数据</h3>
               <div class="addList" :data="addItem">
                 <ul>
                   <li><span class="selectTitle">名字：</span>
                     <el-input v-model="addName" placeholder="请输入姓名" class="selectName"></el-input>
                   </li>
                   <li><span class="selectTitle">订餐：</span>
-                    <el-select v-model="orderStatus" placeholder="请选择">
+                    <el-select v-model="addOrderStatus" placeholder="请选择">
                       <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value">
                       </el-option>
                     </el-select>
                   </li>
                 </ul>
-                <el-button type="primary" class="orderSetBtn" @click="getAddList">提交</el-button>
+                <el-button type="primary" class="orderSetBtn" @click="setAddList">提交</el-button>
               </div>
             </div>
           </div>
@@ -108,8 +108,7 @@
         <ul>
           <li @click="pages=1" :class="pages===1?'active':''">查询所有</li>
           <li @click="pages=2" :class="pages===2?'active':''">点餐设置</li>
-          <li @click="pages=3" :class="pages===3?'active':''">管理员管理</li>
-          <li @click="pages=4" :class="pages===4?'active':''">添加数据</li>
+          <li @click="pages=3" :class="pages===3?'active':''">添加数据</li>
         </ul>
       </div>
     </div>
@@ -137,6 +136,7 @@ export default {
         label: '允许提交'
       }],
       addName: '', // 添加名字
+      addOrderStatus: '', // 添加点餐状态
       addItem: [],
       orderList: [{
         value: 1,
@@ -169,8 +169,8 @@ export default {
     getDate() {
       let selectInp = this.selectInp
       let selectDate = Util.getDate(this.selectDate, 'yyyy-MM-dd')
-      let ajaxURL = Util.ajaxHost + 'getList'
-
+      if (!selectDate && !selectInp) return this.$message({ message: '日期和名字不能同时为空', type: 'error' })
+      let ajaxURL = Util.ajaxHost + 'manager/getList'
       if (selectInp && selectDate) {
         ajaxURL += '?name=' + selectInp + '&orderDate=' + selectDate
       } else if (selectInp) {
@@ -191,11 +191,14 @@ export default {
       })
     },
     // 管理员添加数据
-    getAddList() {
+    setAddList() {
       let orderTime = Date.parse(new Date());
       let name = this.addName
-      let orderStatus = this.orderStatus
-      let ajax = Util.ajaxHost + 'updateData'
+      if (!Util.showUserForm(name)) return
+
+      let orderStatus = this.addOrderStatus
+      if (!orderStatus) return this.$message({ message: '订餐状态不能为空', type: 'error' })
+      let ajax = Util.ajaxHost + 'addOrder'
       let params = { name, orderStatus }
       this.$http.post(ajax, params).then(succ => {
         let res = succ.data
@@ -203,7 +206,7 @@ export default {
         let addItem = res.data
         this.$message({ message: '提交成功', type: 'success' })
         this.addName = ''
-        this.orderStatus = ''
+        this.addOrderStatus = ''
       }, err => {
         console.log(err)
       })
@@ -219,8 +222,9 @@ export default {
     updateDataList() {
       let id = this.editFormId
       let name = this.editName
+      if (!Util.showUserForm(name)) return
       let orderStatus = this.editOrderStatus
-      let ajax = Util.ajaxHost + 'updateDataById'
+      let ajax = Util.ajaxHost + 'manager/updateDataById'
       let params = { id, name, orderStatus }
       this.$http.post(ajax, params).then(succ => {
         let res = succ.data
@@ -245,7 +249,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        let ajax = Util.ajaxHost + 'deleteOrder'
+        let ajax = Util.ajaxHost + 'manager/deleteOrder'
         let params = { id }
         this.$http.post(ajax, params).then(succ => {
           let res = succ.data
@@ -283,10 +287,12 @@ export default {
       })
     },
     // 设置是否提交加班订餐记录
-    getSetSubmit() {
+    setSubmit() {
       let status = Number(this.selectSwitch)
-      let ajax = Util.ajaxHost + 'setSubmit?date=' + this.newDate + '&status=' + status
-      this.$http.get(ajax).then(succ => {
+      let date = this.newDate
+      let ajax = Util.ajaxHost + 'manager/setSubmit'
+      let params = { date, status }
+      this.$http.post(ajax, params).then(succ => {
         let res = succ.data
         if (!Util.commAjaxCB(res)) return
         this.$message({ message: '设置成功', type: 'success' })

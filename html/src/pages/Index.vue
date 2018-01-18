@@ -3,8 +3,8 @@
     <div class="mainbox">
       <h3 class="maintitle">{{ msg  }}</h3>
       <div class="myform-box">
-        <el-input v-model="userName" placeholder="你的名字" class="winput" @keyup.13="showUserForm"></el-input>
-        <el-button type="primary" @click="showUserForm" class="btn">提交</el-button>
+        <el-input v-model="userName" placeholder="你的名字" class="winput" @keyup.enter.native="setShowUserForm"></el-input>
+        <el-button type="primary" @click="setShowUserForm" class="btn">提交</el-button>
       </div>
     </div>
   </div>
@@ -29,26 +29,10 @@ export default {
   },
   mounted() {},
   methods: {
-    checkNum(val) {
-      var regx = /^[A-Za-z0-9]*$/;
-      if (regx.test(val)) {
-        return true;
-      } else {
-        return false;
-      }
-    },
     // 判断是否通过
-    showUserForm() {
-      let userName = this.userName;
-      let msg = '乖！输入你的真实姓名好不好?'
-
-      if (userName === '' || userName === null) return this.$message.error(msg)
-
-      if (this.checkNum(userName)) return this.$message.error(msg)
-
-      if (userName.length > 4) return this.$message.error(msg)
-
-      var orderTime = Date.parse(new Date());
+    setShowUserForm() {
+      let userName = this.userName
+      if (!Util.showUserForm(userName)) return
       this.$confirm('姓名不要乱输，一旦提交不可修改?', '温馨提示', {
         confirmButtonText: '这是我的真名！',
         cancelButtonText: '我还是改一下吧',

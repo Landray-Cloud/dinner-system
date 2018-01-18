@@ -3,7 +3,7 @@
     <div class="userbox" :data="createItem" v-show="bodyShow">
       <p class="datap">今天是{{orderDate}} {{week}}</p>
       <h3 class="userFormTitle" v-if="!isAction"><p class="title">{{ userName  }} 是否加班订餐？</p></h3>
-      <h3 class="maintitle macktitle" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderText }}</span>如有变动，请联系娜娜</p></h3>
+      <h3 class="maintitle macktitle" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderText }}</span>，如有变动，请联系娜娜18923436667</p></h3>
       <div class="checkbox" v-if="!isAction">
         <el-select v-model="orderStatus" placeholder="请选择">
           <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value">
@@ -11,7 +11,7 @@
         </el-select>
       </div>
       <div class="userform-box" v-if="!isAction">
-        <el-button type="primary" @click="sub" class="btn">提交</el-button>
+        <el-button type="primary" @click="getAddList" class="btn">提交</el-button>
       </div>
     </div>
     <el-card class="box-card" v-show="promptSucc">
@@ -57,11 +57,13 @@ export default {
     if (!this.userName) this.$router.push('/')
   },
   methods: {
-    sub() {
+    getAddList() {
       let orderTime = Date.parse(new Date());
       let name = this.userName
+      if (!Util.showUserForm(name)) return
       let orderStatus = this.orderStatus
-      let ajax = Util.ajaxHost + 'updateData'
+      if (!orderStatus) return this.$message({ message: '订餐状态不能为空', type: 'error' })
+      let ajax = Util.ajaxHost + 'addOrder'
       let params = { name, orderStatus }
 
       this.$http.post(ajax, params).then(succ => {

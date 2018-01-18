@@ -6,48 +6,6 @@ const log4js = require('log4js')
 const logger = log4js.getLogger()
 logger.level = 'debug'
 
-
-// 更新订餐数据 (弃用)
-// orderStatus
-// name
-// async function updateData(options) {
-//   let orderStatus = options.orderStatus
-//   let name = options.name
-
-//   let _Date = new Date()
-//   let orderDate = _Date.Format('yyyy-MM-dd')
-//   let orderTime = parseInt(_Date.getTime())
-//   let sqlExecute = $sql.insert
-//   let sqlParam = [orderStatus, orderDate, orderTime, name]
-
-//   // 只查今天
-//   let dbRes = await getList({ name, orderDate })
-//   return new Promise((resolve, reject) => {
-//     if (!dbRes) return reject(Utils.writeError('getList - 集合返回失败'))
-//     let data = dbRes.data
-//     if (!data) return reject(Utils.writeError('getList - 数据返回失败'))
-
-//     // 判断该人是否存在 ? 存在update : 否则insert
-//     if (data.length) {
-//       let isUpdate = false
-//       for (let item of data) {
-//         if (item.name === name) {
-//           isUpdate = true
-//           break
-//         }
-//       }
-//       if (isUpdate) sqlExecute = $sql.update
-//     }
-
-//     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
-//       resolve(Utils.writeSuccess())
-//     }).catch(errRes => {
-//       reject(Utils.writeError('updateData - 失败', errRes))
-//     })
-//   })
-// }
-
-
 // 插入数据
 async function addOrder(options) {
   let name = options.name

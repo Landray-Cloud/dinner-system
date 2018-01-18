@@ -39,7 +39,7 @@ async function getList(options) {
     sqlParam = [name, orderDate]
   } else if (name) { // 查询名字
     sqlExecute = $sql.queryListByName
-    sqlParam = name
+    sqlParam = '%' + name + '%'
   } else if (orderDate) { // 查询日期
     sqlExecute = $sql.queryListByDate
     sqlParam = orderDate

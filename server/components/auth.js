@@ -6,15 +6,7 @@ const auth = {
     },
     checkToken: token => {
         if (!token) return false
-
-        // jsonWebToken.verify(token, SECRET, function(err, decoded) {
-        //     if (!err) return false
-        //     console.log(decoded.user)
-        //     return true
-        // })
-
         let decoded = jsonWebToken.decode(token, SECRET)
-        // console.log('decoded', decoded)
         if (decoded.exp <= Date.now() / 1000) return false
         return true
     }

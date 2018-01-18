@@ -1,6 +1,6 @@
 let Manager = {
     queryListAll: 'SELECT * FROM list',
-    queryListByName: 'SELECT * FROM list WHERE name=?',
+    queryListByName: 'SELECT * FROM list WHERE name LIKE ?',
     queryListByDate: 'SELECT * FROM list WHERE orderDate=?',
     queryListByNameAndDate: 'SELECT * FROM list WHERE name=? AND orderDate=?',
     updateById: 'UPDATE list SET orderStatus=?, orderDate=?, orderTime=?, name=?, remarks=? WHERE id=?',

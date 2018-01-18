@@ -123,9 +123,9 @@ label {
 }
 
 body {
-    background: url("../assets/main-bg.png")no-repeat center center;
+  background: url("../assets/main-bg.png")no-repeat center center;
   background-size: 100% 100%;
-  padding: 1rem 10%;
+  /*padding: 1rem 10%;*/
 }
 
 
@@ -220,6 +220,7 @@ body {
   font-size: 18px;
   text-align: left;
   display: inline-block;
+  line-height: 24px;
 }
 
 .myform-box {
@@ -304,10 +305,35 @@ body {
   border: 1px solid #c2c2c2;
 }
 
-.userListBox {
-  height: 98%;
-  border: 1px solid #eee;
+.userList {
+  width: 90%;
+  position: absolute;
+  left: 50%;
+  margin: 0 0 0 -45%;
+  height: 100%;
+  padding: 40px 0;
 }
+
+.userListBox {
+  border: 1px solid #eee;
+  position: fixed;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+
+.el-ico-size {
+  font-size: 18px;
+}
+
+
+
+
+
+
+
 
 
 
@@ -319,17 +345,25 @@ body {
   background-color: #fafafa;
 }
 
-.usertable {
-  padding-left: 160px;
+.userListCon {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  min-width: 100%;
+  float: left;
+}
+
+.userListCon-sub {
+  margin: 0 0 0 160px;
+  height: 100%;
+  overflow-y: auto
 }
 
 .userListNav {
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
   width: 160px;
+  height: 100%;
+  float: left;
+  margin: 0 0 0 -100%;
   height: 100%;
   background-color: #FAFAFA;
   border-right: 1px solid #ebeef2;
@@ -354,7 +388,7 @@ body {
   position: relative;
   top: 0;
   left: 0;
-  height: 100%;
+  height: 90%;
 }
 
 .selectList-title {
@@ -372,7 +406,7 @@ body {
   padding-top: 30px;
   font-size: 0;
   position: relative;
-  width: 50%;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -380,6 +414,8 @@ body {
   margin-bottom: 20px;
   font-size: 14px;
   color: #222;
+  display: inline-block;
+  margin-right: 40px;
 }
 
 .selectTitle {
@@ -388,7 +424,7 @@ body {
 
 .selectName {
   display: inline-block;
-  width: 220px;
+  width: 217px;
 }
 
 .usertable {
@@ -396,15 +432,14 @@ body {
 }
 
 .orderSet {
-  width: 400px;
-  height: 240px;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  margin: -120px 0 0 -200px;
+  width: 240px;
+  height: 100px;
+  margin: 14% auto;
 }
 
-.orderSet p {
+.addList-p {
+  padding-top: 20%;
+  text-align: center;
   font-size: 18px;
   line-height: 24px;
   margin-bottom: 14px;
@@ -413,9 +448,144 @@ body {
 .orderSetBtn {
   margin: 0 auto;
   text-align: center;
-  margin-top: 10%;
+  margin: 10% auto;
   width: 40%;
   display: block;
+}
+
+.editFormName {
+  width: 217px;
+}
+
+.el-dialog {
+  width: 30%;
+}
+
+.updateSet {
+  display: inline-block;
+  text-align: center;
+  font-size: 18px;
+  line-height: 24px;
+  margin-bottom: 14px;
+  margin-left: 22%;
+}
+
+
+
+
+
+
+
+
+
+
+/* 开关样式 */
+
+.container {
+  display: inline-block;
+}
+
+.container .text {
+  display: none;
+}
+
+.on {
+  color: #333;
+}
+
+.off {
+  color: #eee;
+}
+
+.circle {
+  position: absolute;
+  display: inline-block;
+}
+
+#radio~label {
+  background-color: grey;
+}
+
+#radio~label .circle {
+  left: 0;
+  transition: all 0.3s;
+  --webkit-transition: all 0.3s;
+}
+
+#radio~label .on {
+  display: none;
+}
+
+#radio~label .off {
+  display: inline-block;
+}
+
+#radio:checked~label {
+  background: rgb(19, 206, 102);
+}
+
+#radio:checked~label .circle {
+  left: 35px;
+}
+
+#radio:checked~label .on {
+  display: inline-block;
+  text-indent: 10px;
+}
+
+#radio:checked~label .off {
+  display: none;
+}
+
+.container label {
+  display: inline-block;
+  position: relative;
+  height: 22px;
+  width: 58px;
+  border-radius: 10px;
+  box-shadow: 0 0 2px black;
+}
+
+.container label .circle {
+  display: inline-block;
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.container label .text {
+  text-indent: 22px;
+  line-height: 22px;
+  font-size: 14px;
+  color: #fff;
+  font-family: sans-serif;
+  text-shadow: 0 0 2px #ddd;
+}
+
+
+
+
+
+
+
+
+
+/* userform 卡片 */
+
+.box-card {
+  width: 500px;
+  height: 240px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -135px 0 0 -250px;
+}
+
+.pagesbox {
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 
 @media screen (min-width: 1200px) {
@@ -483,7 +653,7 @@ body {
   }
   .userbox {
     width: 90%;
-    height: 30%;
+    height: 45%;
     position: relative;
     top: 50%;
     left: 50%;
@@ -508,4 +678,105 @@ body {
 .el-table th,
 td {
   text-align: center;
+}
+
+.addList {
+  width: 410px;
+  height: 280px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -140px 0 0 -205px;
+  /*margin: 15% auto;*/
+  border: 1px solid #dedede;
+  border-radius: 6px;
+}
+
+
+
+
+
+
+
+
+/*登录*/
+
+.login-item {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  padding: 0;
+}
+
+.login-item h3 {
+  text-align: center;
+  font-weight: normal;
+  width: 100%;
+  font-size: 20px;
+  padding-bottom: 10px;
+  line-height: 24px;
+  border-bottom: 1px solid #ccc;
+}
+
+.login-box {
+  width: 100%;
+  position: relative;
+  padding: 0 10%;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.login-box li {
+  width: 100%;
+  height: 63px;
+  position: relative;
+  border-bottom: 1px solid #ccc;
+}
+
+.login-box li.uname:before,
+li.pwd:before {
+  content: "";
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 16px;
+  height: 18px;
+  position: absolute;
+  left: 7px;
+  top: 36px;
+}
+
+.login-box li.uname:before {
+  background: url("../assets/users.png") no-repeat left center;
+}
+
+.login-box li.pwd:before {
+  background: url("../assets/pwd.png") no-repeat left center;
+}
+
+.login-box li input {
+  border: none;
+  height: 30px;
+  width: 80%;
+  top: 30px;
+  position: relative;
+  left: 30px;
+  font-size: 18px;
+}
+
+.login-card {
+  width: 460px;
+  height: 280px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: -140px 0 0 -230px;
+  border-radius: 10px;
+}
+
+.login-btn {
+  width: 70%;
+  margin: 30px auto 0;
+  display: block;
 }

@@ -25,6 +25,7 @@ body {
   color: #2c3e50;*/
   width: 100%;
   height: 100%;
+  min-width: 1000px;
   box-sizing: border-box;
   /*position: relative;*/
   /*margin-top: 60px;*/

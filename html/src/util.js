@@ -95,5 +95,59 @@ let Util = {
     }
     return true;
   },
+  // 转换点餐状态码
+  filterOrderStatus: orderStatus => {
+    let text = '返回数据失败'
+    switch (orderStatus) {
+      case 1:
+        text = '加班订餐';
+        break;
+      case 2:
+        text = "加班不订餐";
+        break;
+      case 3:
+        text = "不加班不订餐";
+        break;
+      case 4:
+        text = "不加班订餐";
+        break;
+      case '':
+        text = "获取失败";
+        break;
+      default:
+        text = "获取失败"
+        break;
+    }
+    return text
+  },
+  // 正则 不能输入字母和数字
+  checkNum(val) {
+    var regx = /^[A-Za-z0-9]*$/;
+    if (regx.test(val)) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  // 判断姓名是否合法
+  showUserForm: userName => {
+    let msg = '乖！输入你的真实姓名好不好?'
+    if (userName === '' || userName === null) {
+      VM.$message.error(msg)
+      return false
+    }
+
+    if (Util.checkNum(userName)) {
+      VM.$message.error(msg)
+      return false
+    }
+
+    if (userName.length > 4) {
+      VM.$message.error(msg)
+      return false
+    }
+    return true
+  }
+
 }
 export default Util;

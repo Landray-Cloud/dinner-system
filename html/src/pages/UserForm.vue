@@ -3,7 +3,7 @@
     <div class="userbox" :data="createItem" v-show="bodyShow">
       <p class="datap">今天是{{orderDate}}<span @click="addClick">{{week}}</span> </p>
       <h3 class="userFormTitle" v-if="!isAction"><p class="title">{{ userName  }} 是否加班订餐？</p></h3>
-      <h3 class="maintitle macktitle" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderText }}</span>，如有变动，请联系娜娜</p></h3>
+      <h3 class="maintitle macktitle" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderText }}</span>，如有变动，请联系新梅！</p></h3>
       <div class="checkbox" v-if="!isAction">
         <el-select v-model="orderStatus" placeholder="请选择">
           <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value">

@@ -109,7 +109,6 @@ async function orderStatus(options) {
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
-      logger.debug(succRes)
       let obj = { orderStatus: 0 }
 
       if (!succRes.length || succRes.length === 0) return resolve(Utils.writeSuccess(obj))

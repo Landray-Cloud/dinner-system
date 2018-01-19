@@ -1,116 +1,123 @@
 <template>
   <div class="userList">
-    <el-button type="primary" class="exitLogin" @click="exitLogin">退出登录</el-button>
     <div class="userListBox">
       <div class="userListCon">
         <div class="userListCon-sub">
-          <div v-if="pages===1" class="pagesbox">
-            <h3 class="selectList-title">查数据</h3>
-            <div class="selectList">
-              <el-form :inline="true" class="demo-form-inline ul-elforminline">
-                <el-form-item label="名字：">
-                  <el-input v-model="selectInp" placeholder="请输入姓名"></el-input>
-                </el-form-item>
-                <el-form-item label="日期：">
-                  <el-date-picker v-model="selectDate" type="date" placeholder="选择日期"></el-date-picker>
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" icon="el-icon-search" @click="getDate">查询</el-button>
-                  <el-button icon="el-icon-search" @click="getReset">重置</el-button>
-                </el-form-item>
-              </el-form>
-              <el-table :data="tableData" stripe show-summary :summary-method="getTotal" class="el-table">
-                <el-table-column type="index" label="序号">
-                </el-table-column>
-                <el-table-column label="日期">
-                  <template slot-scope="scope">
-                    {{tableData[scope.$index].orderTime}}
-                  </template>
-                </el-table-column>
-                <el-table-column prop="name" label="姓名">
-                </el-table-column>
-                <el-table-column prop="remarks" label="备注">
-                </el-table-column>
-                <el-table-column prop="orderStatus" label="是/否订餐" :filters="filters" :filter-method="filterIsOrder">
-                  <template slot-scope="scope">
-                    <el-tag v-if="scope.row.orderStatus === 1">加班点餐</el-tag>
-                    <el-tag type="success" v-if="scope.row.orderStatus === 2">加班不点餐</el-tag>
-                    <el-tag type="warning" v-if="scope.row.orderStatus === 3">不加班不点餐</el-tag>
-                  </template>
-                </el-table-column>
-                <el-table-column fixed="right" label="操作" width="120">
-                  <template slot-scope="scope">
-                    <el-button type="text" size="medium"><i class="el-icon-setting el-ico-size" @click="showEditBox(scope.row)"></i></el-button>
-                    <el-button type="text" size="medium">
-                      <i class="el-icon-delete el-ico-size" @click="removeOrder(scope.row.id)"></i>
-                    </el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
+          <div class="userlist-head">
+            <h3 class="ulhead-title">订餐管理后台</h3>
+            <el-button type="primary" class="exitLogin" @click="exitLogin">退出登录</el-button>
           </div>
-          <div v-if="pages===2" class="pagesbox">
-            <h3 class="selectList-title">点餐设置</h3>
-            <div class="selectList">
-              <div class=" addList">
-                <p class="addList-p ">今天是{{newDate}}，{{week}}</p>
-                <p class="updateSet">点餐状态：
-                  <div class="container">
-                    <input type="checkbox" id="radio" name="switch" v-model="selectSwitch" @change="setSubmit">
-                    <label for="radio" class="radio">
-                      <span class="circle"></span>
-                      <span class="text on">ON</span>
-                      <span class="text off">OFF</span>
-                    </label>
-                  </div>
-                </p>
+          <div class="pagesbox">
+            <div v-if="pages===1" class="pagesbox">
+              <h3 class="selectList-title">查数据</h3>
+              <div class="selectList">
+                <el-form :inline="true" class="demo-form-inline ul-elforminline">
+                  <el-form-item label="名字：">
+                    <el-input v-model="selectInp" placeholder="请输入姓名"></el-input>
+                  </el-form-item>
+                  <el-form-item label="日期：">
+                    <el-date-picker v-model="selectDate" type="date" placeholder="选择日期"></el-date-picker>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button type="primary" icon="el-icon-search" @click="getDate">查询</el-button>
+                    <el-button icon="el-icon-search" @click="getReset">重置</el-button>
+                  </el-form-item>
+                </el-form>
+                <el-table :data="tableData" stripe show-summary :summary-method="getTotal" class="el-table">
+                  <el-table-column type="index" label="序号">
+                  </el-table-column>
+                  <el-table-column label="日期">
+                    <template slot-scope="scope">
+                      {{tableData[scope.$index].orderTime}}
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="name" label="姓名">
+                  </el-table-column>
+                  <el-table-column prop="remarks" label="备注">
+                  </el-table-column>
+                  <el-table-column prop="orderStatus" label="是/否订餐" :filters="filters" :filter-method="filterIsOrder">
+                    <template slot-scope="scope">
+                      <el-tag v-if="scope.row.orderStatus === 1">加班点餐</el-tag>
+                      <el-tag type="success" v-if="scope.row.orderStatus === 2">加班不点餐</el-tag>
+                      <el-tag type="warning" v-if="scope.row.orderStatus === 3">不加班不点餐</el-tag>
+                    </template>
+                  </el-table-column>
+                  <el-table-column fixed="right" label="操作" width="120">
+                    <template slot-scope="scope">
+                      <el-button type="text" size="medium"><i class="el-icon-setting el-ico-size" @click="showEditBox(scope.row)"></i></el-button>
+                      <el-button type="text" size="medium">
+                        <i class="el-icon-delete el-ico-size" @click="removeOrder(scope.row.id)"></i>
+                      </el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
               </div>
             </div>
-          </div>
-          <div v-if="pages===3" class="pagesbox">
-            <h3 class="selectList-title">添加数据</h3>
-            <div class="selectList">
-              <el-form ref="form" label-width="80px" class="ulist-frombox" :data="addItem">
-                <el-form-item label="名字：">
-                  <el-input v-model="addName" placeholder="请输入姓名"></el-input>
+            <div v-if="pages===2" class="pagesbox">
+              <h3 class="selectList-title">点餐设置</h3>
+              <div class="selectList">
+                <div class="addList">
+                  <p class="addList-p ">今天是{{newDate}}，{{week}}</p>
+                  <p class="updateSet">点餐状态：
+                    <div class="container">
+                      <input type="checkbox" id="radio" name="switch" v-model="selectSwitch" @change="setSubmit">
+                      <label for="radio" class="radio">
+                        <span class="circle"></span>
+                        <span class="text on">ON</span>
+                        <span class="text off">OFF</span>
+                      </label>
+                    </div>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div v-if="pages===3" class="pagesbox">
+              <h3 class="selectList-title">添加数据</h3>
+              <div class="selectList">
+                <el-form ref="form" label-width="80px" class="ulist-frombox" :data="addItem">
+                  <el-form-item label="名字：">
+                    <el-input v-model="addName" placeholder="请输入姓名"></el-input>
+                  </el-form-item>
+                  <el-form-item label="订餐：">
+                    <el-select v-model="addOrderStatus" placeholder="请选择">
+                      <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="备注：">
+                    <el-input v-model="addRemarks" placeholder="因什么项目而加班"></el-input>
+                  </el-form-item>
+                  <button class="orderSetBtn" @click="setAddList">提交</button>
+                </el-form>
+              </div>
+            </div>
+            <!-- 弹框编辑用户是否点餐 -->
+            <el-dialog title="编辑用户是否订餐" :visible.sync="dialogFormVisible">
+              <el-form :data="tableData" class="ul-elform-edit">
+                <el-form-item label="名字" :label-width="formLabelWidth">
+                  <el-input v-model="editName" placeholder="请输入姓名" class="editFormName"></el-input>
                 </el-form-item>
-                <el-form-item label="订餐：">
-                  <el-select v-model="addOrderStatus" placeholder="请选择">
-                    <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value">
-                    </el-option>
+                <el-form-item label="订餐" :label-width="formLabelWidth">
+                  <el-select v-model="editOrderStatus" placeholder="请选择">
+                    <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="备注：">
-                  <el-input v-model="addRemarks" placeholder="因什么项目而加班"></el-input>
+                <el-form-item label="备注" :label-width="formLabelWidth">
+                  <el-input v-model="remarks" placeholder="因什么项目而加班" class="editFormName"></el-input>
                 </el-form-item>
-                <button class="orderSetBtn" click="setAddList">提交</button>
-                <!-- <el-button type="primary"  @click="setAddList">提交</el-button> -->
               </el-form>
-            </div>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                <el-button type="primary" @click="updateDataList">确 定</el-button>
+              </div>
+            </el-dialog>
           </div>
-          <!-- 弹框编辑用户是否点餐 -->
-          <el-dialog title="编辑用户是否订餐" :visible.sync="dialogFormVisible">
-            <el-form :data="tableData" class="ul-elform-edit">
-              <el-form-item label="名字" :label-width="formLabelWidth">
-                <el-input v-model="editName" placeholder="请输入姓名" class="editFormName"></el-input>
-              </el-form-item>
-              <el-form-item label="订餐" :label-width="formLabelWidth">
-                <el-select v-model="editOrderStatus" placeholder="请选择">
-                  <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="备注" :label-width="formLabelWidth">
-                <el-input v-model="remarks" placeholder="因什么项目而加班" class="editFormName"></el-input>
-              </el-form-item>
-            </el-form>
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="dialogFormVisible = false">取 消</el-button>
-              <el-button type="primary" @click="updateDataList">确 定</el-button>
-            </div>
-          </el-dialog>
         </div>
       </div>
       <div class="userListNav">
+        <div class="admin-ico">
+          <img src="../assets/admin-ico.png">
+        </div>
         <ul>
           <li @click="pages=1" :class="pages===1?'active':''">查询所有</li>
           <li @click="pages=2" :class="pages===2?'active':''">点餐设置</li>
@@ -215,7 +222,7 @@ export default {
         this.$message({ message: '提交成功', type: 'success' })
         this.addName = ''
         this.addOrderStatus = ''
-        this.remarks = ''
+        this.addRemarks = ''
       }, err => {
         console.log(err)
       })
@@ -278,7 +285,7 @@ export default {
     },
     // 统计
     getTotal(param) {
-      return ['合计', '', '','', param.data.length]
+      return ['合计', '', '', '', param.data.length]
     },
     /* 获取是否提交加班订餐记录
      *  点餐设置开关提交
@@ -315,17 +322,32 @@ export default {
     filterIsOrder(value, row) {
       return row.orderStatus === value;
     },
+    // 读取cookie
+    getCookie(name) {
+      var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+      if (arr = document.cookie.match(reg))
+        return unescape(arr[2]);
+      else
+        return null;
+    },
+    // 删除cookie
+    delCookie(name) {
+      var exp = new Date();
+      exp.setTime(exp.getTime() - 1);
+      var cval = this.getCookie(name);
+      if (cval != null)
+        document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString() + ";Path=/";
+    },
     // 退出登录
     exitLogin() {
+      this.delCookie('Angelebaby')
       this.$confirm('是否退出登录?', '温馨提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        if (cookie.setAttribute('Angelebaby')) {
-          cookie.removeAttribute('Angelebaby')
-          this.$router.push('Login')
-        }
+        this.delCookie('Angelebaby')
+        this.$router.push('Login')
       }).catch(() => {});
     }
   }
@@ -336,13 +358,12 @@ export default {
 @import "../less/main.css";
 .exitLogin {
   float: right;
-  margin-bottom: 20px;
 }
 
 .ulist-frombox {
   width: 520px;
   height: 300px;
-  border: 1px solid #ccc;
+  border: 1px solid #c2e7b0;
   padding: 30px;
   box-sizing: border-box;
   border-radius: 6px;

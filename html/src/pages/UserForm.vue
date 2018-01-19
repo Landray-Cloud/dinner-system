@@ -3,7 +3,7 @@
     <el-form ref="form" :data="createItem" label-width="80px" class="user-elform" v-show="bodyShow">
       <p class="datap">今天是{{orderDate}}<span @click="addClick">{{week}}</span> </p>
       <h3 class="userFormTitle" v-if="!isAction"><p class="title">{{ userName  }} 是否加班订餐？</p></h3>
-      <h3 class="maintitle macktitle" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderText }}</span>，如有变动，请联系新梅！</p></h3>
+      <h3 class=" mackText" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderText }}</span>，如有变动，请联系新梅！</p></h3>
       <div class="elform-box">
         <el-form-item label="操作" v-if="!isAction" class="ufelform-item">
           <el-select v-model="orderStatus" placeholder="请选择">
@@ -20,7 +20,7 @@
     </el-form>
     <el-card class="box-card" v-show="promptSucc">
       <div class="box-cardbox">
-        <h3 class="maintitle macktitle">感谢您的付出！</h3>
+        <h3 class="maintitle macktitle thanktitle">感谢您的付出！</h3>
         <div class="reset-btn">
           <el-button type="primary" @click="getReturn">返回</el-button>
         </div>

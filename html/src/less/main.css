@@ -84,9 +84,11 @@ textarea {
   border-radius: 0;
   -webkit-appearance: none;
 }
-.fr{
-  float:right;
+
+.fr {
+  float: right;
 }
+
 label {
   display: block;
 }
@@ -173,10 +175,12 @@ body {
   border-radius: 6px;
   padding: 20px;
 }
-.ufRemarks{
+
+.ufRemarks {
   width: 217px;
   display: inline-block;
 }
+
 .checkbox {
   display: inline-block;
 }
@@ -206,8 +210,15 @@ body {
   padding: 30px 0;
 }
 
-.macktitle {
-  padding: 60px 42px;
+.mackText {
+  padding: 0 10%;
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+  line-height: 24px;
+  height: 260px;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .failtitle {
@@ -314,12 +325,12 @@ body {
 }
 
 .userList {
-  width: 90%;
-  position: absolute;
-  left: 50%;
-  margin: 0 0 0 -45%;
-  height: 94%;
-  padding: 40px 0;
+  width: 100%;
+  position: relative;
+  /*  left: 50%;
+  margin: 0 0 0 -45%;*/
+  height: 100%;
+  /*padding: 40px 0;*/
 }
 
 .userListBox {
@@ -337,12 +348,17 @@ body {
 }
 
 
+
+
+
+
+
 /* userlist */
 
 .userListBox {
   border: 1px solid #f3f4f3;
   position: relative;
-  background-color: #fafafa;
+  background-color: #fff;
 }
 
 .userListCon {
@@ -356,32 +372,60 @@ body {
 .userListCon-sub {
   margin: 0 0 0 160px;
   height: 100%;
-  overflow-y: auto
 }
 
+.userlist-head {
+  width: 100%;
+  height: 64px;
+  padding: 10px 20px;
+  background-color: #f0f9eb;
+  border-bottom: 1px solid #c2e7b0;
+}
+.ulhead-title{
+  font-weight: normal;
+  font-size: 24px;
+  color: #606266;
+  display: inline-block;
+}
 .userListNav {
   width: 160px;
   height: 100%;
   float: left;
   margin: 0 0 0 -100%;
   height: 100%;
-  background-color: #FAFAFA;
-  border-right: 1px solid #ebeef2;
+  background-color: #f0f9eb;
+  border-right: 1px solid #c2e7b0;
+}
+
+.admin-ico {
+  height: 160px;
+  width: 100%;
+  padding: 18px;
+  box-sizing: border-box;
+}
+
+.admin-ico img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid #fff;
 }
 
 .userListNav li {
   height: 48px;
   line-height: 48px;
   padding-left: 10px;
-  border-bottom: 1px solid #ebeef2;
+  border-bottom: 1px solid #c2e7b0;
   font-size: 14px;
   color: #606266;
   cursor: pointer;
-  background-color: #FAFAFA;
+  background-color: #f0f9eb;
 }
 
 .userListNav li.active {
-  color: #409eff;
+  color: #67c23a;
+  background: #f0f9eb;
+  border-color: #c2e7b0;
 }
 
 .selectList {
@@ -397,8 +441,7 @@ body {
   height: 40px;
   line-height: 40px;
   padding-left: 20px;
-  background-color: #f4f4f4;
-  border-bottom: 1px solid #ebeef2;
+  border-bottom: 1px solid #c2e7b0;
 }
 
 .selectList ul {
@@ -418,10 +461,17 @@ body {
   margin-right: 40px;
 }
 
+
+
+
+
+
 /*.selectTitle {
   display: inline-block;
 }
 */
+
+
 /*.selectName {
   display: inline-block;
   width: 217px;
@@ -469,17 +519,6 @@ body {
   margin-bottom: 14px;
   margin-left: 22%;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* 开关样式 */
@@ -566,8 +605,6 @@ body {
   text-shadow: 0 0 2px #ddd;
 }
 
-
-
 /* userform 卡片 */
 
 .box-card {
@@ -582,7 +619,19 @@ body {
 .pagesbox {
   width: 100%;
   height: 100%;
+  overflow-y: auto;
   position: relative;
+}
+
+.thanktitle {
+  width: 500px;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 24px;
+  height: 120px;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
 }
 
 @media screen (min-width: 1200px) {
@@ -592,18 +641,6 @@ body {
   }
 }
 
-/*@media (device-height:568px) and (-webkit-min-device-pixel-ratio:2) {
-  .el-message-box {
-    width: 90%;
-  }
-}*/
-
-
-
-/*@media screen and (device-width:360px){*/
-
-
-/*@media (device-width:667px) and (-webkit-min-device-pixel-ratio:2){*/
 
 @media screen and (max-width: 414px) {
   body {
@@ -613,8 +650,8 @@ body {
     width: 90%;
     margin: -135px 0 0 -45%;
   }
-  .macktitle {
-    padding: 15px 0;
+  .mackText {
+    padding: 0 5%;
   }
   .myform {
     width: 100%;
@@ -680,8 +717,18 @@ body {
     margin-bottom: 20px;
   }
   .el-message-box {
-    width: 90% !important;
+    width: 92% !important;
   }
+  .thanktitle {
+    width: 300px;
+  }
+}
+
+.el-table {
+  width: 90%;
+  margin: 0 auto;
+  border: 1px solid #c2e7b0;
+  margin-bottom: 65px;
 }
 
 .el-table th {
@@ -700,10 +747,14 @@ body {
   left: 50%;
   top: 50%;
   margin: -140px 0 0 -205px;
-  /*margin: 15% auto;*/
-  border: 1px solid #dedede;
+  border: 1px solid #c2e7b0;
   border-radius: 6px;
 }
+
+
+
+
+
 
 
 

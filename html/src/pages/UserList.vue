@@ -299,7 +299,6 @@ export default {
         let _status = res.data.status
         this.status = _status
         this.selectSwitch = Boolean(_status)
-        this.$message({ message: '获取成功', type: 'success' })
       }, err => {
         console.log(err)
       })

@@ -129,7 +129,6 @@ label {
 body {
   background: url("../assets/main-bg.png")no-repeat center center;
   background-size: 100% 100%;
-  /*padding: 1rem 10%;*/
 }
 
 
@@ -154,7 +153,6 @@ body {
   position: relative;
   top: 50%;
   left: 50%;
-  /*margin: -100px 0 0 0;*/
   margin: -100px 0 0 -250px;
   background: #fff;
   border: 1px solid #fff;
@@ -168,7 +166,6 @@ body {
   position: relative;
   top: 50%;
   left: 50%;
-  /*margin: -100px 0 0 0;*/
   margin: -135px 0 0 -250px;
   background: #fff;
   border: 1px solid #fff;
@@ -327,10 +324,7 @@ body {
 .userList {
   width: 100%;
   position: relative;
-  /*  left: 50%;
-  margin: 0 0 0 -45%;*/
   height: 100%;
-  /*padding: 40px 0;*/
 }
 
 .userListBox {
@@ -350,15 +344,11 @@ body {
 
 
 
-
-
-
 /* userlist */
 
 .userListBox {
-  border: 1px solid #f3f4f3;
   position: relative;
-  background-color: #fff;
+  background-color: #dfe5e5;
 }
 
 .userListCon {
@@ -378,23 +368,23 @@ body {
   width: 100%;
   height: 64px;
   padding: 10px 20px;
-  background-color: #f0f9eb;
-  border-bottom: 1px solid #c2e7b0;
+  background-color: #222;
 }
-.ulhead-title{
+
+.ulhead-title {
   font-weight: normal;
   font-size: 24px;
-  color: #606266;
+  color: #fff;
   display: inline-block;
 }
+
 .userListNav {
   width: 160px;
   height: 100%;
   float: left;
   margin: 0 0 0 -100%;
   height: 100%;
-  background-color: #f0f9eb;
-  border-right: 1px solid #c2e7b0;
+  background-color: #464646;
 }
 
 .admin-ico {
@@ -415,17 +405,23 @@ body {
   height: 48px;
   line-height: 48px;
   padding-left: 10px;
-  border-bottom: 1px solid #c2e7b0;
   font-size: 14px;
-  color: #606266;
+  color: #969891;
   cursor: pointer;
-  background-color: #f0f9eb;
+  background-color: #464646;
 }
 
 .userListNav li.active {
-  color: #67c23a;
-  background: #f0f9eb;
-  border-color: #c2e7b0;
+  color: #dd0f71;
+  background: #585657;
+}
+
+.userListNav li.active::before {
+  content: "";
+  border-left: 2px solid #dd0f71;
+  position: absolute;
+  left: 0;
+  height: 48px;
 }
 
 .selectList {
@@ -439,9 +435,11 @@ body {
   font-weight: normal;
   font-size: 18px;
   height: 40px;
+  color: #212326;
   line-height: 40px;
   padding-left: 20px;
-  border-bottom: 1px solid #c2e7b0;
+  color: #dd0f71;
+  border-bottom: 1px solid #fff;
 }
 
 .selectList ul {
@@ -460,6 +458,9 @@ body {
   display: inline-block;
   margin-right: 40px;
 }
+
+
+
 
 
 
@@ -519,6 +520,9 @@ body {
   margin-bottom: 14px;
   margin-left: 22%;
 }
+
+
+
 
 
 /* 开关样式 */
@@ -604,6 +608,9 @@ body {
   font-family: sans-serif;
   text-shadow: 0 0 2px #ddd;
 }
+
+
+
 
 /* userform 卡片 */
 
@@ -727,7 +734,7 @@ body {
 .el-table {
   width: 90%;
   margin: 0 auto;
-  border: 1px solid #c2e7b0;
+  border: 1px solid #fff;
   margin-bottom: 65px;
 }
 
@@ -747,9 +754,12 @@ body {
   left: 50%;
   top: 50%;
   margin: -140px 0 0 -205px;
-  border: 1px solid #c2e7b0;
   border-radius: 6px;
+  background: #fff;
 }
+
+
+
 
 
 
@@ -852,6 +862,7 @@ li.pwd:before {
   color: #fff;
   text-align: center;
   height: 40px;
+  cursor: pointer;
   border-radius: 6px;
 }
 

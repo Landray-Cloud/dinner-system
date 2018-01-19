@@ -23,34 +23,36 @@
                     <el-button icon="el-icon-search" @click="getReset">重置</el-button>
                   </el-form-item>
                 </el-form>
-                <el-table :data="tableData" stripe show-summary :summary-method="getTotal" class="el-table">
-                  <el-table-column type="index" label="序号">
-                  </el-table-column>
-                  <el-table-column label="日期">
-                    <template slot-scope="scope">
-                      {{tableData[scope.$index].orderTime}}
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="name" label="姓名">
-                  </el-table-column>
-                  <el-table-column prop="remarks" label="备注">
-                  </el-table-column>
-                  <el-table-column prop="orderStatus" label="是/否订餐" :filters="filters" :filter-method="filterIsOrder">
-                    <template slot-scope="scope">
-                      <el-tag v-if="scope.row.orderStatus === 1">加班点餐</el-tag>
-                      <el-tag type="success" v-if="scope.row.orderStatus === 2">加班不点餐</el-tag>
-                      <el-tag type="warning" v-if="scope.row.orderStatus === 3">不加班不点餐</el-tag>
-                    </template>
-                  </el-table-column>
-                  <el-table-column fixed="right" label="操作" width="120">
-                    <template slot-scope="scope">
-                      <el-button type="text" size="medium"><i class="el-icon-setting el-ico-size" @click="showEditBox(scope.row)"></i></el-button>
-                      <el-button type="text" size="medium">
-                        <i class="el-icon-delete el-ico-size" @click="removeOrder(scope.row.id)"></i>
-                      </el-button>
-                    </template>
-                  </el-table-column>
-                </el-table>
+                <div class="ul-tabluebox">
+                  <el-table :data="tableData" stripe show-summary :summary-method="getTotal" class="el-table">
+                    <el-table-column type="index" label="序号">
+                    </el-table-column>
+                    <el-table-column label="日期">
+                      <template slot-scope="scope">
+                        {{tableData[scope.$index].orderTime}}
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="name" label="姓名">
+                    </el-table-column>
+                    <el-table-column prop="remarks" label="备注">
+                    </el-table-column>
+                    <el-table-column prop="orderStatus" label="是/否订餐" :filters="filters" :filter-method="filterIsOrder">
+                      <template slot-scope="scope">
+                        <el-tag v-if="scope.row.orderStatus === 1">加班点餐</el-tag>
+                        <el-tag type="success" v-if="scope.row.orderStatus === 2">加班不点餐</el-tag>
+                        <el-tag type="warning" v-if="scope.row.orderStatus === 3">不加班不点餐</el-tag>
+                      </template>
+                    </el-table-column>
+                    <el-table-column fixed="right" label="操作" width="120">
+                      <template slot-scope="scope">
+                        <el-button type="text" size="medium"><i class="el-icon-setting el-ico-size" @click="showEditBox(scope.row)"></i></el-button>
+                        <el-button type="text" size="medium">
+                          <i class="el-icon-delete el-ico-size" @click="removeOrder(scope.row.id)"></i>
+                        </el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </div>
               </div>
             </div>
             <div v-if="pages===2" class="pagesbox">
@@ -59,14 +61,8 @@
                 <div class="addList">
                   <p class="addList-p ">今天是{{newDate}}，{{week}}</p>
                   <p class="updateSet">点餐状态：
-                    <div class="container">
-                      <input type="checkbox" id="radio" name="switch" v-model="selectSwitch" @change="setSubmit">
-                      <label for="radio" class="radio">
-                        <span class="circle"></span>
-                        <span class="text on">ON</span>
-                        <span class="text off">OFF</span>
-                      </label>
-                    </div>
+                    <el-switch v-model="selectSwitch" active-color="#13ce66" inactive-color="#dcdfe6" @change="setSubmit">
+                    </el-switch>
                   </p>
                 </div>
               </div>
@@ -93,19 +89,21 @@
             </div>
             <!-- 弹框编辑用户是否点餐 -->
             <el-dialog title="编辑用户是否订餐" :visible.sync="dialogFormVisible">
-              <el-form :data="tableData" class="ul-elform-edit">
-                <el-form-item label="名字" :label-width="formLabelWidth">
-                  <el-input v-model="editName" placeholder="请输入姓名" class="editFormName"></el-input>
-                </el-form-item>
-                <el-form-item label="订餐" :label-width="formLabelWidth">
-                  <el-select v-model="editOrderStatus" placeholder="请选择">
-                    <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item label="备注" :label-width="formLabelWidth">
-                  <el-input v-model="remarks" placeholder="因什么项目而加班" class="editFormName"></el-input>
-                </el-form-item>
-              </el-form>
+              <!-- <div class="selectList"> -->
+                <el-form :data="tableData" class="ul-elform-edit" label-width="80px">
+                  <el-form-item label="名字" :label-width="formLabelWidth">
+                    <el-input v-model="editName" placeholder="请输入姓名" class="editFormName"></el-input>
+                  </el-form-item>
+                  <el-form-item label="订餐" :label-width="formLabelWidth">
+                    <el-select v-model="editOrderStatus" placeholder="请选择">
+                      <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="备注" :label-width="formLabelWidth">
+                    <el-input v-model="remarks" placeholder="因什么项目而加班" class="editFormName"></el-input>
+                  </el-form-item>
+                </el-form>
+              <!-- </div> -->
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
                 <el-button type="primary" @click="updateDataList">确 定</el-button>
@@ -379,7 +377,8 @@ export default {
 }
 
 .ul-elforminline {
-  margin: 30px auto 0;
+  padding-top: 30px;
+  background-color: #f2f2f2;
   text-align: center;
 }
 
@@ -413,5 +412,6 @@ export default {
 .ul-elform-edit .el-select {
   width: 100%;
 }
+
 
 </style>

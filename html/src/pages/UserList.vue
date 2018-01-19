@@ -61,7 +61,7 @@
                 <div class="addList">
                   <p class="addList-p ">今天是{{newDate}}，{{week}}</p>
                   <p class="updateSet">点餐状态：
-                    <el-switch v-model="selectSwitch" active-color="#13ce66" inactive-color="#dcdfe6" @change="setSubmit">
+                    <el-switch v-model="selectSwitch" @change="setSubmit">
                     </el-switch>
                   </p>
                 </div>
@@ -83,26 +83,28 @@
                   <el-form-item label="备注：">
                     <el-input v-model="addRemarks" placeholder="因什么项目而加班"></el-input>
                   </el-form-item>
-                  <button class="orderSetBtn" @click="setAddList">提交</button>
+                  <div class="login-btn">
+                    <el-button @click="setAddList" type="primary"> 提交</el-button>
+                  </div>
                 </el-form>
               </div>
             </div>
             <!-- 弹框编辑用户是否点餐 -->
             <el-dialog title="编辑用户是否订餐" :visible.sync="dialogFormVisible">
               <!-- <div class="selectList"> -->
-                <el-form :data="tableData" class="ul-elform-edit" label-width="80px">
-                  <el-form-item label="名字" :label-width="formLabelWidth">
-                    <el-input v-model="editName" placeholder="请输入姓名" class="editFormName"></el-input>
-                  </el-form-item>
-                  <el-form-item label="订餐" :label-width="formLabelWidth">
-                    <el-select v-model="editOrderStatus" placeholder="请选择">
-                      <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value"></el-option>
-                    </el-select>
-                  </el-form-item>
-                  <el-form-item label="备注" :label-width="formLabelWidth">
-                    <el-input v-model="remarks" placeholder="因什么项目而加班" class="editFormName"></el-input>
-                  </el-form-item>
-                </el-form>
+              <el-form :data="tableData" class="ul-elform-edit" label-width="60px">
+                <el-form-item label="名字" :label-width="formLabelWidth">
+                  <el-input v-model="editName" placeholder="请输入姓名" class="editFormName"></el-input>
+                </el-form-item>
+                <el-form-item label="订餐" :label-width="formLabelWidth">
+                  <el-select v-model="editOrderStatus" placeholder="请选择">
+                    <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="备注" :label-width="formLabelWidth">
+                  <el-input v-model="remarks" placeholder="因什么项目而加班" class="editFormName"></el-input>
+                </el-form-item>
+              </el-form>
               <!-- </div> -->
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -412,6 +414,5 @@ export default {
 .ul-elform-edit .el-select {
   width: 100%;
 }
-
 
 </style>

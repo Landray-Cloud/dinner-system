@@ -1,6 +1,5 @@
 <template>
   <div class=" mainBg">
-    <!-- 页眉 结束 -->
     <!--中部开始-->
     <el-card class="login-card">
       <div class="text login-item">
@@ -17,8 +16,6 @@
       </div>
     </el-card>
     <!--中部end-->
-    <!-- 页脚 开始 -->
-    <!-- 页脚 结束 -->
   </div>
 </template>
 <script>

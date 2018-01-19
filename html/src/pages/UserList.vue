@@ -363,13 +363,14 @@ export default {
 .ulist-frombox {
   width: 520px;
   height: 300px;
-  border: 1px solid #c2e7b0;
+  border: 1px solid #fff;
   padding: 30px;
   box-sizing: border-box;
   border-radius: 6px;
   position: absolute;
   left: 50%;
   top: 50%;
+  background-color: #fff;
   margin: -150px 0 0 -260px;
 }
 

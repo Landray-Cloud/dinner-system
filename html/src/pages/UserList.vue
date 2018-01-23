@@ -198,7 +198,7 @@ export default {
         if (!Util.commAjaxCB(res)) return
         let data = res.data
         for (var i in data) {
-          data[i].orderTime = Util.getDate(data[i].orderTime, 'yyyy-MM-dd hh:ss');
+          data[i].orderTime = Util.getDate(data[i].orderTime, 'yyyy-MM-dd hh:mm');
         }
         this.tableData = data
       }, err => {

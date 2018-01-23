@@ -743,12 +743,6 @@ body {
 .el-table th {
   background: #ecf5ff;
 }
-
-.el-table th,
-.el-table td {
-  text-align: center !important;
-}
-
 .addList {
   width: 410px;
   height: 280px;

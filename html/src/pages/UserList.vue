@@ -25,25 +25,25 @@
                 </el-form>
                 <div class="ul-tabluebox">
                   <el-table :data="tableData" stripe show-summary :summary-method="getTotal" class="el-table">
-                    <el-table-column type="index" label="序号">
+                    <el-table-column type="index" label="序号" align="center">
                     </el-table-column>
-                    <el-table-column label="日期">
+                    <el-table-column label="日期" align="center">
                       <template slot-scope="scope">
                         {{tableData[scope.$index].orderTime}}
                       </template>
                     </el-table-column>
-                    <el-table-column prop="name" label="姓名">
+                    <el-table-column prop="name" label="姓名" align="center">
                     </el-table-column>
-                    <el-table-column prop="remarks" label="备注">
+                    <el-table-column prop="remarks" label="备注" align="center">
                     </el-table-column>
-                    <el-table-column prop="orderStatus" label="是/否订餐" :filters="filters" :filter-method="filterIsOrder">
+                    <el-table-column prop="orderStatus" label="是/否订餐" :filters="filters" :filter-method="filterIsOrder" align="center">
                       <template slot-scope="scope">
                         <el-tag v-if="scope.row.orderStatus === 1">加班点餐</el-tag>
                         <el-tag type="success" v-if="scope.row.orderStatus === 2">加班不点餐</el-tag>
                         <el-tag type="warning" v-if="scope.row.orderStatus === 3">不加班不点餐</el-tag>
                       </template>
                     </el-table-column>
-                    <el-table-column fixed="right" label="操作" width="120">
+                    <el-table-column fixed="right" label="操作" width="120" align="center">
                       <template slot-scope="scope">
                         <el-button type="text" size="medium"><i class="el-icon-setting el-ico-size" @click="showEditBox(scope.row)"></i></el-button>
                         <el-button type="text" size="medium">

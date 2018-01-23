@@ -70,7 +70,7 @@ export default {
       let remarks = this.remarks
       if (!Util.showUserForm(name)) return
       let orderStatus = this.orderStatus
-      if (!orderStatus) return this.$message({ message: '订餐状态不能为空', type: 'error' })
+      if (!orderStatus) return this.$message({ message: '请选择您的操作！', type: 'error' })
       let ajax = Util.ajaxHost + 'addOrder'
       let params = { name, orderStatus, remarks }
 

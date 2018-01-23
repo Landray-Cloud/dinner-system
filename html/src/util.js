@@ -1,6 +1,18 @@
+const jsonWebToken = require('jsonWebToken')
+const SECRET = 'Leonardo'
+
 let Util = {
   ajaxHost: '//test.ywork.me/node/dinner/',
   // ajaxHost: 'http://localhost:3001/node/dinner/',
+  // 转码
+  setToken: userName => {
+    return jsonWebToken.sign({ userName }, SECRET)
+  },
+  // 解码
+  getToken: token => {
+    if (!token) return false
+    return jsonWebToken.verify(token, SECRET)
+  },
   // 转换日期
   Format: (timeObj, fmt) => {
     var o = {

@@ -39,10 +39,11 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
+       let upsid  = Util.setToken(userName)
         if (window.localStorage) {
-          localStorage.setItem('userName', userName);
+          localStorage.setItem('userName', upsid);
         } else {
-          Cookie.write('userName', userName);
+          Cookie.write('userName', upsid);
         }
         this.$router.push('UserForm')
       }).catch(() => {});

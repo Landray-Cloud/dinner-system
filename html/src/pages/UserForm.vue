@@ -59,9 +59,13 @@ export default {
   },
 
   created() { // created 组件创建完毕属性已经绑定但dom还未生成的状态
+    if (!this.userName) return this.$router.push('/')
     this.getIsAction()
+    let token = Util.getToken(this.userName)
+    console.log('取', token)
+    this.userName = token.userName
     this.week = Util.getWeek(this.week);
-    if (!this.userName) this.$router.push('/')
+
   },
   methods: {
     getAddList() {
@@ -167,7 +171,7 @@ export default {
 .ufelform-btn button {
   width: 60%;
   display: block;
-  margin:20% auto 0;
+  margin: 20% auto 0;
 }
 
 @media screen and (max-width: 414px) {

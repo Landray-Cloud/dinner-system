@@ -344,6 +344,8 @@ body {
 
 
 
+
+
 /* userlist */
 
 .userListBox {
@@ -468,6 +470,8 @@ body {
 
 
 
+
+
 /*.selectTitle {
   display: inline-block;
 }
@@ -521,6 +525,8 @@ body {
   margin-bottom: 14px;
   margin-left: 22%;
 }
+
+
 
 
 
@@ -610,6 +616,8 @@ body {
   font-family: sans-serif;
   text-shadow: 0 0 2px #ddd;
 }
+
+
 
 
 
@@ -732,10 +740,12 @@ body {
     width: 300px;
   }
 }
-.ul-tabluebox{
+
+.ul-tabluebox {
   width: 90%;
-  margin:20px auto;
+  margin: 20px auto;
 }
+
 .el-table {
   margin-bottom: 65px;
 }
@@ -743,6 +753,7 @@ body {
 .el-table th {
   background: #ecf5ff;
 }
+
 .addList {
   width: 410px;
   height: 280px;
@@ -753,6 +764,8 @@ body {
   border-radius: 6px;
   background: #fff;
 }
+
+
 
 
 /*登录*/
@@ -796,11 +809,11 @@ li.pwd:before {
   content: "";
   background-repeat: no-repeat;
   background-size: 100%;
-  width: 16px;
-  height: 18px;
+  width: 22px;
+  height: 40px;
   position: absolute;
-  left: 7px;
-  top: 36px;
+  left: 15px;
+  top: 22px;
 }
 
 .login-box li.uname:before {
@@ -820,9 +833,11 @@ li.pwd:before {
   left: 30px;
   font-size: 18px;
 }
-.login-box li input{
-  border:none;
+
+.login-box li input {
+  border: none;
 }
+
 .login-card {
   width: 460px;
   height: 280px;

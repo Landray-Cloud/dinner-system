@@ -5,7 +5,6 @@ import UserForm from '@/pages/UserForm';
 import UserList from '@/pages/UserList';
 import UserFail from '@/pages/UserFail';
 import Login from '@/pages/Login';
-import UList from '@/pages/UList'
 Vue.use(Router);
 
 export default new Router({
@@ -21,10 +20,6 @@ export default new Router({
     path:'/UserList',
     name:'UserList',
     component:UserList
-  },{
-    path:'/UList',
-    name:'UList',
-    component:UList
   },{
     path:'/Login',
     name:'Login',

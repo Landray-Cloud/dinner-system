@@ -37,7 +37,7 @@ export default {
       bodyShow: true, // false
       promptSucc: false,
       orderDate: Util.getDate(new Date(), 'yyyy-MM-dd'),
-      userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
+      userName: window.localStorage ? localStorage.getItem('DiCaprio') : Cookie.read("DiCaprio"),
       week: new Date().getDay(), //星期
       createItem: [], // 数据列表
       orderStatus: '', // 订餐状态
@@ -59,9 +59,12 @@ export default {
   },
 
   created() { // created 组件创建完毕属性已经绑定但dom还未生成的状态
+    if (!this.userName) return this.$router.push('/')
     this.getIsAction()
+    let token = Util.getToken(this.userName)
+    this.userName = token.userName
     this.week = Util.getWeek(this.week);
-    if (!this.userName) this.$router.push('/')
+
   },
   methods: {
     getAddList() {
@@ -87,7 +90,7 @@ export default {
     addClick() {
       this.clickCount = this.clickCount + 1
       if (this.clickCount < 10) return
-      localStorage.removeItem('userName')
+      localStorage.removeItem('DiCaprio')
       location.reload()
     },
     // 用户今天是否已做了选择
@@ -167,7 +170,7 @@ export default {
 .ufelform-btn button {
   width: 60%;
   display: block;
-  margin:20% auto 0;
+  margin: 20% auto 0;
 }
 
 @media screen and (max-width: 414px) {

@@ -6,10 +6,10 @@
         <h3>登录</h3>
         <ul class="login-box">
           <li class="uname">
-            <input type="text" v-model="userName" placeholder="请输入用户名" autoComplete="on">
+            <el-input v-model="userName" type="text" placeholder="请输入用户名"></el-input>
           </li>
           <li class="pwd">
-            <input type="password" v-model="pwd" placeholder="请输入密码" autoComplete="on" @keyup.enter.native="loginSub">
+            <el-input v-model="pwd" type="password" @keyup.enter.native="loginSub" placeholder="请输入密码"></el-input>
           </li>
         </ul>
         <div class="login-btn">

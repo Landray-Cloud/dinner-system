@@ -811,16 +811,18 @@ li.pwd:before {
   background: url("../assets/pwd.png") no-repeat left center;
 }
 
-.login-box li input {
+.login-box li .el-input {
   border: none;
-  height: 30px;
+  height: 40px;
   width: 80%;
-  top: 30px;
+  top: 22px;
   position: relative;
   left: 30px;
   font-size: 18px;
 }
-
+.login-box li input{
+  border:none;
+}
 .login-card {
   width: 460px;
   height: 280px;

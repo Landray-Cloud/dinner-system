@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       msg: '加班订餐系统',
-      userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
+      userName: window.localStorage ? localStorage.getItem('DiCaprio') : Cookie.read("DiCaprio"),
       week: new Date().getDay(),
       date: Util.getDate(new Date(), 'yyyy-MM-dd'),
       orderStatus: ''
@@ -41,9 +41,9 @@ export default {
       }).then(() => {
        let upsid  = Util.setToken(userName)
         if (window.localStorage) {
-          localStorage.setItem('userName', upsid);
+          localStorage.setItem('DiCaprio', upsid);
         } else {
-          Cookie.write('userName', upsid);
+          Cookie.write('DiCaprio', upsid);
         }
         this.$router.push('UserForm')
       }).catch(() => {});

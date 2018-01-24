@@ -37,7 +37,7 @@ export default {
       bodyShow: true, // false
       promptSucc: false,
       orderDate: Util.getDate(new Date(), 'yyyy-MM-dd'),
-      userName: window.localStorage ? localStorage.getItem('userName') : Cookie.read("userName"),
+      userName: window.localStorage ? localStorage.getItem('DiCaprio') : Cookie.read("DiCaprio"),
       week: new Date().getDay(), //星期
       createItem: [], // 数据列表
       orderStatus: '', // 订餐状态
@@ -62,7 +62,6 @@ export default {
     if (!this.userName) return this.$router.push('/')
     this.getIsAction()
     let token = Util.getToken(this.userName)
-    console.log('取', token)
     this.userName = token.userName
     this.week = Util.getWeek(this.week);
 
@@ -91,7 +90,7 @@ export default {
     addClick() {
       this.clickCount = this.clickCount + 1
       if (this.clickCount < 10) return
-      localStorage.removeItem('userName')
+      localStorage.removeItem('DiCaprio')
       location.reload()
     },
     // 用户今天是否已做了选择

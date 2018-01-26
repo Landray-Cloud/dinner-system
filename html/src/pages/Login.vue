@@ -13,7 +13,7 @@
           </li>
         </ul>
         <div class="login-btn">
-          <el-button type="primary" @click="loginSub"> 登录</el-button>
+          <el-button type="primary" @click="loginSub" :loading="loading"> 登录</el-button>
         </div>
       </div>
     </el-card>
@@ -27,7 +27,8 @@ export default {
   data() {
     return {
       pwd: '',
-      userName: ''
+      userName: '',
+      loading: false
     }
   },
   methods: {
@@ -36,11 +37,14 @@ export default {
       let pass = this.pwd
       let ajax = Util.ajaxHost + 'manager/login'
       let params = { user, pass }
+      this.loading = true
       this.$http.post(ajax, params).then(succ => {
+        this.loading = false
         let res = succ.data
         if (!Util.commAjaxCB(res)) return
         this.$router.push('UserList')
       }, err => {
+        this.loading = false
         this.$message({ message: '登录失败，请联系管理员', type: 'error' })
       })
     }

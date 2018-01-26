@@ -2,8 +2,8 @@ const jsonWebToken = require('jsonWebToken')
 const SECRET = 'Leonardo'
 
 let Util = {
-  ajaxHost: '//test.ywork.me/node/dinner/',
-  // ajaxHost: 'http://localhost:3001/node/dinner/',
+  // ajaxHost: '//test.ywork.me/node/dinner/',
+  ajaxHost: 'http://localhost:3001/node/dinner/',
   // 转码
   setToken: userName => {
     return jsonWebToken.sign({ userName }, SECRET)

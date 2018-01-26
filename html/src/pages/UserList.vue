@@ -23,7 +23,7 @@
                     <el-button icon="el-icon-search" @click="getReset">重置</el-button>
                   </el-form-item>
                 </el-form>
-                <div class="ul-tabluebox">
+                <div class="ul-tabluebox" v-loading="tbloading">
                   <el-table :data="tableData" stripe show-summary :summary-method="getTotal" class="el-table">
                     <el-table-column type="index" label="序号" align="center">
                     </el-table-column>
@@ -81,10 +81,10 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item label="备注：">
-                    <el-input v-model="addRemarks" placeholder="因什么项目而加班"></el-input>
+                    <el-input v-model="addRemarks" placeholder="因什么项目而加班" @keyup.enter.native="setAddList"></el-input>
                   </el-form-item>
                   <div class="login-btn">
-                    <el-button @click="setAddList" type="primary"> 提交</el-button>
+                    <el-button @click="setAddList" type="primary" :loading="addLoading">提交</el-button>
                   </div>
                 </el-form>
               </div>
@@ -171,7 +171,9 @@ export default {
       formLabelWidth: '120px',
       editFormId: '',
       status: '', // 点餐设置状态
-      remarks: '' // 订餐备注
+      remarks: '', // 订餐备注
+      tbloading: false,
+      addLoading: false
 
     }
   },
@@ -185,6 +187,7 @@ export default {
       let selectInp = this.selectInp
       let selectDate = Util.getDate(this.selectDate, 'yyyy-MM-dd')
       if (!selectDate && !selectInp) return this.$message({ message: '日期和名字不能同时为空', type: 'error' })
+      this.tbloading = true
       let ajaxURL = Util.ajaxHost + 'manager/getList'
       if (selectInp && selectDate) {
         ajaxURL += '?name=' + selectInp + '&orderDate=' + selectDate
@@ -193,7 +196,9 @@ export default {
       } else if (selectDate) {
         ajaxURL += '?orderDate=' + selectDate
       }
+
       this.$http.get(ajaxURL).then(succ => {
+        this.tbloading = false
         let res = succ.data
         if (!Util.commAjaxCB(res)) return
         let data = res.data
@@ -202,11 +207,13 @@ export default {
         }
         this.tableData = data
       }, err => {
+        this.tbloading = false
         console.error(err)
       })
     },
     // 管理员添加数据
     setAddList() {
+      this.addLoading = true
       let orderTime = Date.parse(new Date());
       let name = this.addName
       if (!Util.showUserForm(name)) return
@@ -216,6 +223,7 @@ export default {
       let ajax = Util.ajaxHost + 'addOrder'
       let params = { name, orderStatus, remarks }
       this.$http.post(ajax, params).then(succ => {
+        this.addLoading = false
         let res = succ.data
         if (!Util.commAjaxCB(res)) return
         let addItem = res.data
@@ -224,6 +232,7 @@ export default {
         this.addOrderStatus = ''
         this.addRemarks = ''
       }, err => {
+        this.addLoading = false
         console.log(err)
       })
     },

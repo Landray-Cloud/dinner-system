@@ -1,6 +1,6 @@
 <template>
   <div id="home " class="mainBg main">
-    <el-form ref="form" :data="createItem" label-width="80px" class="user-elform" v-show="bodyShow">
+    <el-form ref="form" :data="createItem" label-width="80px" class="user-elform" v-show="bodyShow" v-loading.body="ufLoading">
       <p class="datap">今天是{{orderDate}}<span @click="addClick">{{week}}</span> </p>
       <h3 class="userFormTitle" v-if="!isAction"><p class="title">{{ userName  }} 是否加班订餐？</p></h3>
       <h3 class=" mackText" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderText }}</span>，如有变动，请联系新梅！</p></h3>
@@ -14,7 +14,7 @@
           <el-input v-model="remarks" placeholder="因什么项目而加班"></el-input>
         </el-form-item>
         <div v-if="!isAction" class="ufelform-btn">
-          <el-button type="primary" @click="getAddList" class="btn">提交</el-button>
+          <el-button type="primary" @click="getAddList" class="btn" :loading="ufLoadingBtn">提交</el-button>
         </div>
       </div>
     </el-form>
@@ -34,7 +34,7 @@ export default {
   name: 'UserForm',
   data() {
     return {
-      bodyShow: true, // false
+      bodyShow: false, // false
       promptSucc: false,
       orderDate: Util.getDate(new Date(), 'yyyy-MM-dd'),
       userName: window.localStorage ? localStorage.getItem('DiCaprio') : Cookie.read("DiCaprio"),
@@ -52,9 +52,13 @@ export default {
         value: 3,
         label: '不加班不订餐'
       }],
-      isAction: false,
+      isAction: '',
       clickCount: 0,
-      remarks: '' // 订餐备注
+      remarks: '', // 订餐备注
+      ufLoading: true,
+      ufLoadingBtn: false,
+      tfStatus: '', // 手否允许点餐
+      userFailShow: false
     }
   },
 
@@ -74,10 +78,11 @@ export default {
       if (!Util.showUserForm(name)) return
       let orderStatus = this.orderStatus
       if (!orderStatus) return this.$message({ message: '请选择您的操作！', type: 'error' })
+      this.ufLoadingBtn = true
       let ajax = Util.ajaxHost + 'addOrder'
       let params = { name, orderStatus, remarks }
-
       this.$http.post(ajax, params).then(succ => {
+        this.ufLoadingBtn = false
         let res = succ.data
         if (!Util.commAjaxCB(res)) return
         let createItem = res.data
@@ -95,17 +100,20 @@ export default {
     },
     // 用户今天是否已做了选择
     getIsAction() {
+      this.ufLoading = true
       let ajax = Util.ajaxHost + "isAction?name=" + this.userName + '&orderDate=' + this.orderDate
       this.$http.get(ajax).then(succ => {
+        this.ufLoading = false
         let res = succ.data
         if (!Util.commAjaxCB(res)) return
-        let _isAction = res.data.isAction || false
+        // let _isAction = res.data.isAction || false
+        let _isAction = res.data.isAction
         this.isAction = _isAction
         if (_isAction) this.getOrderStatus()
         this.bodyShow = true
-
       }, err => {
-        this.bodyShow = true
+        this.loading = false
+        this.bodyShow = false
         console.log(err);
       })
     },

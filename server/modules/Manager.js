@@ -3,19 +3,22 @@ const connectionDatabase = require('../dao/connectionDatabase')
 const $sql = require('../dao/Manager')
 const Utils = require('../utils')
 const log4js = require('log4js')
+const crypto = require('crypto')
 const logger = log4js.getLogger()
 logger.level = 'debug'
 
+// 生成md5密文
+let _cryptPwd = str => { return crypto.createHash('md5').update(str).digest('hex') }
 
 // 管理员登录
 async function login(options) {
   let user = options.user
   let pass = options.pass
-
+  
   if (!user || !pass) return Utils.writeError('login: user和pass是必须参数')
 
   let sqlExecute = $sql.login
-  let sqlParam = [user, pass]
+  let sqlParam = [user, _cryptPwd(pass)]
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {

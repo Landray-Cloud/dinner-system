@@ -1,17 +1,15 @@
 <template>
   <div class="mainBg" id="home">
-    <user-fail></user-fail>
-    <div class="mainbox" v-show="indexWarpShow">
+    <user-fail v-if="orderStatusFail"></user-fail>
+    <div class="mainbox" v-else>
       <h3 class="maintitle">{{ msg  }}</h3>
       <div class="myform-box">
-        <!-- <el-input v-model="userName" placeholder="你的名字" class="winput" @keyup.enter.native="setShowUserForm"></el-input> -->
-        <input class="unametext" v-model="userName" placeholder="你的名字" @keyup.13="setShowUserForm" />
+        <div class="useripbox">
+          <el-input v-model="userName" placeholder="你的名字" @keyup.enter.native="setShowUserForm"></el-input>
+        </div>
         <el-button type="primary" @click="setShowUserForm" class="btn fr" :loading="indexLoading">提交</el-button>
       </div>
     </div>
-    <!-- <div class="mainbox" v-show="userFailShow">
-      <h3 class="failtitle">当前非点餐提交时间段！</h3>
-    </div> -->
   </div>
 </template>
 <script>
@@ -27,19 +25,17 @@ export default {
       msg: '加班订餐系统',
       userName: window.localStorage ? localStorage.getItem('DiCaprio') : Cookie.read("DiCaprio"),
       week: new Date().getDay(),
-      // orderDate: Util.getDate(new Date(), 'yyyy-MM-dd'),
-      // orderStatus: '',
-      indexWarpShow: true,
-      // userFailShow: false
+      orderDate: Util.getDate(new Date(), 'yyyy-MM-dd'),
+      orderMain: false,
+      orderStatusFail: '',
       indexLoading: false
     }
   },
   created() {
-    // this.getSubmit()
+    this.getSubmit()
     if (this.userName) this.$router.push('UserForm')
     let week = this.week
   },
-  mounted() {},
   methods: {
     // 判断是否通过
     setShowUserForm() {
@@ -62,29 +58,32 @@ export default {
         this.$router.push('UserForm')
       }).catch(() => {});
 
-    }
+    },
     // 获取某日是否可以提交加班订餐记录
-    // getSubmit() {
-    //   let ajax = Util.ajaxHost + 'getSubmit?date=' + this.orderDate
-    //   this.$http.get(ajax).then(succ => {
-    //     let res = succ.data
-    //     if (!Util.commAjaxCB(res)) return
-    //     this.orderStatus = res.data.status
-    //     // if (!this.orderStatus) this.$router.push('UserFail')
-    //     if (!this.orderStatus) {
-    //       this.userFailShow = true
-    //       this.indexWarpShow = false
-
-    //     }
-    //   }, err => {
-    //     console.log(err)
-    //   })
-    // }
+    getSubmit() {
+      let ajax = Util.ajaxHost + 'getSubmit?date=' + this.orderDate
+      this.$http.get(ajax).then(succ => {
+        let res = succ.data
+        if (!Util.commAjaxCB(res)) return
+        this.orderStatusFail = res.data.status
+        if (!this.orderStatusFail) {
+          this.orderStatusFail = true
+        } else {
+          this.orderStatusFail = false
+        }
+      }, err => {
+        console.log(err)
+      })
+    }
   }
 };
 
 </script>
 <style type="text/css">
 @import "../less/main.css";
+.useripbox {
+  width: 72%;
+  display: inline-block;
+}
 
 </style>

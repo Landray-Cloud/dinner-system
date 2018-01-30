@@ -91,10 +91,9 @@
             </div>
             <!-- 弹框编辑用户是否点餐 -->
             <el-dialog title="编辑用户是否订餐" :visible.sync="dialogFormVisible">
-              <!-- <div class="selectList"> -->
               <el-form :data="tableData" class="ul-elform-edit" label-width="60px">
                 <el-form-item label="名字" :label-width="formLabelWidth">
-                  <el-input v-model="editName" placeholder="请输入姓名" class="editFormName"></el-input>
+                  <el-input v-model="editName" placeholder="请输入姓名"></el-input>
                 </el-form-item>
                 <el-form-item label="订餐" :label-width="formLabelWidth">
                   <el-select v-model="editOrderStatus" placeholder="请选择">
@@ -102,10 +101,9 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="备注" :label-width="formLabelWidth">
-                  <el-input v-model="remarks" placeholder="因什么项目而加班" class="editFormName"></el-input>
+                  <el-input v-model="remarks" placeholder="因什么项目而加班"></el-input>
                 </el-form-item>
               </el-form>
-              <!-- </div> -->
               <div slot="footer" class="dialog-footer">
                 <el-button @click="dialogFormVisible = false">取 消</el-button>
                 <el-button type="primary" @click="updateDataList">确 定</el-button>

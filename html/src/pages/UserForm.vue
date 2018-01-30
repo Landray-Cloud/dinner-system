@@ -1,46 +1,62 @@
 <template>
   <div id="home " class="mainBg main">
-    <el-form ref="form" :data="createItem" label-width="80px" class="user-elform" v-show="bodyShow" v-loading.body="ufLoading">
-      <p class="datap">今天是{{orderDate}}<span @click="addClick">{{week}}</span> </p>
-      <h3 class="userFormTitle" v-if="!isAction"><p class="title">{{ userName  }} 是否加班订餐？</p></h3>
-      <h3 class=" mackText" v-else><p class="title">{{ userName }}，你今天已选择<span class="pink">{{ orderText }}</span>，如有变动，请联系新梅！</p></h3>
-      <div class="elform-box">
-        <el-form-item label="操作" v-if="!isAction" class="ufelform-item">
-          <el-select v-model="orderStatus" placeholder="请选择">
-            <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="备注" v-if="!isAction" class="ufelform-item">
-          <el-input v-model="remarks" placeholder="因什么项目而加班"></el-input>
-        </el-form-item>
-        <div v-if="!isAction" class="ufelform-btn">
-          <el-button type="primary" @click="getAddList" class="btn" :loading="ufLoadingBtn">提交</el-button>
+    <user-fail v-if="orderStatusFail"></user-fail>
+    <div v-else>
+      <el-form ref="form" :data="createItem" label-width="80px" class="user-elform" v-show="bodyShow" v-loading.body="ufLoading">
+        <p class="datap">今天是{{orderDate}}<span @click="addClick">{{week}}</span> </p>
+        <h3 class="userFormTitle" v-if="!isAction"><p class="title">{{computUserName }} 是否加班订餐？</p></h3>
+        <h3 class=" mackText" v-else><p class="title">{{ computUserName }}，你今天已选择<span class="pink">{{ orderText }}</span>，如有变动，请联系新梅！</p></h3>
+        <div class="elform-box">
+          <el-form-item label="操作" v-if="!isAction" class="ufelform-item">
+            <el-select v-model="orderStatus" placeholder="请选择">
+              <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="备注" v-if="!isAction" class="ufelform-item">
+            <el-input v-model="remarks" placeholder="因什么项目而加班"></el-input>
+          </el-form-item>
+          <div v-if="!isAction" class="ufelform-btn">
+            <el-button type="primary" @click="getAddList" class="btn" :loading="ufLoadingBtn">提交</el-button>
+          </div>
         </div>
-      </div>
-    </el-form>
-    <el-card class="box-card" v-show="promptSucc">
-      <div class="box-cardbox">
-        <h3 class="maintitle macktitle thanktitle">感谢您的付出！</h3>
-        <div class="reset-btn">
-          <el-button type="primary" @click="getReturn">返回</el-button>
+      </el-form>
+      <el-card class="box-card" v-show="promptSucc">
+        <div class="box-cardbox">
+          <h3 class="maintitle macktitle thanktitle">感谢您的付出！</h3>
+          <div class="reset-btn">
+            <el-button type="primary" @click="getReturn">返回</el-button>
+          </div>
         </div>
-      </div>
-    </el-card>
+      </el-card>
+    </div>
   </div>
 </template>
 <script>
 import Util from '@/util.js';
+import userFail from '@/components/userFail'
 export default {
   name: 'UserForm',
+  components: {
+    userFail
+  },
+  computed: {
+    computUserName() {
+      let userName = this.userName
+      let nameToken = Util.getToken(userName)
+      userName = nameToken.userName
+      return userName
+    }
+  },
   data() {
     return {
-      bodyShow: false, // false
+      bodyShow: true, // false
       promptSucc: false,
       orderDate: Util.getDate(new Date(), 'yyyy-MM-dd'),
       userName: window.localStorage ? localStorage.getItem('DiCaprio') : Cookie.read("DiCaprio"),
       week: new Date().getDay(), //星期
       createItem: [], // 数据列表
       orderStatus: '', // 订餐状态
+      orderStatusFail: '',
       orderText: '', // 显示用，订餐状态文字
       orderList: [{
         value: 1,
@@ -63,17 +79,16 @@ export default {
   },
 
   created() { // created 组件创建完毕属性已经绑定但dom还未生成的状态
+    this.getSubmit()
     if (!this.userName) return this.$router.push('/')
     this.getIsAction()
-    let token = Util.getToken(this.userName)
-    this.userName = token.userName
     this.week = Util.getWeek(this.week);
 
   },
   methods: {
     getAddList() {
       let orderTime = Date.parse(new Date());
-      let name = this.userName
+      let name = this.computUserName
       let remarks = this.remarks
       if (!Util.showUserForm(name)) return
       let orderStatus = this.orderStatus
@@ -92,6 +107,22 @@ export default {
         console.log(err)
       })
     },
+    // 获取某日是否可以提交加班订餐记录
+    getSubmit() {
+      let ajax = Util.ajaxHost + 'getSubmit?date=' + this.orderDate
+      this.$http.get(ajax).then(succ => {
+        let res = succ.data
+        if (!Util.commAjaxCB(res)) return
+        this.orderStatusFail = res.data.status
+        if (!this.orderStatusFail) {
+          this.orderStatusFail = true
+        } else {
+          this.orderStatusFail = false
+        }
+      }, err => {
+        console.log(err)
+      })
+    },
     addClick() {
       this.clickCount = this.clickCount + 1
       if (this.clickCount < 10) return
@@ -101,13 +132,13 @@ export default {
     // 用户今天是否已做了选择
     getIsAction() {
       this.ufLoading = true
-      let ajax = Util.ajaxHost + "isAction?name=" + this.userName + '&orderDate=' + this.orderDate
+      let name = this.computUserName
+      let ajax = Util.ajaxHost + "isAction?name=" + name + '&orderDate=' + this.orderDate
       this.$http.get(ajax).then(succ => {
         this.ufLoading = false
         let res = succ.data
         if (!Util.commAjaxCB(res)) return
-        // let _isAction = res.data.isAction || false
-        let _isAction = res.data.isAction
+        let _isAction = res.data.isAction || false
         this.isAction = _isAction
         if (_isAction) this.getOrderStatus()
         this.bodyShow = true
@@ -119,7 +150,8 @@ export default {
     },
     // 用户今天的订餐状态
     getOrderStatus() {
-      let ajax = Util.ajaxHost + "orderStatus?name=" + this.userName + '&orderDate=' + this.orderDate
+      let name = this.computUserName
+      let ajax = Util.ajaxHost + "orderStatus?name=" + name + '&orderDate=' + this.orderDate
       this.$http.get(ajax).then(succ => {
         let res = succ.data;
         if (!Util.commAjaxCB(res)) return

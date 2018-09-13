@@ -12,8 +12,20 @@
               <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
+          <el-form-item label="外卖名称" v-if="!isAction" class="ufelform-item">
+            <el-select v-model="cake" placeholder="请选择美食名称，遵从少数服从多数的原则">
+              <template v-if="week==='星期二'">
+                <el-option v-for="item in options2" :key="item.label" :label="item.label" :value="item.label">
+                </el-option>
+              </template>
+              <template v-if="week==='星期四'">
+                <el-option v-for="item in options4" :key="item.label" :label="item.label" :value="item.label">
+                </el-option>
+              </template>
+            </el-select>
+          </el-form-item>
           <el-form-item label="备注" v-if="!isAction" class="ufelform-item">
-            <el-input v-model="remarks" placeholder="因什么项目而加班"></el-input>
+            <el-input v-model="remarks" placeholder="因为什么项目而加班"></el-input>
           </el-form-item>
           <div v-if="!isAction" class="ufelform-btn">
             <el-button type="primary" @click="getAddList" class="btn" :loading="ufLoadingBtn">提交</el-button>
@@ -68,8 +80,15 @@ export default {
         value: 3,
         label: '不加班不订餐'
       }],
+      options2: [
+        { label: '蒸功夫', value: 1 }, { label: '潮梅里卤鹅-(卤鹅)', value: 2 }, { label: '一顿饭(快餐)', value: 3 }
+      ],
+      options4: [
+        { label: '米多面多(快餐)', value: 1 }, { label: '米多多(快餐)', value: 2 }, { label: '一顿饭(快餐)', value: 3 }
+      ],
       isAction: '',
       clickCount: 0,
+      cake: '', // 外卖名称
       remarks: '', // 订餐备注
       ufLoading: true,
       ufLoadingBtn: false,
@@ -89,7 +108,7 @@ export default {
     getAddList() {
       let orderTime = Date.parse(new Date());
       let name = this.computUserName
-      let remarks = this.remarks
+      let remarks = `[${this.cake}]` + this.remarks
       if (!Util.showUserForm(name)) return
       let orderStatus = this.orderStatus
       if (!orderStatus) return this.$message({ message: '请选择您的操作！', type: 'error' })
@@ -181,7 +200,7 @@ export default {
   box-sizing: border-box;
   border-radius: 6px;
   width: 500px;
-  height: 360px;
+  height: 400px;
   position: absolute;
   top: 50%;
   margin: -180px 0 0 -250px;

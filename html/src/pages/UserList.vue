@@ -81,7 +81,7 @@
                     </el-select>
                   </el-form-item>
                   <el-form-item label="备注：">
-                    <el-input v-model="addRemarks" placeholder="因什么项目而加班" @keyup.enter.native="setAddList"></el-input>
+                    <el-input v-model="remarks" placeholder="因什么项目而加班" @keyup.enter.native="setAddList"></el-input>
                   </el-form-item>
                   <div class="login-btn">
                     <el-button @click="setAddList" type="primary" :loading="addLoading">提交</el-button>

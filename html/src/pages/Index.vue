@@ -56,7 +56,10 @@ export default {
           Cookie.write('DiCaprio', upsid);
         }
         this.$router.push('UserForm')
-      }).catch(() => {});
+      }).catch(_ => {
+        this.indexLoading = false
+        this.userName = ''
+      });
 
     },
     // 获取某日是否可以提交加班订餐记录

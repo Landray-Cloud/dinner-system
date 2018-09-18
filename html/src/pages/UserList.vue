@@ -148,7 +148,6 @@ export default {
       }],
       addName: '', // 添加名字
       addOrderStatus: '', // 添加点餐状态
-      addRemarks: '',
       addItem: [],
       orderList: [{
         value: 1,
@@ -228,7 +227,7 @@ export default {
         this.$message({ message: '提交成功', type: 'success' })
         this.addName = ''
         this.addOrderStatus = ''
-        this.addRemarks = ''
+        this.remarks = ''
       }, err => {
         this.addLoading = false
         console.log(err)

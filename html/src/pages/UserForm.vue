@@ -13,7 +13,7 @@
             </el-select>
           </el-form-item>
           <el-form-item label="外卖名称" v-if="!isAction" class="ufelform-item">
-            <el-select v-model="cake" placeholder="请选择美食名称，遵从少数服从多数的原则">
+            <el-select v-model="cake" placeholder="请选择外卖名称，遵从少数服从多数原则">
               <template v-if="week==='星期二'">
                 <el-option v-for="item in options2" :key="item.label" :label="item.label" :value="item.label">
                 </el-option>
@@ -81,10 +81,10 @@ export default {
         label: '不加班不订餐'
       }],
       options2: [
-        { label: '蒸功夫', value: 1 }, { label: '潮梅里卤鹅-(卤鹅)', value: 2 }, { label: '一顿饭(快餐)', value: 3 }
+        { label: '真功夫(快餐)', value: 1 }, { label: '永和豆浆(快餐)', value: 2 }, { label: '米多面多', value: 3 }, { label: '潮梅里卤鹅', value: 4 }
       ],
       options4: [
-        { label: '米多面多(快餐)', value: 1 }, { label: '米多多(快餐)', value: 2 }, { label: '一顿饭(快餐)', value: 3 }
+        { label: '壹定食(快餐)', value: 1 }, { label: '吃个汤(椰子汤)', value: 2 }, { label: '粮仓满满(偏辣)', value: 3 }, { label: 'E顿饭(快餐)', value: 4 }
       ],
       isAction: '',
       clickCount: 0,

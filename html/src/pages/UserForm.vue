@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import Util from '@/util.js';
+  import Util from '@/util.js';
 import userFail from '@/components/userFail'
 export default {
   name: 'UserForm',
@@ -108,7 +108,7 @@ export default {
     getAddList() {
       let orderTime = Date.parse(new Date());
       let name = this.computUserName
-      let remarks = `[${this.cake}]` + this.remarks
+      let remarks = this.cake ? `[${this.cake}]`:'' + this.remarks
       if (!Util.showUserForm(name)) return
       let orderStatus = this.orderStatus
       if (!orderStatus) return this.$message({ message: '请选择您的操作！', type: 'error' })
@@ -193,6 +193,7 @@ export default {
 </script>
 <style type="text/css">
 @import "../less/main.css";
+
 .user-elform {
   background: #fff;
   padding: 15px;
@@ -246,24 +247,29 @@ export default {
     left: 50%;
     width: 100%;
   }
+
   .elform-box {
     width: 100%;
   }
+
   .ufelform-btn {
     width: 60%;
     display: block;
     margin: 0 auto;
   }
+
   /*  .elform-box .el-select{
     width: 98%;
   }*/
   .ufelform-item {
     width: 90%;
   }
+
   .elform-box .el-select,
   .elform-box .el-input {
     width: 100%;
   }
+
   /* .elform-box input{
     width: 217px;
   }*/

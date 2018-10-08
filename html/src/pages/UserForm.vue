@@ -241,6 +241,7 @@ export default {
     border-radius: 6px;
     position: absolute;
     top: 50%;
+    height: 450px;
     margin: -50% 0 0 -50%;
     left: 50%;
     width: 100%;

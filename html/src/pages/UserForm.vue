@@ -84,7 +84,7 @@ export default {
         { label: '真功夫(快餐)', value: 1 }, { label: '永和豆浆(快餐)', value: 2 }, { label: '米多面多', value: 3 }, { label: '潮梅里卤鹅', value: 4 }
       ],
       options4: [
-        { label: '壹定食(快餐)', value: 1 }, { label: '吃个汤(椰子汤)', value: 2 }, { label: '粮仓满满(偏辣)', value: 3 }, { label: 'E顿饭(快餐)', value: 4 }
+        { label: '壹定食(快餐)', value: 1 }, { label: '吃个汤(椰子汤)', value: 2 }, { label: '粮仓满满(偏辣)', value: 3 }, { label: '金牌隆江猪脚烧腊(烧腊)', value: 4 }
       ],
       isAction: '',
       clickCount: 0,

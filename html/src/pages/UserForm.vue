@@ -8,12 +8,12 @@
         <h3 class=" mackText" v-else><p class="title">{{ computUserName }}，你今天已选择<span class="pink">{{ orderText }}</span>，如有变动，请联系新梅！</p></h3>
         <div class="elform-box">
           <el-form-item label="操作" v-if="!isAction" class="ufelform-item">
-            <el-select v-model="orderStatus" placeholder="请选择">
+            <el-select v-model="orderStatus" placeholder="加还是不加呢？">
               <el-option v-for="item in orderList" :key="item.value" :label="item.label" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="外卖名称" v-if="!isAction" class="ufelform-item">
-            <el-select v-model="cake" placeholder="请选择外卖名称，遵从少数服从多数原则">
+          <el-form-item label="订哪家？" v-if="!isAction" class="ufelform-item">
+            <el-select v-model="cake" placeholder="统一订被选最多的">
               <template v-if="week==='星期二'">
                 <el-option v-for="item in options2" :key="item.label" :label="item.label" :value="item.label">
                 </el-option>
@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-  import Util from '@/util.js';
+import Util from '@/util.js';
 import userFail from '@/components/userFail'
 export default {
   name: 'UserForm',
@@ -81,10 +81,18 @@ export default {
         label: '不加班不订餐'
       }],
       options2: [
-        { label: '真功夫(快餐)', value: 1 }, { label: '永和豆浆(快餐)', value: 2 }, { label: '米多面多', value: 3 }, { label: '潮梅里卤鹅', value: 4 }
+        { label: '真功夫(快餐)', value: 1 },
+        { label: '永和豆浆(快餐)', value: 2 },
+        { label: '米多面多', value: 3 },
+        { label: '潮梅里卤鹅', value: 4 },
+        { label: '马来一号', value: 5 }
       ],
       options4: [
-        { label: '壹定食(快餐)', value: 1 }, { label: '吃个汤(椰子汤)', value: 2 }, { label: '粮仓满满(偏辣)', value: 3 }, { label: '金牌隆江猪脚烧腊(烧腊)', value: 4 }
+        { label: '壹定食(快餐)', value: 1 },
+        { label: '吃个汤(椰子汤)', value: 2 },
+        { label: '粮仓满满(偏辣)', value: 3 },
+        { label: '金牌隆江猪脚烧腊(烧腊)', value: 4 },
+        { label: '台资味', value: 4 }
       ],
       isAction: '',
       clickCount: 0,

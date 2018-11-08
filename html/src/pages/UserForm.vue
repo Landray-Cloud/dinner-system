@@ -90,7 +90,6 @@ export default {
       options4: [
         { label: '壹定食(快餐)', value: 1 },
         { label: '吃个汤(椰子汤)', value: 2 },
-        { label: '粮仓满满(偏辣)', value: 3 },
         { label: '金牌隆江猪脚烧腊(烧腊)', value: 4 },
         { label: '台资味', value: 4 }
       ],

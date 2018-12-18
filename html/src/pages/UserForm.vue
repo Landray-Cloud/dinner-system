@@ -85,13 +85,16 @@ export default {
         { label: '永和豆浆(快餐)', value: 2 },
         { label: '米多面多', value: 3 },
         { label: '潮梅里卤鹅', value: 4 },
-        { label: '马来一号', value: 5 }
+        { label: '马来一号', value: 5 },
+        { label: '港岛记', value: 6 }
       ],
       options4: [
         { label: '壹定食(快餐)', value: 1 },
         { label: '吃个汤(椰子汤)', value: 2 },
-        { label: '金牌隆江猪脚烧腊(烧腊)', value: 4 },
-        { label: '台资味', value: 4 }
+        { label: '金牌隆江猪脚烧腊(烧腊)', value: 3 },
+        { label: '起家一头牛', value: 4 },
+        { label: '盒悦', value: 5 },
+        { label: '红荔村肠粉', value: 6 }
       ],
       isAction: '',
       clickCount: 0,
@@ -112,13 +115,34 @@ export default {
 
   },
   methods: {
+    checkData() {
+      if (!this.orderStatus) {
+        this.$message({ message: '你到底加不加班?', type: 'error' })
+        return false
+      }
+
+      if (!this.cake) {
+        this.$message({ message: '你想订哪家?', type: 'error' })
+        return false
+      }
+
+      if (!this.remarks) {
+        this.$message({ message: '要在备注里写上加班原因哦', type: 'error' })
+        return false
+      }
+
+      if (!Util.showUserForm(this.computUserName)) return false
+
+      return true
+    },
     getAddList() {
+      if (!this.checkData()) return
       let orderTime = Date.parse(new Date());
       let name = this.computUserName
-      let remarks = this.cake ? `[${this.cake}]`:'' + this.remarks
-      if (!Util.showUserForm(name)) return
+      const cake = this.cake
+      let remarks = this.remarks
+      if (cake) remarks = `[${cake}]${remarks}`
       let orderStatus = this.orderStatus
-      if (!orderStatus) return this.$message({ message: '请选择您的操作！', type: 'error' })
       this.ufLoadingBtn = true
       let ajax = Util.ajaxHost + 'addOrder'
       let params = { name, orderStatus, remarks }

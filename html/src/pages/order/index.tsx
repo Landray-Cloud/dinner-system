@@ -3,14 +3,14 @@ import { RouteComponentProps } from 'react-router'
 // import axios from 'axios'
 import './index.scss'
 
-export default class App extends Component<RouteComponentProps<{},{}>>{
-  componentDidMount(){
+export default class App extends Component<RouteComponentProps<{}, {}>>{
+  componentDidMount() {
     // use axios here
   }
-  render(){
+  render() {
     return (
       <div className="app">
-        Hello html
+        Order
       </div>
     )
   }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
-import AppCmpt from './app'
+import Home from './pages/home'
+import Order from './pages/order'
 import { Router, Route, hashHistory } from 'react-router'
 import 'normalize.css'
 import './assets/style/antd.less'
@@ -11,7 +12,8 @@ class Index extends Component {
   render() {
     return (
       <Router history={hashHistory}>
-        <Route path="/" component={AppCmpt} />
+        <Route path="/" component={Home} />
+        <Route path="/order" component={Order} />
       </Router>
     )
   }

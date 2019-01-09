@@ -1,0 +1,36 @@
+@mixin invisible() {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@mixin size($width, $height: 0) {
+  @if $height <= 0 {
+    $height: $width;
+  }
+  width: $width;
+  height: $height;
+}
+
+// auto hyphens
+@mixin hyphens {
+  word-break: break-all;
+  hyphens: auto;
+}
+
+@mixin clearfix {
+  &:after {
+    content: '';
+    display: block;
+    float: none;
+    clear: both;
+  }
+}
+
+// 多行文字超出部分显示省略号
+@mixin ellipsis($lines: 2) {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+  overflow: hidden;
+}

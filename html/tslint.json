@@ -1,0 +1,16 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint-config-standard",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
+  "rules": {
+    "await-promise": [true, "Thenable", "PromiseLike"],
+    "prefer-const": true,
+    "quotemark": [true, "single", "jsx-double"],
+    "no-debugger": false,
+    "interface-name": [true, "never"],
+    "semicolon": [true, "never"]
+  }
+}

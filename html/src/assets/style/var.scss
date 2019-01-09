@@ -1,0 +1,71 @@
+// var.scss会被antd.less引用,因为种种限制,除了定义变量请不要在这里使用其他SCSS语法。
+
+/** ------------- font ------------- */
+$font-family: 'PingFangSC-Regular', 'Avenir', Helvetica, Arial, sans-serif;
+// 大字体
+$font-size-lg: 18px;
+// 中型字体
+$font-size-medium: 16px;
+// 基础字体大小
+$font-size-base: 14px;
+// 小型字体
+$font-size-sm: 12px;
+
+/** -------------- color -------------- */
+// 主色调
+$primary-color: #4285f4;
+// 普通信息色
+$info-color: #7f8fa4;
+$normal-color: $info-color;
+// 成功颜色
+$success-color: $primary-color;
+// 过程颜色
+$processing-color: $primary-color;
+// 警告色
+$warning-color: #fbbc05;
+// 危险色
+$error-color: #f35244;
+$highlight-color: $error-color;
+
+/** -------------- border -------------- */
+// 通用的border颜色
+$border-color-base: #e6eaee;
+// 浅色的border
+$border-color-split: #d2d7dc;
+// 按钮圆角
+$border-radius-base: 2px;
+$border-radius-sm: 1px;
+
+// 遮罩层背景色
+$modal-mask-bg: opacify(#000, 0.3);
+
+/** ------------------ 文字颜色 ---------------- */
+// 主要文字颜色
+$text-color: #8292a6;
+// 普通文字颜色
+$text-color-regular: #3e4651;
+// 次要文字颜色
+$text-color-secondary: #666;
+// 次次要文字颜色
+$text-color-light: #999;
+// 文字占位符颜色
+$text-color-placeholder: opacify($text-color-regular, 0.6);
+// 图标颜色(包括图标中的文字使用的颜色) opacify($text-color-regular, 0.8);
+$icon-color: $info-color;
+// 图标激活时颜色
+$icon-active-color: $primary-color;
+
+/**--------------- 门户管理界面 ---------------- */
+// 门户管理页面背景色
+$mng-page-bgcolor: #eff3f6;
+// 顶部header 文字颜色
+$mng-header-color: #fff;
+// 侧边栏
+$mng-sidebar-bgcolor: #272d43;
+$mng-sidebar-regular-color: $info-color;
+$mng-sidebar-item-active-bgcolor: #181a21;
+$mng-sidebar-item-active-color: #fff;
+
+/**--------------- 门户配置界面 ---------------- */
+// 门户配置界面背景色
+$app-page-bgcolor: #e6eaee;

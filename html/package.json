@@ -1,26 +1,54 @@
 {
-  "name": "html",
-  "version": "0.1.0",
+  "name": "@ekp/html",
+  "version": "1.0.0",
+  "author": "Landray",
   "private": true,
-  "dependencies": {
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.2"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "node build/start.js",
+    "build": "node build/build.js",
+    "lint-message": "echo 'Lint code before commit, refuse if error occurred'"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "lint-staged": {
+    "packages/**/*.(ts|tsx)": [
+      "tslint",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run lint-message"
+    }
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.2.0",
+    "antd": "^1.0.0",
+    "anujs": "^1.4.9",
+    "axios": "0.17.1",
+    "es5-polyfill": "^0.0.6",
+    "normalize.css": "^8.0.1",
+    "react-router": "3"
+  },
+  "devDependencies": {
+    "@toolkit/webpack-ts": "^0.0.1",
+    "@types/node": "^10.12.18",
+    "@types/react": "^16.7.17",
+    "@types/react-dom": "^16.0.11",
+    "@types/react-router": "3",
+    "@types/webpack-env": "^1.13.6",
+    "deploy-toolkit": "^0.1.0",
+    "fs-extra": "^7.0.1",
+    "husky": "^1.3.0",
+    "lint-staged": "^8.1.0"
+  },
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
   },
   "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
+    "ie >= 8",
+    "Chrome >= 21",
+    "Firefox >= 1",
+    "Edge >= 13",
+    "last 3 versions"
   ]
 }

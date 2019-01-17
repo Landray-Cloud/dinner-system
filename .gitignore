@@ -15,3 +15,5 @@ yarn-error.log*
 data.json
 /server/config/index.js
 /html/dist
+
+*.json

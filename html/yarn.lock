@@ -678,10 +678,10 @@
   dependencies:
     any-observable "^0.3.0"
 
-"@toolkit/webpack-ts@^0.0.1":
-  version "0.0.1"
-  resolved "http://npm.landray.com.cn:80/@toolkit%2fwebpack-ts/-/webpack-ts-0.0.1.tgz#6815d8509aec1d80de55a41f5c39134215156e23"
-  integrity sha512-zI8YUGMjDTrTjvXZ5xVgG6knIch1ye6XwbWcYiFIRxlzmlyBvyCTOk2eGkoBjIjhBW5cTdYnRJirvLgSy473fQ==
+"@toolkit/webpack-ts@^0.0.2":
+  version "0.0.2"
+  resolved "http://npm.landray.com.cn/@toolkit%2fwebpack-ts/-/webpack-ts-0.0.2.tgz#d8425f46dd0769329b2fcc0f93c5bd3f220ca944"
+  integrity sha512-Q0siqpp3sHCyQzs7UybkjDkGTgmdpoZ6G63azAsQ+4tX6Z1viD5vLzaeVCiD4dzjwXBRLx1S599XMWvbC7DH8A==
   dependencies:
     "@babel/core" "^7.2.2"
     "@babel/plugin-proposal-class-properties" "^7.2.1"
@@ -693,6 +693,9 @@
     "@types/node" "^10.12.18"
     "@types/react" "^16.7.17"
     "@types/react-dom" "^16.0.11"
+    "@types/react-intl" "^2.3.15"
+    "@types/react-redux" "^6.0.12"
+    "@types/react-router" "^3.0.20"
     "@types/webpack-env" "^1.13.6"
     autoprefixer "^9.4.3"
     babel-loader "^8.0.4"
@@ -711,6 +714,7 @@
     fork-ts-checker-webpack-plugin "^0.5.2"
     friendly-errors-webpack-plugin "^1.7.0"
     fs-extra "^7.0.1"
+    glob "^7.1.3"
     html-loader "^0.5.5"
     html-webpack-plugin "^3.2.0"
     json3 "^3.3.2"
@@ -730,6 +734,7 @@
     sass "^1.15.2"
     sass-loader "^7.1.0"
     style-loader "^0.23.1"
+    terser-webpack-plugin "^1.2.1"
     thread-loader "^2.1.1"
     ts-import-plugin "^1.5.5"
     ts-loader "^5.3.1"
@@ -792,7 +797,20 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-router@3":
+"@types/react-intl@^2.3.15":
+  version "2.3.15"
+  resolved "http://registry.npm.taobao.org/@types/react-intl/download/@types/react-intl-2.3.15.tgz#4768425b6a9bd680c1076761244b2b96a337dfa7"
+  integrity sha1-R2hCW2qb1oDBB2dhJEsrlqM336c=
+
+"@types/react-redux@^6.0.12":
+  version "6.0.13"
+  resolved "http://registry.npm.taobao.org/@types/react-redux/download/@types/react-redux-6.0.13.tgz#490ace7b49e57281edf85671bb455b31cdfa7d0b"
+  integrity sha1-SQrOe0nlcoHt+FZxu0VbMc36fQs=
+  dependencies:
+    "@types/react" "*"
+    redux "^4.0.0"
+
+"@types/react-router@3", "@types/react-router@^3.0.20":
   version "3.0.20"
   resolved "http://registry.npm.taobao.org/@types/react-router/download/@types/react-router-3.0.20.tgz#a711682475ccef70ad9ad9e459859380221e6ee6"
   integrity sha1-pxFoJHXM73CtmtnkWYWTgCIebuY=
@@ -4831,7 +4849,7 @@ loglevel@^1.4.1:
   resolved "http://registry.npm.taobao.org/loglevel/download/loglevel-1.6.1.tgz#e0fc95133b6ef276cdc8887cdaf24aa6f156f8fa"
   integrity sha1-4PyVEztu8nbNyIh82vJKpvFW+Po=
 
-loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0, loose-envify@^1.3.1:
+loose-envify@^1.0.0, loose-envify@^1.1.0, loose-envify@^1.2.0, loose-envify@^1.3.1, loose-envify@^1.4.0:
   version "1.4.0"
   resolved "http://registry.npm.taobao.org/loose-envify/download/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha1-ce5R+nvkyuwaY4OffmgtgTLTDK8=
@@ -6819,6 +6837,14 @@ redux@4.0.0:
     loose-envify "^1.1.0"
     symbol-observable "^1.2.0"
 
+redux@^4.0.0:
+  version "4.0.1"
+  resolved "http://registry.npm.taobao.org/redux/download/redux-4.0.1.tgz#436cae6cc40fbe4727689d7c8fae44808f1bfef5"
+  integrity sha1-Q2yubMQPvkcnaJ18j65EgI8b/vU=
+  dependencies:
+    loose-envify "^1.4.0"
+    symbol-observable "^1.2.0"
+
 regenerate-unicode-properties@^7.0.0:
   version "7.0.0"
   resolved "http://registry.npm.taobao.org/regenerate-unicode-properties/download/regenerate-unicode-properties-7.0.0.tgz#107405afcc4a190ec5ed450ecaa00ed0cafa7a4c"
@@ -7755,7 +7781,7 @@ tar@^4:
     safe-buffer "^5.1.2"
     yallist "^3.0.2"
 
-terser-webpack-plugin@^1.1.0:
+terser-webpack-plugin@^1.1.0, terser-webpack-plugin@^1.2.1:
   version "1.2.1"
   resolved "http://registry.npm.taobao.org/terser-webpack-plugin/download/terser-webpack-plugin-1.2.1.tgz#7545da9ae5f4f9ae6a0ac961eb46f5e7c845cc26"
   integrity sha1-dUXamuX0+a5qCslh60b158hFzCY=

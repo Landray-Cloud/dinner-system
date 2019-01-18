@@ -54,9 +54,9 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
         <p>你好呀{this.state.form.name}，今天是{this.state.date}</p>
         <p>你要加班点餐吗?</p>
         <Select placeholder="请选择" style={{ width: 120 }} onChange={this.handleOrderStatusChange}>
-          <Option value={1}>加班订餐</Option>
-          <Option value={2}>加班不订餐</Option>
-          <Option value={3}>不加班不订餐</Option>
+          <Option value="1">加班订餐</Option>
+          <Option value="2">加班不订餐</Option>
+          <Option value="3">不加班不订餐</Option>
         </Select>
         <Input data-id="remarks" placeholder="可以写写因啥事加班?" allowClear value={this.state.form.remarks} onChange={this.handleRemarksChange} />
         <Button type="primary" onClick={this.handleSubmitClick}>提交</Button>

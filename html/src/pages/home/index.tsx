@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { RouteComponentProps, Link } from 'react-router'
+import { RouteComponentProps, hashHistory } from 'react-router'
 // import axios from 'axios'
 import './index.scss'
-import { Input, Button } from 'antd'
-import { hashHistory } from 'react-router'
+import { Input, Button, notification } from 'antd'
 
 export default class App extends Component<RouteComponentProps<{}, {}>>{
   constructor(props) {
@@ -34,7 +33,11 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
   checkData = userName => {
     const msg = '乖！输入你的真实姓名好不好?'
     if (userName === '' || userName === null) {
-      alert(msg)
+      notification.error({
+        message: '这是标题',
+        description: msg,
+      })
+      // alert(msg)
       return false
     }
 
@@ -67,8 +70,8 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
   render() {
     return (
       <div className="app">
-        <Input placeholder="请输入你的名字" allowClear value={this.state.uname} onChange={this.handleInputChange} />
-        <Button type="primary" onClick={this.handleSubmitClick}>去点餐</Button>
+        <Input placeholder="请输入你的名字" value={this.state.uname} onChange={this.handleInputChange} />
+        <Button type="primary" onClick={this.handleSubmitClick}>提交</Button>
       </div>
     )
   }

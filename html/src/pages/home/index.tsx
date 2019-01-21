@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import { RouteComponentProps, hashHistory } from 'react-router'
 // import axios from 'axios'
 import './index.scss'
-import { Input, Button, notification } from 'antd'
+import { Form, Input, Button, notification } from 'antd'
+import Util from '../../util'
+const FormItem = Form.Item
 
 export default class App extends Component<RouteComponentProps<{}, {}>>{
   constructor(props) {
@@ -11,7 +13,7 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
       uname: ''
     }
     this.handleInputChange = this.handleInputChange.bind(this)
-    this.handleSubmitClick = this.handleSubmitClick.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
     this.checkData = this.checkData.bind(this)
   }
 
@@ -31,27 +33,27 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
 
   // 判断姓名是否合法
   checkData = userName => {
-    const msg = '乖！输入你的真实姓名好不好?'
+    let flag = true
     if (userName === '' || userName === null) {
-      notification.error({
-        message: '这是标题',
-        description: msg,
-      })
-      // alert(msg)
-      return false
+      flag = false
     }
 
     if (this.checkEngAndNum(userName)) {
-      alert(msg)
-      return false
+      flag = false
     }
 
     if (userName.length > 4) {
-      alert(msg)
-      return false
+      flag = false
     }
 
-    return true
+    if (!flag) {
+      notification.error({
+        message: '',
+        description: '乖！输入你的真实姓名好不好?'
+      })
+    }
+
+    return flag
   }
 
   handleInputChange(e) {
@@ -60,18 +62,25 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
     })
   }
 
-  handleSubmitClick = _ => {
+  handleSubmit = _ => {
     const uname = this.state.uname
-    console.log('uname', uname)
+    // console.log('uname', uname)
     if (!this.checkData(uname)) return
+    const localData = Util.setToken(uname)
+    localStorage.setItem('DiCaprio', localData)
     hashHistory.push('/order')
   }
 
   render() {
     return (
-      <div className="app">
-        <Input placeholder="请输入你的名字" value={this.state.uname} onChange={this.handleInputChange} />
-        <Button type="primary" onClick={this.handleSubmitClick}>提交</Button>
+      <div className="form-warp">
+        <h1>加班点餐系统</h1>
+        <Form inline onSubmit={this.handleSubmit}>
+          <FormItem label="姓名">
+            <Input placeholder="请输入你的名字" value={this.state.uname} onChange={this.handleInputChange} />
+          </FormItem>
+          <Button type="primary" htmlType="submit">提交</Button>
+        </Form>
       </div>
     )
   }

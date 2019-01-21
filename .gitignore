@@ -16,3 +16,4 @@ data.json
 /server/config/index.js
 /html/dist
 /html/*.json
+*.json

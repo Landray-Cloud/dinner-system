@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { RouteComponentProps, hashHistory } from 'react-router'
-// import axios from 'axios'
 import './index.scss'
-import { Form, Input, Button, notification } from 'antd'
+import { Form, Input, Button, notification, Modal } from 'antd'
 import Util from '../../util'
 const FormItem = Form.Item
+const confirm = Modal.confirm
 
 export default class App extends Component<RouteComponentProps<{}, {}>>{
   constructor(props) {
@@ -70,9 +70,15 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
     // console.log('uname', uname)
     if (!this.checkData(uname)) return
 
-    Util.setNameToLocal(uname)
-
-    hashHistory.push('/order')
+    confirm({
+      title: '温馨提示',
+      content: '姓名别乱输哦，以后不改给了哦!',
+      onOk() {
+        Util.setNameToLocal(uname)
+        hashHistory.push('/order')
+      },
+      onCancel() { }
+    })
   }
 
   render() {

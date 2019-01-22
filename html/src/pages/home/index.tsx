@@ -18,7 +18,10 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
   }
 
   componentDidMount() {
-    // use axios here
+    const name = Util.getNameFromLocal()
+    if (name) {
+      hashHistory.push('/order')
+    }
   }
 
   // 正则 不能输入字母和数字
@@ -66,8 +69,9 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
     const uname = this.state.uname
     // console.log('uname', uname)
     if (!this.checkData(uname)) return
-    const localData = Util.setToken(uname)
-    localStorage.setItem('DiCaprio', localData)
+
+    Util.setNameToLocal(uname)
+
     hashHistory.push('/order')
   }
 

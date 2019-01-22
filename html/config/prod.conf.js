@@ -6,5 +6,6 @@ module.exports = Object.assign({}, baseConfig, {
     app: {
       entry: path.join(__dirname, '../src/main.tsx')
     }
-  }
+  },
+  assetsPublicPath: './'
 })

@@ -21,7 +21,7 @@ const getNameFromLocal = _ => {
     if (obj) {
       if (obj.data) {
         name = obj.data
-      } else if (obj.userName) {
+      } else if (obj.userName) { // 兼容旧系统
         name = obj.userName
       }
     }

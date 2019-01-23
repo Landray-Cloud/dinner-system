@@ -1,4 +1,0 @@
-{
-  /* 防止子项目没有配置tsconfig.json */
-  "extends": "@toolkit/webpack-ts/template/tsconfig.json"
-}

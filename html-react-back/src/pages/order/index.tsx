@@ -55,7 +55,7 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
       const date = new Date()
       const orderDate = date.Format('yyyy-MM-dd')
       const week = date.Format('yyyy-MM-dd u')
-      this.setState({ name, orderDate, week }, _ => {
+      this.setState({ name, orderDate, week }, () => {
         this.getSubmitStatus()
         this.getOrderStatus()
       })
@@ -107,7 +107,7 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
   // 提交
   async handleSubmit(e) {
     if (!this.checkForm()) return
-    let postData = this.state.form
+    const postData = this.state.form
     postData.name = this.state.name
     const restaurant = this.state.restaurant
     if (restaurant) {
@@ -123,7 +123,7 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
   // 生成选项菜单
   generateOpts() {
     const week = this.state.week
-    let arr = []
+    const arr = []
     let opts = [
       '真功夫(快餐)',
       '永和豆浆(快餐)',
@@ -145,7 +145,7 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
     }
 
     if (opts.length > 0) {
-      for (let text of opts) {
+      for (const text of opts) {
         arr.push(
           <Option value={text}>{text}</Option>
         )
@@ -162,7 +162,7 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
 
     const menuOptsEle = this.generateOpts()
     let bodyJSX = (
-      <Form horizontal onSubmit={this.handleSubmit}>
+      <Form horizontal={true} onSubmit={this.handleSubmit}>
         <FormItem label="加班" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
           <Select placeholder="请选择" onChange={this.handleOrderStatusChange}>
             <Option value="1">加班订餐</Option>
@@ -176,7 +176,7 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
           </Select>
         </FormItem>
         <FormItem label="备注" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
-          <Input data-id="remarks" placeholder="可以写写因啥事加班?" allowClear value={this.state.form.remarks} onChange={this.handleRemarksChange} />
+          <Input data-id="remarks" placeholder="可以写写因啥事加班?" allowClear={true} value={this.state.form.remarks} onChange={this.handleRemarksChange} />
         </FormItem>
         <Button type="primary" htmlType="submit">提交</Button>
       </Form>

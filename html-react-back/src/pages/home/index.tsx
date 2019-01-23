@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, FormEvent } from 'react'
 import { RouteComponentProps, hashHistory } from 'react-router'
 import './index.scss'
 import { Form, Input, Button, notification, Modal } from 'antd'
@@ -6,7 +6,11 @@ import Util from '../../util'
 const FormItem = Form.Item
 const confirm = Modal.confirm
 
-export default class App extends Component<RouteComponentProps<{}, {}>>{
+interface IState {
+  uname: string
+}
+
+export default class App extends Component<RouteComponentProps<{}, {}>, IState>{
   constructor(props) {
     super(props)
     this.state = {
@@ -20,12 +24,12 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
   componentDidMount() {
     const name = Util.getNameFromLocal()
     if (name) {
-      hashHistory.push('/order')
+      // hashHistory.push('/order')
     }
   }
 
   // 正则 不能输入字母和数字
-  checkEngAndNum = str => {
+  checkEngAndNum = (str: string) => {
     const regx = /^[A-Za-z0-9]*$/
     if (regx.test(str)) {
       return true
@@ -35,9 +39,9 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
   }
 
   // 判断姓名是否合法
-  checkData = userName => {
+  checkData = (userName: string) => {
     let flag = true
-    if (userName === '' || userName === null) {
+    if (userName === '') {
       flag = false
     }
 
@@ -59,13 +63,13 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
     return flag
   }
 
-  handleInputChange(e) {
+  handleInputChange(e: FormEvent<HTMLInputElement>) {
     this.setState({
-      uname: e.target.value
+      uname: (e.target as HTMLInputElement).value
     })
   }
 
-  handleSubmit = _ => {
+  handleSubmit = () => {
     const uname = this.state.uname
     // console.log('uname', uname)
     if (!this.checkData(uname)) return
@@ -76,8 +80,7 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
       onOk() {
         Util.setNameToLocal(uname)
         hashHistory.push('/order')
-      },
-      onCancel() { }
+      }
     })
   }
 
@@ -85,7 +88,7 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
     return (
       <div className="form-warp">
         <h1>加班点餐系统</h1>
-        <Form inline onSubmit={this.handleSubmit}>
+        <Form inline={true} onSubmit={this.handleSubmit}>
           <FormItem label="姓名">
             <Input placeholder="请输入你的名字" value={this.state.uname} onChange={this.handleInputChange} />
           </FormItem>

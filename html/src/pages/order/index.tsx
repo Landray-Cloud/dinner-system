@@ -138,7 +138,6 @@ export default class App extends Component<IProps, IState>{
   // 生成选项菜单
   generateOpts() {
     const week = this.state.week
-    // const arr = []
     let opts = [
       '真功夫(快餐)',
       '永和豆浆(快餐)',
@@ -158,7 +157,6 @@ export default class App extends Component<IProps, IState>{
         '红荔村肠粉'
       ]
     }
-
     return opts.map((text, idx) => <Option key={String(idx)} value={text}>{text}</Option>)
   }
 

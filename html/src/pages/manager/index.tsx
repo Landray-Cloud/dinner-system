@@ -20,7 +20,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
     collapsed: false
   }
 
-  toggle() {
+  toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed,
     })

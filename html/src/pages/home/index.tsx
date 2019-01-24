@@ -30,25 +30,14 @@ export default class App extends Component<IProps, Istate> {
     }
   }
 
-  /** 名字检查 不能输入字母和数字 */
-  checkEngAndNum = (str: string) => {
-    const regx = /^[A-Za-z0-9]*$/
-    if (regx.test(str)) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  // 判断姓名是否合法
-  /** 传入需要被检验的名字 */
+  /** 判断姓名是否合法 传入需要被检验的名字 */
   checkData = (name: string) => {
     let flag = true
     if (name === '') {
       flag = false
     }
 
-    if (this.checkEngAndNum(name)) {
+    if (Util.checkEngAndNum(name)) {
       flag = false
     }
 

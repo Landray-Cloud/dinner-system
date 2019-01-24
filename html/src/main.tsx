@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import Home from './pages/home'
 import Order from './pages/order'
-// import Util from './util'
-import { Router, Route, hashHistory } from 'react-router'
+import { HashRouter, Route, Switch } from 'react-router-dom'
+// import { hashHistory as Router, Route, Switch } from 'react-router-dom'
 import 'normalize.css'
 import './assets/style/antd.less'
 import './assets/style/base.scss'
@@ -13,14 +13,16 @@ import './shim'
 class Index extends Component {
   render() {
     return (
-      <Router history={hashHistory}>
-        <Route path="/" component={Home} />
-        <Route path="/order" component={Order} />
-      </Router>
+      // <Router>
+      <HashRouter>
+        <Switch>
+          <Route exact={true} path="/" component={Home} />
+          <Route path="/order" component={Order} />
+        </Switch>
+      </HashRouter>
+      // </Router>
     )
   }
-
 }
-// Date.prototype.Format('xxx')
 
 ReactDOM.render(<Index />, document.getElementById('app') as HTMLElement)

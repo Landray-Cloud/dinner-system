@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { RouteComponentProps, hashHistory } from 'react-router'
 import client from '../../client'
 import Util from '../../util'
 import './index.scss'
@@ -7,7 +6,23 @@ import { Form, Input, Button, Select, notification } from 'antd'
 const Option = Select.Option
 const FormItem = Form.Item
 
-export default class App extends Component<RouteComponentProps<{}, {}>>{
+interface IProps {
+  history: any
+}
+
+interface IState {
+  week: string,
+  orderDate: string,
+  restaurant: string,
+  name: string,
+  orderStatusModel: string | number,
+  submitStatus: any,
+  form: {
+    [k: string]: string | number
+  }
+}
+
+export default class App extends Component<IProps, IState>{
   constructor(props) {
     super(props)
     this.state = {
@@ -56,11 +71,11 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
       const orderDate = date.Format('yyyy-MM-dd')
       const week = date.Format('yyyy-MM-dd u')
       this.setState({ name, orderDate, week }, () => {
-        this.getSubmitStatus()
-        this.getOrderStatus()
+        this.getSubmitStatus().catch()
+        this.getOrderStatus().catch()
       })
     } else {
-      hashHistory.push('/')
+      this.props.history.push('/')
     }
   }
 
@@ -87,7 +102,7 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
     const form = this.state.form
     if (!form.orderStatus) {
       notification.error({
-        message: '',
+        message: '嘿',
         description: '你到底加不加班?'
       })
       return false
@@ -95,7 +110,7 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
 
     if (!form.remarks) {
       notification.error({
-        message: '',
+        message: '嘿',
         description: '要在备注里写上加班原因哦'
       })
       return false
@@ -106,6 +121,7 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
 
   // 提交
   async handleSubmit(e) {
+    e.preventDefault()
     if (!this.checkForm()) return
     const postData = this.state.form
     postData.name = this.state.name
@@ -113,17 +129,16 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
     if (restaurant) {
       postData.remarks = `[${restaurant}] ${postData.remarks}`
     }
-    const orderStatus = parseInt(postData.orderStatus)
-    postData.orderStatus = orderStatus
-    // console.log('postData', postData)
+    console.log('postData', postData)
     const res = await client.post('addOrder', postData)
-    this.setState({ orderStatusModel: orderStatus })
+    if (!res) return
+    this.setState({ orderStatusModel: postData.orderStatus })
   }
 
   // 生成选项菜单
   generateOpts() {
     const week = this.state.week
-    const arr = []
+    // const arr = []
     let opts = [
       '真功夫(快餐)',
       '永和豆浆(快餐)',
@@ -144,46 +159,43 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
       ]
     }
 
-    if (opts.length > 0) {
-      for (const text of opts) {
-        arr.push(
-          <Option value={text}>{text}</Option>
-        )
-      }
-    }
-
-    return arr
+    return opts.map((text, idx) => <Option key={String(idx)} value={text}>{text}</Option>)
   }
 
   render() {
     const name = this.state.name
     const week = this.state.week
     const adminName = '新梅'
-
     const menuOptsEle = this.generateOpts()
+    const formItemLayout = {
+      labelCol: { span: 3 },
+      wrapperCol: { span: 21 }
+    }
     let bodyJSX = (
-      <Form horizontal={true} onSubmit={this.handleSubmit}>
-        <FormItem label="加班" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
+      <Form className="order-form" layout="horizontal" onSubmit={this.handleSubmit}>
+        <FormItem label="加班" {...formItemLayout}>
           <Select placeholder="请选择" onChange={this.handleOrderStatusChange}>
-            <Option value="1">加班订餐</Option>
-            <Option value="2">加班不订餐</Option>
-            <Option value="3">不加班不订餐</Option>
+            <Option value={1}>加班订餐</Option>
+            <Option value={2}>加班不订餐</Option>
+            <Option value={3}>不加班不订餐</Option>
           </Select>
         </FormItem>
-        <FormItem label="吃啥" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
+        <FormItem label="吃啥" {...formItemLayout}>
           <Select placeholder="请选择" onChange={this.handleRestaurantChange}>
             {menuOptsEle}
           </Select>
         </FormItem>
-        <FormItem label="备注" labelCol={{ span: 6 }} wrapperCol={{ span: 14 }}>
+        <FormItem label="备注" {...formItemLayout}>
           <Input data-id="remarks" placeholder="可以写写因啥事加班?" allowClear={true} value={this.state.form.remarks} onChange={this.handleRemarksChange} />
         </FormItem>
-        <Button type="primary" htmlType="submit">提交</Button>
+        <FormItem>
+          <Button type="primary" htmlType="submit">提交</Button>
+        </FormItem>
       </Form>
     )
 
     // 如果点餐过了
-    const orderStatusModel = parseInt(this.state.orderStatusModel)
+    const orderStatusModel = this.state.orderStatusModel
     if (orderStatusModel > 0) {
       let orderText = ''
       switch (orderStatusModel) {
@@ -212,7 +224,7 @@ export default class App extends Component<RouteComponentProps<{}, {}>>{
 
     return (
       <div className="form-warp">
-        <h2>你好呀，{name}。今天是{week}</h2>
+        <h2>你好呀，{name}。今天是 {week}</h2>
         {bodyJSX}
       </div>
     )

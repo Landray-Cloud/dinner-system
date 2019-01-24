@@ -1,16 +1,18 @@
 import React, { Component, FormEvent } from 'react'
-import { RouteComponentProps, hashHistory } from 'react-router'
 import './index.scss'
 import { Form, Input, Button, notification, Modal } from 'antd'
 import Util from '../../util'
-const FormItem = Form.Item
 const confirm = Modal.confirm
 
-interface IState {
+interface IProps {
+  history: any
+}
+
+interface Istate {
   uname: string
 }
 
-export default class App extends Component<RouteComponentProps<{}, {}>, IState>{
+export default class App extends Component<IProps, Istate> {
   constructor(props) {
     super(props)
     this.state = {
@@ -24,11 +26,11 @@ export default class App extends Component<RouteComponentProps<{}, {}>, IState>{
   componentDidMount() {
     const name = Util.getNameFromLocal()
     if (name) {
-      // hashHistory.push('/order')
+      this.props.history.push('/order')
     }
   }
 
-  // 正则 不能输入字母和数字
+  /** 名字检查 不能输入字母和数字 */
   checkEngAndNum = (str: string) => {
     const regx = /^[A-Za-z0-9]*$/
     if (regx.test(str)) {
@@ -39,24 +41,29 @@ export default class App extends Component<RouteComponentProps<{}, {}>, IState>{
   }
 
   // 判断姓名是否合法
-  checkData = (userName: string) => {
+  /** 传入需要被检验的名字 */
+  checkData = (name: string) => {
     let flag = true
-    if (userName === '') {
+    if (name === '') {
       flag = false
     }
 
-    if (this.checkEngAndNum(userName)) {
+    if (this.checkEngAndNum(name)) {
       flag = false
     }
 
-    if (userName.length > 4) {
+    if (name.length < 2) {
+      flag = false
+    }
+
+    if (name.length > 4) {
       flag = false
     }
 
     if (!flag) {
       notification.error({
-        message: '',
-        description: '乖！输入你的真实姓名好不好?'
+        message: '乖~~',
+        description: '输入你的真实姓名好不好?'
       })
     }
 
@@ -69,17 +76,18 @@ export default class App extends Component<RouteComponentProps<{}, {}>, IState>{
     })
   }
 
-  handleSubmit = () => {
+  handleSubmit = (e) => {
+    e.preventDefault()
     const uname = this.state.uname
-    // console.log('uname', uname)
     if (!this.checkData(uname)) return
-
     confirm({
       title: '温馨提示',
       content: '姓名别乱输哦，以后不改给了哦!',
-      onOk() {
+      cancelText: '我还是改一下吧',
+      okText: '确认',
+      onOk: () => {
         Util.setNameToLocal(uname)
-        hashHistory.push('/order')
+        this.props.history.push('/order')
       }
     })
   }
@@ -88,11 +96,13 @@ export default class App extends Component<RouteComponentProps<{}, {}>, IState>{
     return (
       <div className="form-warp">
         <h1>加班点餐系统</h1>
-        <Form inline={true} onSubmit={this.handleSubmit}>
-          <FormItem label="姓名">
+        <Form layout="inline" onSubmit={this.handleSubmit}>
+          <Form.Item>
             <Input placeholder="请输入你的名字" value={this.state.uname} onChange={this.handleInputChange} />
-          </FormItem>
-          <Button type="primary" htmlType="submit">提交</Button>
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">提交</Button>
+          </Form.Item>
         </Form>
       </div>
     )

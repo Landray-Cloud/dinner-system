@@ -12,7 +12,7 @@ interface Istate {
   uname: string
 }
 
-export default class App extends Component<IProps, Istate> {
+export default class Home extends Component<IProps, Istate> {
   constructor(props) {
     super(props)
     this.state = {

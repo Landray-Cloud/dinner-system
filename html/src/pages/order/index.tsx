@@ -22,7 +22,7 @@ interface IState {
   }
 }
 
-export default class App extends Component<IProps, IState>{
+export default class Order extends Component<IProps, IState>{
   constructor(props) {
     super(props)
     this.state = {

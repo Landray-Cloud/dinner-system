@@ -43,7 +43,7 @@ export default class Order extends Component<IProps, IState>{
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  // 查询当前订餐状态
+  /** 查询当前订餐状态 */
   async getOrderStatus() {
     const name = Util.getNameFromLocal()
     const orderDate = this.state.orderDate
@@ -55,7 +55,7 @@ export default class Order extends Component<IProps, IState>{
     }
   }
 
-  // 查询当前是否允许提交的状态
+  /** 查询当前是否允许提交的状态 */
   async getSubmitStatus() {
     const date = this.state.orderDate
     const ajaxURL = `getSubmit?date=${date}`
@@ -79,25 +79,25 @@ export default class Order extends Component<IProps, IState>{
     }
   }
 
-  // 加班状态赋值
+  /** 加班状态赋值 */
   handleOrderStatusChange(orderStatus) {
     const form = Object.assign({}, this.state.form, { orderStatus })
     this.setState({ form })
   }
 
-  // 选择订餐厅赋值
+  /** 选择订餐厅赋值 */
   handleRestaurantChange(restaurant) {
     this.setState({ restaurant })
   }
 
-  // 备注 赋值
+  /** 备注 赋值 */
   handleRemarksChange(e) {
     const remarks = e.target.value
     const form = Object.assign({}, this.state.form, { remarks })
     this.setState({ form })
   }
 
-  // 检查表单
+  /** 检查表单 */
   checkForm() {
     const form = this.state.form
     if (!form.orderStatus) {
@@ -119,7 +119,7 @@ export default class Order extends Component<IProps, IState>{
     return true
   }
 
-  // 提交
+  /** 提交 */
   async handleSubmit(e) {
     e.preventDefault()
     if (!this.checkForm()) return
@@ -135,7 +135,7 @@ export default class Order extends Component<IProps, IState>{
     this.setState({ orderStatusModel: postData.orderStatus })
   }
 
-  // 生成选项菜单
+  /** 生成选项菜单 */
   generateOpts() {
     const week = this.state.week
     let opts = [
@@ -164,7 +164,6 @@ export default class Order extends Component<IProps, IState>{
     const name = this.state.name
     const week = this.state.week
     const adminName = '新梅'
-    const menuOptsEle = this.generateOpts()
     const formItemLayout = {
       labelCol: { span: 3 },
       wrapperCol: { span: 21 }
@@ -180,7 +179,7 @@ export default class Order extends Component<IProps, IState>{
         </FormItem>
         <FormItem label="吃啥" {...formItemLayout}>
           <Select placeholder="请选择" onChange={this.handleRestaurantChange}>
-            {menuOptsEle}
+            {this.generateOpts()}
           </Select>
         </FormItem>
         <FormItem label="备注" {...formItemLayout}>

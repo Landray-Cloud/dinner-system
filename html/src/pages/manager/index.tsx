@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 // import Util from '../../util'
 import './index.scss'
 import { Layout, Menu, Icon } from 'antd'
-
+import DinnerTable from './components/table'
+import OnOff from './components/onoff'
 
 const { Header, Sider, Content } = Layout
 
@@ -12,18 +13,39 @@ interface IProps {
 }
 
 interface Istate {
-  collapsed: boolean
+  collapsed: boolean,
+  active: string
 }
 
 export default class SiderDemo extends Component<IProps, Istate> {
   state = {
-    collapsed: false
+    collapsed: false,
+    active: '1'
   }
 
   toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed,
     })
+  }
+
+  /** 菜单点击 */
+  handleMenuItemOnClick = (e: any) => {
+    const active = e.key
+    if (!active) return
+    this.setState({ active })
+  }
+
+  /** 生产中间内容 */
+  generateContent = () => {
+    switch (this.state.active) {
+      case '1':
+        return <DinnerTable></DinnerTable>
+      case '2':
+        return <OnOff></OnOff>
+      case '3':
+        return '开发中...'
+    }
   }
 
   render() {
@@ -35,7 +57,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
           collapsed={this.state.collapsed}
         >
           <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} onClick={this.handleMenuItemOnClick}>
             <Menu.Item key="1">
               <Icon type="bar-chart" />
               <span>查看报表</span>
@@ -62,7 +84,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
             margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280,
           }}
           >
-            Content
+            {this.generateContent()}
           </Content>
         </Layout>
       </Layout>

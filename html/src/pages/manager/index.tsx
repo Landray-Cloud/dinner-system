@@ -19,7 +19,7 @@ interface Istate {
 
 export default class SiderDemo extends Component<IProps, Istate> {
   state = {
-    collapsed: false,
+    collapsed: !false,
     active: '1'
   }
 
@@ -40,11 +40,13 @@ export default class SiderDemo extends Component<IProps, Istate> {
   generateContent = () => {
     switch (this.state.active) {
       case '1':
-        return <DinnerTable></DinnerTable>
+        return <DinnerTable />
       case '2':
-        return <OnOff></OnOff>
+        return <OnOff />
       case '3':
-        return '开发中...'
+        return (
+          <div>'开发中...'</div>
+        )
     }
   }
 

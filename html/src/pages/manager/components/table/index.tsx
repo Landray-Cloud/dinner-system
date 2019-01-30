@@ -159,11 +159,11 @@ export default class SiderDemo extends Component<IProps, Istate> {
       key: 'action',
       render: (text, record) => (
         <span>
-          <a href="javascript:;">编辑</a>
+          <a href="javascript:;">编辑{record.id}</a>
           <Divider type="vertical" />
           <a href="javascript:;">删除</a>
         </span>
-      ),
+      )
     }]
 
     return (

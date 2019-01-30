@@ -18,6 +18,53 @@ interface Istate {
   dataSource: any
 }
 
+/** 返回状态的中文 */
+function generateStatusName(status: number) {
+  let text = ''
+  let color = ''
+  switch (status) {
+    case 1:
+      text = '加班订餐'
+      color = 'blue'
+      break
+    case 2:
+      text = '加班不订餐'
+      color = 'yellow'
+      break
+    case 3:
+      text = '不加班不订餐'
+      color = 'red'
+      break
+  }
+  return { text, color }
+}
+
+/** 返回部门的中文 */
+function genrateDepartment(dept: number) {
+  let text = ''
+  switch (dept) {
+    case 0:
+      text = '用户体验部'
+      break
+    case 1:
+      text = 'KM 产品部'
+      break
+    case 2:
+      text = '蓝钉产品部'
+      break
+    case 3:
+      text = '平台支持部'
+      break
+    case 4:
+      text = 'EKP 产品部'
+      break
+    case 5:
+      text = 'AIP 部门'
+      break
+  }
+  return text
+}
+
 export default class SiderDemo extends Component<IProps, Istate> {
   state = {
     name: '',
@@ -52,7 +99,6 @@ export default class SiderDemo extends Component<IProps, Istate> {
     }
     const res = await client.get(ajaxURL)
     const dataSource = res.data.data
-    console.log('dataSource', dataSource)
     this.setState({ dataSource })
   }
 
@@ -74,56 +120,50 @@ export default class SiderDemo extends Component<IProps, Istate> {
 
   render() {
     const columns = [{
-      title: 'Name',
+      title: '姓名',
       dataIndex: 'name',
       key: 'name'
     }, {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
+      title: '提交时间',
+      dataIndex: 'orderTime',
+      key: 'orderTime',
+      render: (orderTime: number) => (
+        <span>{new Date(orderTime).Format('yyyy-MM-dd hh:mm')}</span>
+      )
     }, {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: '吃哪家',
+      dataIndex: 'restaurant',
+      key: 'restaurant'
     }, {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: tags => (
-        <span>
-          {tags.map(tag => <Tag color="blue" key={tag}>{tag}</Tag>)}
-        </span>
-      ),
+      title: '部门',
+      dataIndex: 'department',
+      key: 'department',
+      render: (department: number) => (
+        <span>{genrateDepartment(department)}</span>
+      )
     }, {
-      title: 'Action',
+      title: '备注',
+      dataIndex: 'remarks',
+      key: 'remarks'
+    }, {
+      title: '是否订餐',
+      key: 'orderStatus',
+      dataIndex: 'orderStatus',
+      render: (orderStatus: number) => {
+        return (
+          <Tag color={generateStatusName(orderStatus).color}>{generateStatusName(orderStatus).text}</Tag>
+        )
+      }
+    }, {
+      title: '操作',
       key: 'action',
       render: (text, record) => (
         <span>
-          <a href="javascript:;">Invite {record.name}</a>
+          <a href="javascript:;">编辑</a>
           <Divider type="vertical" />
-          <a href="javascript:;">Delete</a>
+          <a href="javascript:;">删除</a>
         </span>
       ),
-    }]
-
-    const dataSource = [{
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
-    }, {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
-    }, {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
     }]
 
     return (
@@ -133,8 +173,8 @@ export default class SiderDemo extends Component<IProps, Istate> {
           onSearch={this.handleSearchOnSublimt}
           enterButton={true}
         />
-        <DatePicker defaultValue={moment(new Date(), dateFormat)} format={dateFormat} onChange={this.handleDatePickerOnChange} />
-        <Table dataSource={dataSource} columns={columns} />
+        <DatePicker defaultValue={moment(new Date(), dateFormat)} onChange={this.handleDatePickerOnChange} />
+        <Table dataSource={this.state.dataSource} columns={columns} />
       </div>
     )
   }

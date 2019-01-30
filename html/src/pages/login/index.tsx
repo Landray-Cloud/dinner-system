@@ -28,12 +28,12 @@ export default class Login extends Component<IProps, Istate> {
   loginSub = async () => {
     this.setState({loading: true})
       const params = {
-        userName: this.state.userName,
-        pwd: this.state.pwd
+        user: this.state.userName,
+        pass: this.state.pwd
       }
       const ajaxURL = 'manager/login'
       const res = await client.post(ajaxURL, params)
-      if(res.errcode===0) {
+      if(res.errcode === 0) {
         this.setState({loading: false})
         this.props.history.push('/manager')
       } else {

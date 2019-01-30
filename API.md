@@ -45,7 +45,9 @@ name | true | String | 名字
 
 ---
 
-## 3.用户今天是否已做了选择(用处貌似不大，用获取点餐状态接口orderStatus也能实现)
+## 3.用户今天是否已做了选择
+用处貌似不大，用获取点餐状态接口orderStatus也能实现
+
 *   方法名: isAction
 *   请求: GET
 *   示例: /node/dinner/isAction?name=leo666&orderDate=2018-01-12
@@ -175,7 +177,10 @@ id | true | Number | 记录ID
 参数 | 是否必须 | 类型 | 描述
 ---|---|---|---
 name | true | String | 名字
+department | true | Number | 部门：0，用户体验部；1，KM 产品部；2，蓝钉产品部；3，平台支持部；4，EKP 产品部；5，AIP 部门
 orderStatus | true | String | 订餐状态
+restaurant | false | String | 吃哪家
 remarks | false | String | 备注
 
 ---
+

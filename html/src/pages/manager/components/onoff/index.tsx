@@ -23,9 +23,22 @@ export default class SiderDemo extends Component<IProps, Istate> {
       week: Util.getWeek(new Date().getDay())
     }
   }
-  onChange = (checked) => {
-    console.log(checked)
+  onChange = async (checked) => {
+    let status = -1
+    if(checked) {
+      status = 1
+    } else {
+      status = 0
+    }
+    const ajaxURL = 'manager/setSubmit'
+    const ajaxDate = {
+      status: status,
+      newDate: this.state.newDate
+    }
+    const res = client.post(ajaxURL, ajaxDate).catch()
+    console.log(res)
   }
+
   componentDidMount() {
     client.get(`getSubmit?date=${this.state.newDate}`).then(res => {
       const status = res.data.data.status

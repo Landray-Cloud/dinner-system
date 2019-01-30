@@ -45,12 +45,74 @@ const checkEngAndNum = (str: string) => {
   }
 }
 
+// 转换日期
+const Format = (timeObj, fmt) => {
+  const o = {
+    'M+': timeObj.getMonth() + 1,
+    'd+': timeObj.getDate(),
+    'h+': timeObj.getHours(),
+    'm+': timeObj.getMinutes(),
+    's+': timeObj.getSeconds(),
+    'q+': Math.floor((timeObj.getMonth() + 3) / 3),
+    'S': timeObj.getMilliseconds()
+  }
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (timeObj.getFullYear() + '').substr(4 - RegExp.$1.length))
+  }
+  for (const k in o) {
+    if (new RegExp('(' + k + ')').test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+    }
+  }
+  return fmt
+}
+// 转换星期
+const getWeek = (val) => {
+  let text = '获取数据失败'
+  switch (val) {
+    case 1:
+      text = '星期一'
+      break
+    case 2:
+      text = '星期二'
+      break
+    case 3:
+      text = '星期三'
+      break
+    case 4:
+      text = '星期四'
+      break
+    case 5:
+      text = '星期五'
+      break
+    case 6:
+      text = '星期六'
+      break
+    case 7:
+      text = '星期日'
+      break
+    default:
+      text = '获取数据失败'
+      break
+  }
+  return text
+}
+// 转换日期格式
+const getDate = (val, fm) => {
+  val = Number(val)
+  if (val) {
+    return Format(new Date(val), fm)
+  }
+}
 const Util = {
   setToken,
   getToken,
   getNameFromLocal,
   setNameToLocal,
-  checkEngAndNum
+  checkEngAndNum,
+  getDate,
+  getWeek,
+  Format
 }
 
 export default Util

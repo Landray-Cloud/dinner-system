@@ -30,7 +30,6 @@ orderStatus | Number | 订餐状态, 1:加班订餐; 2:加班不订餐; 3:不加
 orderDate | String | 订餐日期："2018-01-15"
 orderTime | Number | 订餐时间戳： 1516000813994
 
-
 ---
 
 ## 2.更新订餐数据 (弃用)
@@ -46,7 +45,7 @@ name | true | String | 名字
 
 ---
 
-## 3.用户今天是否已做了选择
+## 3.用户今天是否已做了选择(用处貌似不大，用获取点餐状态接口orderStatus也能实现)
 *   方法名: isAction
 *   请求: GET
 *   示例: /node/dinner/isAction?name=leo666&orderDate=2018-01-12
@@ -62,7 +61,6 @@ name | true | String | 名字
 参数 | 类型 | 描述
 ---|---|---|---
 isAction | Boolean | true: 已操作，false: 未操作
-
 
 ---
 
@@ -82,7 +80,6 @@ name | true | String | 名字
 参数 | 类型 | 描述
 ---|---|---|---
 orderStatus | Number | 1:加班订餐; 2:加班不订餐; 3:不加班不订餐
-
 
 ---
 
@@ -105,7 +102,6 @@ errcode | Number | -1: 登陆不成功, 0: 登陆成功
 
 
 
-
 ---
 
 ## 6.获取某日是否可以提交加班订餐记录
@@ -123,7 +119,6 @@ date | true | String | 日期，格式：2018-01-16
 参数 | 类型 | 描述
 ---|---|---|---
 status | Number | 0: 不允许, 1: 允许
-
 
 ---
 
@@ -168,7 +163,6 @@ remarks | false | String | 备注
 ---|---|---|---
 id | true | Number | 记录ID
 
-
 ---
 
 
@@ -183,6 +177,5 @@ id | true | Number | 记录ID
 name | true | String | 名字
 orderStatus | true | String | 订餐状态
 remarks | false | String | 备注
-
 
 ---

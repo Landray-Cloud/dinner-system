@@ -35,7 +35,7 @@ export default class Login extends Component<IProps, Istate> {
 
   handleEnterKey = (e) => {
     if (e.charCode === 13) {
-      this.loginSub()
+      this.loginSub().catch()
     }
   }
 
@@ -68,7 +68,7 @@ export default class Login extends Component<IProps, Istate> {
       pass: this.state.pwd
     }
     const ajaxURL = 'manager/login'
-    const res = await client.post(ajaxURL, ajaxData)
+    const res = await client.post(ajaxURL, ajaxData).catch()
     const data = res.data
     this.setState({ loading: false })
     if (data.errcode !== 0) {

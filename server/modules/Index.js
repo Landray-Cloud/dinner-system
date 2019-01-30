@@ -12,7 +12,9 @@ async function addOrder(options) {
   const department = options.department
   const orderStatus = options.orderStatus
 
-  if (!name || !department || !orderStatus) {
+  // if (!name || !department || !orderStatus) {
+  // 开发期间，先把department参数弄成非必填
+  if (!name || !orderStatus) {
     Utils.writeError('addOrder: name、department、orderStatus是必须参数')
     return
   }

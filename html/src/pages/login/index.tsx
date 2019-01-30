@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component, FormEvent } from 'react'
 import client from '../../client'
 import './index.scss'
 import { Card, Input, Button, notification } from 'antd'
 
 interface Istate {
+  user: string,
   pwd: string,
-  userName: string,
   loading: boolean
 }
 interface IProps {
@@ -15,34 +15,70 @@ export default class Login extends Component<IProps, Istate> {
   constructor(props) {
     super(props)
     this.state = {
+      user: '',
       pwd: '',
-      userName: '',
       loading: false
     }
   }
+
+  handleUserChange = (e: FormEvent<HTMLInputElement>) => {
+    this.setState({
+      user: (e.target as HTMLInputElement).value
+    })
+  }
+
+  handlePwdChange = (e: FormEvent<HTMLInputElement>) => {
+    this.setState({
+      pwd: (e.target as HTMLInputElement).value
+    })
+  }
+
   handleEnterKey = (e) => {
-    if(e.charCode === 13) {
+    if (e.charCode === 13) {
       this.loginSub()
     }
   }
+
+  /** 检查表单 */
+  checkForm = () => {
+    if (!this.state.user) {
+      notification.error({
+        message: '登录失败',
+        description: '用户名不能为空'
+      })
+      return false
+    }
+
+    if (!this.state.pwd) {
+      notification.error({
+        message: '登录失败',
+        description: '密码不能为空'
+      })
+      return false
+    }
+
+    return true
+  }
+
   loginSub = async () => {
-    this.setState({loading: true})
-      const params = {
-        user: this.state.userName,
-        pass: this.state.pwd
-      }
-      const ajaxURL = 'manager/login'
-      const res = await client.post(ajaxURL, params)
-      if(res.errcode === 0) {
-        this.setState({loading: false})
-        this.props.history.push('/manager')
-      } else {
-        this.setState({loading: false})
-        notification.error({
-          message: '登录失败',
-          description: res.errmsg
-        })
-      }
+    if (!this.checkForm()) return
+    this.setState({ loading: true })
+    const ajaxData = {
+      user: this.state.user,
+      pass: this.state.pwd
+    }
+    const ajaxURL = 'manager/login'
+    const res = await client.post(ajaxURL, ajaxData)
+    const data = res.data
+    this.setState({ loading: false })
+    if (data.errcode !== 0) {
+      notification.error({
+        message: '登录失败',
+        description: data.errmsg
+      })
+      return
+    }
+    this.props.history.push('/manager')
   }
 
   render() {
@@ -53,10 +89,10 @@ export default class Login extends Component<IProps, Istate> {
             <h3>登录</h3>
             <ul className="login-box">
               <li className="uname">
-                <Input type="text" placeholder="请输入用户名" />
+                <Input type="text" onchange={this.handleUserChange} placeholder="请输入用户名" />
               </li>
               <li className="pwd">
-                <Input type="password" onKeyPress={this.handleEnterKey} placeholder="请输入密码" />
+                <Input type="password" onchange={this.handlePwdChange} onKeyPress={this.handleEnterKey} placeholder="请输入密码" />
               </li>
             </ul>
             <div className="login-btn">

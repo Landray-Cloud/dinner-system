@@ -89,10 +89,10 @@ export default class Login extends Component<IProps, Istate> {
             <h3>登录</h3>
             <ul className="login-box">
               <li className="uname">
-                <Input type="text" onchange={this.handleUserChange} placeholder="请输入用户名" />
+                <Input type="text" onChange={this.handleUserChange} placeholder="请输入用户名" />
               </li>
               <li className="pwd">
-                <Input type="password" onchange={this.handlePwdChange} onKeyPress={this.handleEnterKey} placeholder="请输入密码" />
+                <Input type="password" onChange={this.handlePwdChange} onKeyPress={this.handleEnterKey} placeholder="请输入密码" />
               </li>
             </ul>
             <div className="login-btn">

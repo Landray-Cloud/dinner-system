@@ -8,17 +8,17 @@ const logger = log4js.getLogger()
 logger.level = 'debug'
 
 // 生成md5密文
-let _cryptPwd = str => { return crypto.createHash('md5').update(str).digest('hex') }
+const _cryptPwd = str => { return crypto.createHash('md5').update(str).digest('hex') }
 
 // 管理员登录
 async function login(options) {
-  let user = options.user
-  let pass = options.pass
-  
+  const user = options.user
+  const pass = options.pass
+
   if (!user || !pass) return Utils.writeError('login: user和pass是必须参数')
 
-  let sqlExecute = $sql.login
-  let sqlParam = [user, _cryptPwd(pass)]
+  const sqlExecute = $sql.login
+  const sqlParam = [user, _cryptPwd(pass)]
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
@@ -34,8 +34,8 @@ async function login(options) {
 async function getList(options) {
   let sqlExecute = $sql.queryListAll
   let sqlParam = null
-  let name = options.name
-  let orderDate = options.orderDate
+  const name = options.name
+  const orderDate = options.orderDate
 
   if (name && orderDate) { // 同时查询名字 和 日期
     sqlExecute = $sql.queryListByNameAndDate
@@ -60,15 +60,17 @@ async function getList(options) {
 
 // 根据ID更新订餐数据 (管理用)
 async function updateDataById(options) {
-  let orderStatus = options.orderStatus
-  let name = options.name
-  let id = options.id
-  let remarks = options.remarks || ''
-  let _Date = new Date()
-  let orderDate = _Date.Format('yyyy-MM-dd')
-  let orderTime = parseInt(_Date.getTime())
-  let sqlExecute = $sql.updateById
-  let sqlParam = [orderStatus, orderDate, orderTime, name, remarks, id]
+  const orderStatus = options.orderStatus
+  const name = options.name
+  const id = options.id
+  const remarks = options.remarks || ''
+  const department = options.department
+  const restaurant = options.restaurant || ''
+  const _Date = new Date()
+  const orderDate = _Date.Format('yyyy-MM-dd')
+  const orderTime = parseInt(_Date.getTime())
+  const sqlExecute = $sql.updateById
+  const sqlParam = [orderStatus, orderDate, orderTime, name, remarks, department, restaurant, id]
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
@@ -82,8 +84,8 @@ async function updateDataById(options) {
 
 // 删除某条订餐信息记录
 async function deleteOrder(options) {
-  let id = options.id
-  let sqlExecute = $sql.deleteById
+  const id = options.id
+  const sqlExecute = $sql.deleteById
 
   if (!id) return Utils.writeError('deleteOrder: id是必须参数')
 
@@ -99,16 +101,16 @@ async function deleteOrder(options) {
 
 // 设置某日是否可以提交加班订餐记录
 async function setSubmit(options) {
-  let date = options.date
-  let status = options.status
+  const date = options.date
+  const status = options.status
 
   if (!date || typeof status === 'undefined') return Utils.writeError('setSubmit: date和status是必须参数')
 
   // 这里为何直接是UPDATE而不是INSERT呢？
   // 因为下面调用getSubmit的时候，如果遇到没有数据，则可以先insert了
-  let sqlExecute = $sql.setSubmitUpdate
-  let sqlParam = [status, date]
-  let getSub = await require('./Index').getSubmit({ date })
+  const sqlExecute = $sql.setSubmitUpdate
+  const sqlParam = [status, date]
+  const getSub = await require('./Index').getSubmit({ date })
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {

@@ -26,9 +26,11 @@ orderDate | false | String | 以日期检索数据
 ---|---|---|---
 id | Number | 
 name | String | 名字
+department | Number | 部门：0，用户体验部；1，KM 产品部；2，蓝钉产品部；3，平台支持部；4，EKP 产品部；5，AIP 部门
 orderStatus | Number | 订餐状态, 1:加班订餐; 2:加班不订餐; 3:不加班不订餐
 orderDate | String | 订餐日期："2018-01-15"
 orderTime | Number | 订餐时间戳： 1516000813994
+restaurant | String | 吃哪家
 
 ---
 
@@ -148,8 +150,10 @@ status | true | Number | 0: 不允许, 1: 允许
 参数 | 是否必须 | 类型 | 描述
 ---|---|---|---
 id | true | Number | 记录ID
-orderStatus | true | String | 订餐状态
+department | true | Number | 部门：0，用户体验部；1，KM 产品部；2，蓝钉产品部；3，平台支持部；4，EKP 产品部；5，AIP 部门
 name | true | String | 名字
+orderStatus | true | String | 订餐状态
+restaurant | false | String | 吃哪家
 remarks | false | String | 备注
 
 ---

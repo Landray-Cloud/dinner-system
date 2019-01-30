@@ -8,17 +8,22 @@ logger.level = 'debug'
 
 // 插入数据
 async function addOrder(options) {
-  let name = options.name
-  let orderStatus = options.orderStatus
+  const name = options.name
+  const department = options.department
+  const orderStatus = options.orderStatus
 
-  if (!name || !orderStatus) return Utils.writeError('addOrder: name和orderStatus是必须参数')
+  if (!name || !department || !orderStatus) {
+    Utils.writeError('addOrder: name、department、orderStatus是必须参数')
+    return
+  }
 
-  let remarks = options.remarks || ''
-  let _Date = new Date()
-  let orderDate = _Date.Format('yyyy-MM-dd')
-  let orderTime = parseInt(_Date.getTime())
-  let sqlExecute = $sql.insertOrder
-  let sqlParam = [name, orderStatus, orderDate, orderTime, remarks]
+  const restaurant = options.restaurant || ''
+  const remarks = options.remarks || ''
+  const _Date = new Date()
+  const orderDate = _Date.Format('yyyy-MM-dd')
+  const orderTime = parseInt(_Date.getTime())
+  const sqlExecute = $sql.insertOrder
+  const sqlParam = [name, orderStatus, orderDate, orderTime, remarks, department, restaurant]
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
@@ -32,13 +37,13 @@ async function addOrder(options) {
 
 // 某用户某天是否已做了选择
 async function isAction(options) {
-  let name = options.name
-  let orderDate = options.orderDate
+  const name = options.name
+  const orderDate = options.orderDate
 
   if (!name || !orderDate) return Utils.writeError('isAction: name和orderDate是必须参数')
 
-  let sqlExecute = $sql.queryAction
-  let sqlParam = [name, orderDate]
+  const sqlExecute = $sql.queryAction
+  const sqlParam = [name, orderDate]
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
@@ -58,13 +63,13 @@ async function isAction(options) {
 // 2: 加班不点餐
 // 3: 不加班不点餐
 async function orderStatus(options) {
-  let name = options.name
-  let orderDate = options.orderDate
+  const name = options.name
+  const orderDate = options.orderDate
 
   if (!name || !orderDate) return Utils.writeError('orderStatus: name和orderDate是必须参数')
 
-  let sqlExecute = $sql.queryOrderStatus
-  let sqlParam = [name, orderDate]
+  const sqlExecute = $sql.queryOrderStatus
+  const sqlParam = [name, orderDate]
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
@@ -86,12 +91,12 @@ async function orderStatus(options) {
 // status:1 == 开
 // status:0 == 关
 async function getSubmit(options) {
-  let date = options.date
+  const date = options.date
 
   if (!date) return Utils.writeError('getSubmit: date是必须参数')
 
-  let sqlExecute = $sql.getSubmit
-  let sqlParam = [date]
+  const sqlExecute = $sql.getSubmit
+  const sqlParam = [date]
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {

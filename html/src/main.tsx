@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import Home from './pages/home'
 import Order from './pages/order'
 import Manager from './pages/manager'
+import Login from './pages/login'
 import { HashRouter, Route, Switch } from 'react-router-dom'
 // import { hashHistory as Router, Route, Switch } from 'react-router-dom'
 import 'normalize.css'
@@ -18,6 +19,7 @@ class Index extends Component {
       <HashRouter>
         <Switch>
           <Route exact={true} path="/" component={Home} />
+          <Route path="/login" component={Login} />
           <Route path="/order" component={Order} />
           <Route path="/manager" component={Manager} />
         </Switch>

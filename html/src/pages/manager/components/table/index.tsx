@@ -3,8 +3,10 @@ import client from '../../../../client'
 // import Util from '../../../../util'
 import './index.scss'
 import { Input, DatePicker, Table, Divider, Tag, notification } from 'antd'
-// import moment = require('moment')
+import moment from 'moment'
 const Search = Input.Search
+
+const dateFormat = 'yyyy-MM-dd'
 
 interface IProps {
   [k: string]: any
@@ -21,6 +23,13 @@ export default class SiderDemo extends Component<IProps, Istate> {
     name: '',
     orderDate: '',
     dataSource: []
+  }
+
+  componentDidMount = () => {
+    const orderDate = new Date().Format(dateFormat)
+    this.setState({ orderDate }, () => {
+      this.getList().catch()
+    })
   }
 
   getList = async () => {
@@ -124,7 +133,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
           onSearch={this.handleSearchOnSublimt}
           enterButton={true}
         />
-        <DatePicker onChange={this.handleDatePickerOnChange} />
+        <DatePicker defaultValue={moment(new Date(), dateFormat)} format={dateFormat} onChange={this.handleDatePickerOnChange} />
         <Table dataSource={dataSource} columns={columns} />
       </div>
     )

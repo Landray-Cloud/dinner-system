@@ -3,7 +3,7 @@ const router = express.Router()
 const Manager = require('../modules/Manager')
 const auth = require('../components/auth')
 const AUTH_ERROR = { auth: 0 } // 统一登录失败
-const __IS_DEV__ = false
+const __IS_DEV__ = true
 
 // 后台登录
 router.post('/login', async (req, res) => {

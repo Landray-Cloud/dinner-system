@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { Switch } from 'antd'
+import { Switch, notification } from 'antd'
 import client from '../../../../client'
-import Util from '../../../../util'
 import './index.scss'
 
 interface IProps {
@@ -9,57 +8,58 @@ interface IProps {
 }
 
 interface Istate {
-  defaultChecked: any,
-  newDate: string,
-  week: string
+  checked: any,
+  week: string,
+  today: string
 }
 
 export default class SiderDemo extends Component<IProps, Istate> {
   constructor(props) {
     super(props)
     this.state = {
-      defaultChecked: Boolean,
-      newDate: Util.getDate(new Date(), 'yyyy-MM-dd'),
-      week: Util.getWeek(new Date().getDay())
+      checked: '',
+      week: new Date().Format('yyyy-MM-dd u'),
+      today: new Date().Format('yyyy-MM-dd')
     }
   }
-  onChange = async (checked) => {
-    let status = -1
-    if(checked) {
-      status = 1
-    } else {
-      status = 0
-    }
+
+  // 修改当日点餐状态
+  onSwitch = async (checked) => {
+    this.setState({
+      checked: checked
+    })
+    const status = checked ? 1 : 0
     const ajaxURL = 'manager/setSubmit'
     const ajaxDate = {
       status: status,
-      newDate: this.state.newDate
+      data: this.state.today
     }
-    const res = client.post(ajaxURL, ajaxDate).catch()
-    console.log(res)
+    await client.post(ajaxURL, ajaxDate)
+    notification.success({
+      message: '点餐状态修改成功',
+    })
+  }
+
+  // 获取当日点餐状态
+  _getSubmit = async () => {
+    const res = await client.get(`getSubmit?date=${this.state.today}`)
+    const _status = res.data.data.status
+    this.setState({
+      checked: Boolean(_status)
+    })
   }
 
   componentDidMount() {
-    client.get(`getSubmit?date=${this.state.newDate}`).then(res => {
-      const status = res.data.data.status
-      if(status === 1) {
-        this.setState({
-          defaultChecked: true
-        })
-      } else if(status === 0) {
-        this.setState({
-          defaultChecked: false
-        })
-      }
-    })
+    this._getSubmit().catch()
   }
+  
   render() {
     return (
-      <div>
+      <div className="orderWrapper">
         <div className="orderSet">
-          <p className="orderSet-p ">今天是{this.state.newDate}，{this.state.week}</p>
+          <p className="orderSet-p ">今天是{this.state.week}</p>
           <p className="updateSet">点餐状态：
-          <Switch defaultChecked={this.state.defaultChecked} onChange={this.onChange} />
+          <Switch checked={this.state.checked} onChange={this.onSwitch} />
           </p>
         </div>
       </div>

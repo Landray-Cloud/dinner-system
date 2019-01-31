@@ -1,0 +1,29 @@
+.orderSet{
+  width: 410px;
+  height: 280px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%) translateY(-50%);
+  border-radius: 6px;
+  background: #e2e4e5;
+}
+.orderSet-p{
+  padding-top: 26%;
+  text-align: center;
+  font-size: 18px;
+  line-height: 24px;
+  margin-bottom: 14px;
+}
+.updateSet{
+  display: inline-block;
+  text-align: center;
+  font-size: 18px;
+  line-height: 24px;
+  margin-bottom: 14px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  .ant-switch-checked {
+    background-color: #464646;
+  }
+}

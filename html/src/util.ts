@@ -45,6 +45,54 @@ const checkEngAndNum = (str: string) => {
   }
 }
 
+/** 部门对照表 */
+const deptTable = [{
+  value: 0,
+  label: '用户体验部'
+}, {
+  value: 1,
+  label: 'KM产品部'
+}, {
+  value: 2,
+  label: '蓝钉产品部'
+}, {
+  value: 3,
+  label: '平台支持部'
+}, {
+  value: 4,
+  label: 'EKP产品部'
+}, {
+  value: 5,
+  label: 'AIP部门'
+}]
+
+/** 传入数字 返回 部门的中文名字 */
+function getDeptNameFromNum(dept: number) {
+  return deptTable[dept].label
+  // let text = ''
+  // switch (dept) {
+  //   case 0:
+  //     text = '用户体验部'
+  //     break
+  //   case 1:
+  //     text = 'KM 产品部'
+  //     break
+  //   case 2:
+  //     text = '蓝钉产品部'
+  //     break
+  //   case 3:
+  //     text = '平台支持部'
+  //     break
+  //   case 4:
+  //     text = 'EKP 产品部'
+  //     break
+  //   case 5:
+  //     text = 'AIP 部门'
+  //     break
+  // }
+  // return text
+}
+
 // 转换日期
 const Format = (timeObj, fmt) => {
   const o = {
@@ -112,7 +160,9 @@ const Util = {
   checkEngAndNum,
   getDate,
   getWeek,
-  Format
+  Format,
+  getDeptNameFromNum,
+  deptTable
 }
 
 export default Util

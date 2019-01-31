@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import client from '../../../../client'
-// import Util from '../../../../util'
+import Util from '../../../../util'
 import './index.scss'
-import { Input, DatePicker, Table, Divider, Tag, notification } from 'antd'
+import { Input, DatePicker, Table, Divider, Tag, notification, Form, Select } from 'antd'
 import moment from 'moment'
 const Search = Input.Search
+const Option = Select.Option
+const FormItem = Form.Item
 
 const dateFormat = 'yyyy-MM-dd'
 
@@ -15,6 +17,7 @@ interface IProps {
 interface Istate {
   name: string,
   orderDate: string,
+  department: string | number,
   dataSource: any
 }
 
@@ -39,36 +42,11 @@ function generateStatusName(status: number) {
   return { text, color }
 }
 
-/** 返回部门的中文 */
-function genrateDepartment(dept: number) {
-  let text = ''
-  switch (dept) {
-    case 0:
-      text = '用户体验部'
-      break
-    case 1:
-      text = 'KM 产品部'
-      break
-    case 2:
-      text = '蓝钉产品部'
-      break
-    case 3:
-      text = '平台支持部'
-      break
-    case 4:
-      text = 'EKP 产品部'
-      break
-    case 5:
-      text = 'AIP 部门'
-      break
-  }
-  return text
-}
-
 export default class SiderDemo extends Component<IProps, Istate> {
   state = {
     name: '',
     orderDate: '',
+    department: '',
     dataSource: []
   }
 
@@ -82,13 +60,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
   getList = async () => {
     const orderDate = this.state.orderDate
     const name = this.state.name
-    if (!orderDate && !name) {
-      notification.error({
-        message: '嘿',
-        description: '名字和日期两个不能同时为空'
-      })
-      return
-    }
+
     let ajaxURL = 'manager/getList'
     if (name && orderDate) {
       ajaxURL += `?name=${name}&orderDate=${orderDate}`
@@ -96,7 +68,19 @@ export default class SiderDemo extends Component<IProps, Istate> {
       ajaxURL += `?name=${name}`
     } else if (orderDate) {
       ajaxURL += `?orderDate=${orderDate}`
+    } else {
+      notification.error({
+        message: '嘿',
+        description: '名字和日期两个不能同时为空'
+      })
+      return
     }
+    const department = this.state.department
+
+    if (department) {
+      ajaxURL += `&department=${department}`
+    }
+
     const res = await client.get(ajaxURL)
     const dataSource = res.data.data
     this.setState({ dataSource })
@@ -116,6 +100,16 @@ export default class SiderDemo extends Component<IProps, Istate> {
     this.setState({ orderDate }, () => {
       this.getList().catch()
     })
+  }
+
+  /** 部门改变 */
+  handleDeptChange = (department) => {
+    console.log('department', department)
+  }
+
+  /** 生成部门待选项 */
+  generateOpts = () => {
+    return Util.deptTable.map((item) => <Option key={String(item.value)} value={item.value}>{item.label}</Option>)
   }
 
   render() {
@@ -139,7 +133,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
       dataIndex: 'department',
       key: 'department',
       render: (department: number) => (
-        <span>{genrateDepartment(department)}</span>
+        <span>{Util.getDeptNameFromNum(department)}</span>
       )
     }, {
       title: '备注',
@@ -166,14 +160,30 @@ export default class SiderDemo extends Component<IProps, Istate> {
       )
     }]
 
+    // const formItemLayout = {
+    //   labelCol: { span: 6 },
+    //   wrapperCol: { span: 18 }
+    // }
+
     return (
       <div>
-        <Search
-          placeholder="按名字搜索"
-          onSearch={this.handleSearchOnSublimt}
-          enterButton={true}
-        />
-        <DatePicker defaultValue={moment(new Date(), dateFormat)} onChange={this.handleDatePickerOnChange} />
+        <Form layout="inline">
+          <FormItem label="提交日期">
+            <DatePicker defaultValue={moment(new Date(), dateFormat)} onChange={this.handleDatePickerOnChange} />
+          </FormItem>
+          <FormItem label="部门">
+            <Select placeholder="为空则全选" onChange={this.handleDeptChange}>
+              {this.generateOpts()}
+            </Select>
+          </FormItem>
+          <FormItem>
+            <Search
+              placeholder="按名字搜索"
+              onSearch={this.handleSearchOnSublimt}
+              enterButton={true}
+            />
+          </FormItem>
+        </Form>
         <Table dataSource={this.state.dataSource} columns={columns} />
       </div>
     )

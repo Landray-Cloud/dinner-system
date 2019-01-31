@@ -5,6 +5,7 @@ import './index.scss'
 import { Layout, Menu, Icon } from 'antd'
 import DinnerTable from './components/table'
 import OnOff from './components/onoff'
+import Order from './components/order'
 
 const { Header, Sider, Content } = Layout
 
@@ -44,9 +45,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
       case '2':
         return <OnOff />
       case '3':
-        return (
-          <div>'开发中...'</div>
-        )
+        return <Order />
     }
     return (
       <div>暂无...</div>

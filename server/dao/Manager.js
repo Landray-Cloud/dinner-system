@@ -3,6 +3,8 @@ module.exports = {
   queryListByName: 'SELECT * FROM list WHERE name LIKE ?',
   queryListByDate: 'SELECT * FROM list WHERE orderDate=?',
   queryListByNameAndDate: 'SELECT * FROM list WHERE name=? AND orderDate=?',
+  queryListByDateAndDept: 'SELECT * FROM list WHERE orderDate=? AND department=?',
+  queryListByNameAndDateAndDept: 'SELECT * FROM list WHERE name=? AND orderDate=? AND department=?',
   updateById: 'UPDATE list SET orderStatus=?, orderDate=?, orderTime=?, name=?, remarks=?, department=?, restaurant=?, WHERE id=?',
   deleteById: 'DELETE from list where id=?',
   login: 'SELECT * FROM admin WHERE user=? AND pass=?',

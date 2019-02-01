@@ -36,8 +36,15 @@ async function getList(options) {
   let sqlParam = null
   const name = options.name
   const orderDate = options.orderDate
+  const department = options.department
 
-  if (name && orderDate) { // 同时查询名字 和 日期
+  if (name && orderDate && department) { // 同时查询 日期 名字 部门
+    sqlExecute = $sql.queryListByNameAndDateAndDept
+    sqlParam = [name, orderDate, department]
+  } else if (department && orderDate) { // 同时查询 日期 部门
+    sqlExecute = $sql.queryListByDateAndDept
+    sqlParam = [orderDate, department]
+  } else if (name && orderDate) { // 同时查询 日期 名字
     sqlExecute = $sql.queryListByNameAndDate
     sqlParam = [name, orderDate]
   } else if (name) { // 查询名字

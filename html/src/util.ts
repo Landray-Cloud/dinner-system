@@ -1,5 +1,6 @@
 const jwt = require('jsonWebToken')
 const SECRET = 'Leonardo'
+const localName = 'USER_INFO'
 
 /** 加密: 传入需要加密的内容 */
 const setToken = (data: string) => {
@@ -15,7 +16,7 @@ const getToken = (token: string) => {
 /** 从本地存储获取名字 */
 const getNameFromLocal = () => {
   let name = ''
-  const localData = localStorage.getItem('DiCaprio')
+  const localData = localStorage.getItem(localName)
   if (localData) {
     const obj = getToken(localData)
     if (obj) {
@@ -32,7 +33,7 @@ const getNameFromLocal = () => {
 /** 设置名字到本地存储里面 */
 const setNameToLocal = (name: string) => {
   const localData = setToken(name)
-  localStorage.setItem('DiCaprio', localData)
+  localStorage.setItem(localName, localData)
 }
 
 /** 名字检查 不能输入字母和数字 */

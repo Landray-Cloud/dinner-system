@@ -86,8 +86,6 @@ export default class Home extends Component<IProps, Istate> {
     if (!this.checkData()) return
     const uname = this.state.uname
     const department = this.state.department
-    // const localData = { uname, department }
-    // console.log('localData', localData)
     confirm({
       title: '温馨提示',
       content: '姓名别乱输哦，以后不改给了哦!',

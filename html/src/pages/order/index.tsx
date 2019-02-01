@@ -13,7 +13,6 @@ interface IProps {
 interface IState {
   week: string,
   orderDate: string,
-  restaurant: string,
   name: string,
   orderStatusModel: string | number,
   submitStatus: any,
@@ -28,12 +27,13 @@ export default class Order extends Component<IProps, IState>{
     this.state = {
       week: '',
       orderDate: '',
-      restaurant: '', // 选择了的餐厅
       name: '',
       orderStatusModel: 0, // 本地用
       submitStatus: '', // 当前是否允许提交的状态
       form: {
         orderStatus: 0, // 提交用
+        restaurant: '', // 选择了的餐厅
+        department: '', // 所在部门
         remarks: ''
       }
     }
@@ -41,27 +41,6 @@ export default class Order extends Component<IProps, IState>{
     this.handleRestaurantChange = this.handleRestaurantChange.bind(this)
     this.handleRemarksChange = this.handleRemarksChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-  }
-
-  /** 查询当前订餐状态 */
-  async getOrderStatus() {
-    const name = Util.getNameFromLocal()
-    const orderDate = this.state.orderDate
-    const ajaxURL = `orderStatus?name=${name}&orderDate=${orderDate}`
-    const res = await client.get(ajaxURL)
-    const orderStatusModel = res.data.data.orderStatus
-    if (orderStatusModel) {
-      this.setState({ orderStatusModel })
-    }
-  }
-
-  /** 查询当前是否允许提交的状态 */
-  async getSubmitStatus() {
-    const date = this.state.orderDate
-    const ajaxURL = `getSubmit?date=${date}`
-    const res = await client.get(ajaxURL)
-    const submitStatus = res.data.data.status
-    this.setState({ submitStatus })
   }
 
   componentDidMount() {
@@ -79,6 +58,32 @@ export default class Order extends Component<IProps, IState>{
     }
   }
 
+  /** 查询当前订餐状态 */
+  async getOrderStatus() {
+    const name = Util.getNameFromLocal()
+    const orderDate = this.state.orderDate
+    const ajaxURL = `orderStatus?name=${name}&orderDate=${orderDate}`
+    const res = await client.get(ajaxURL)
+    const orderStatusModel = res.data.data.orderStatus
+    if (orderStatusModel) {
+      this.setState({ orderStatusModel })
+    }
+    const department = localStorage.getItem('department')
+    if (department) {
+      const form = Object.assign({}, this.state.form, { department: parseInt(department) })
+      this.setState({ form })
+    }
+  }
+
+  /** 查询当前是否允许提交的状态 */
+  async getSubmitStatus() {
+    const date = this.state.orderDate
+    const ajaxURL = `getSubmit?date=${date}`
+    const res = await client.get(ajaxURL)
+    const submitStatus = res.data.data.status
+    this.setState({ submitStatus })
+  }
+
   /** 加班状态赋值 */
   handleOrderStatusChange(orderStatus) {
     const form = Object.assign({}, this.state.form, { orderStatus })
@@ -87,7 +92,8 @@ export default class Order extends Component<IProps, IState>{
 
   /** 选择订餐厅赋值 */
   handleRestaurantChange(restaurant) {
-    this.setState({ restaurant })
+    const form = Object.assign({}, this.state.form, { restaurant })
+    this.setState({ form })
   }
 
   /** 备注 赋值 */
@@ -125,11 +131,7 @@ export default class Order extends Component<IProps, IState>{
     if (!this.checkForm()) return
     const postData = this.state.form
     postData.name = this.state.name
-    const restaurant = this.state.restaurant
-    if (restaurant) {
-      postData.remarks = `[${restaurant}] ${postData.remarks}`
-    }
-    console.log('postData', postData)
+    // console.log('postData', postData)
     const res = await client.post('addOrder', postData)
     if (!res) return
     this.setState({ orderStatusModel: postData.orderStatus })

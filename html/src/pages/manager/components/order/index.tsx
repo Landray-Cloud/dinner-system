@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { Form, Input, Button, Select } from 'antd'
 import './index.scss'
+import Util from '../../../../util'
 
 const Option = Select.Option
 const FormItem = Form.Item
 
 interface IProps {
-  history: any
+  history?: any
 }
+
 interface IState {
   name: string,
   department: string,
@@ -37,6 +39,16 @@ class AddOrder extends Component<IProps, IState> {
     const form = Object.assign({}, this.state.form, { remarks })
     this.setState({ form })
   }
+
+  /** 部门改变 */
+  handleDeptChange = (department) => {
+    console.log('department', department)
+  }
+
+  /** 生成部门待选项 */
+  generateOpts = () => {
+    return Util.deptTable.map((item) => <Option key={String(item.value)} value={item.value}>{item.label}</Option>)
+  }
   render() {
     const formItemLayout = {
       labelCol: { span: 3 },
@@ -49,13 +61,8 @@ class AddOrder extends Component<IProps, IState> {
             <Input placeholder="请输入姓名" allowClear={true} onChange={this.handleNameChange}/>
           </FormItem>
           <FormItem label="部门" {...formItemLayout}>
-            <Select placeholder="请选择">
-              <Option value={0}>用户体验部</Option>
-              <Option value={1}>KM产品部</Option>
-              <Option value={2}>蓝钉产品部</Option>
-              <Option value={3}>平台支持部</Option>
-              <Option value={4}>EKP产品部</Option>
-              <Option value={5}>AIP部门</Option>
+            <Select placeholder="请选择"  onChange={this.handleDeptChange}>
+              {this.generateOpts()}
             </Select>
           </FormItem>
           <FormItem label="订餐" {...formItemLayout}>

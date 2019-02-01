@@ -1,22 +1,26 @@
 import React, { Component, FormEvent } from 'react'
 import './index.scss'
-import { Form, Input, Button, notification, Modal } from 'antd'
+import { Form, Input, Button, notification, Modal, Select } from 'antd'
 import Util from '../../util'
 const confirm = Modal.confirm
+const Option = Select.Option
+const FormItem = Form.Item
 
 interface IProps {
   history: any
 }
 
 interface Istate {
-  uname: string
+  uname: string,
+  department: any
 }
 
 export default class Home extends Component<IProps, Istate> {
   constructor(props) {
     super(props)
     this.state = {
-      uname: ''
+      uname: '',
+      department: ''
     }
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -30,8 +34,9 @@ export default class Home extends Component<IProps, Istate> {
     }
   }
 
-  /** 判断姓名是否合法 传入需要被检验的名字 */
-  checkData = (name: string) => {
+  /** 校验表单 */
+  checkData = () => {
+    const name = this.state.uname
     let flag = true
     if (name === '') {
       flag = false
@@ -54,6 +59,17 @@ export default class Home extends Component<IProps, Istate> {
         message: '乖~~',
         description: '输入你的真实姓名好不好?'
       })
+      return flag
+    }
+
+    const department = this.state.department
+
+    if (!department) {
+      flag = false
+      notification.error({
+        message: '乖~~',
+        description: '请选择部门'
+      })
     }
 
     return flag
@@ -67,8 +83,11 @@ export default class Home extends Component<IProps, Istate> {
 
   handleSubmit = (e) => {
     e.preventDefault()
+    if (!this.checkData()) return
     const uname = this.state.uname
-    if (!this.checkData(uname)) return
+    const department = this.state.department
+    // const localData = { uname, department }
+    // console.log('localData', localData)
     confirm({
       title: '温馨提示',
       content: '姓名别乱输哦，以后不改给了哦!',
@@ -76,9 +95,21 @@ export default class Home extends Component<IProps, Istate> {
       okText: '确认',
       onOk: () => {
         Util.setNameToLocal(uname)
+        localStorage.setItem('department', department)
         this.props.history.push('/order')
       }
     })
+  }
+
+  /** 生成部门待选项 */
+  generateOpts = () => {
+    return Util.deptTable.map((item) => <Option key={String(item.value)} value={item.value}>{item.label}</Option>)
+  }
+
+  /** 部门选择改变: 进行搜索请求列表 */
+  handleDeptChange = (department) => {
+    // console.log('department', department)
+    this.setState({ department })
   }
 
   render() {
@@ -86,12 +117,17 @@ export default class Home extends Component<IProps, Istate> {
       <div className="form-warp">
         <h1>加班点餐系统</h1>
         <Form layout="inline" onSubmit={this.handleSubmit}>
-          <Form.Item>
-            <Input placeholder="请输入你的名字" value={this.state.uname} onChange={this.handleInputChange} />
-          </Form.Item>
-          <Form.Item>
+          <FormItem>
+            <Input placeholder="你的名字" value={this.state.uname} onChange={this.handleInputChange} />
+          </FormItem>
+          <FormItem>
+            <Select className="table-select" allowClear={true} placeholder="你的部门" onChange={this.handleDeptChange}>
+              {this.generateOpts()}
+            </Select>
+          </FormItem>
+          <FormItem>
             <Button type="primary" htmlType="submit">提交</Button>
-          </Form.Item>
+          </FormItem>
         </Form>
       </div>
     )

@@ -1,6 +1,13 @@
-.form-warp {
-  border-radius: 6px !important;
-  background: #e2e4e5 !important;
+.order-wrap {
+  width: 500px;
+  min-height: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%) translateY(-50%);
+  border-radius: 6px;
+  background: #e2e4e5;
   overflow: hidden;
   padding-top: 40px;
+  text-align: center;
 }

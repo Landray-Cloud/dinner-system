@@ -63,12 +63,12 @@ export default class Login extends Component<IProps, Istate> {
   loginSub = async () => {
     if (!this.checkForm()) return
     this.setState({ loading: true })
-    const ajaxData = {
+    const postData = {
       user: this.state.user,
       pass: this.state.pwd
     }
     const ajaxURL = 'manager/login'
-    const res = await client.post(ajaxURL, ajaxData).catch()
+    const res = await client.post(ajaxURL, postData).catch()
     const data = res.data
     this.setState({ loading: false })
     if (data.errcode !== 0) {

@@ -55,7 +55,7 @@ class AddOrder extends Component<IProps, IState> {
       wrapperCol: { span: 21 }
     }
     return (
-      <div className="form-warp">
+      <div className="order-wrap">
         <Form className="order-form" layout="horizontal">
           <FormItem label="姓名" {...formItemLayout}>
             <Input placeholder="请输入姓名" allowClear={true} onChange={this.handleNameChange}/>

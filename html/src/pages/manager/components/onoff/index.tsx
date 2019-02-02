@@ -29,15 +29,18 @@ export default class SiderDemo extends Component<IProps, Istate> {
       checked: checked
     })
     const status = checked ? 1 : 0
-    const ajaxURL = 'manager/setSubmit'
-    const ajaxDate = {
-      status: status,
-      data: this.state.today
+    const date = this.state.today
+    const postData = {
+      status,
+      date
     }
-    await client.post(ajaxURL, ajaxDate)
-    notification.success({
-      message: '点餐状态修改成功',
-    })
+    const res = await client.post(`manager/setSubmit`, postData)
+    const code = res.data.errcode
+    if(code === 0) {
+      notification.success({
+        message: '点餐状态修改成功',
+      })
+    }
   }
 
   // 获取当日点餐状态

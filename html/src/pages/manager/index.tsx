@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 // import client from '../../client'
 // import Util from '../../util'
 import './index.scss'
-import { Layout, Menu, Icon } from 'antd'
+import { Layout, Menu, Icon, Button, Modal } from 'antd'
 import DinnerTable from './components/table'
 import OnOff from './components/onoff'
 import AddOrder from './components/order'
+// import { relative } from 'path';
 
 const { Header, Sider, Content } = Layout
-
+const confirm = Modal.confirm
 interface IProps {
   [k: string]: any,
   history: any
@@ -20,10 +21,17 @@ interface Istate {
 }
 
 export default class SiderDemo extends Component<IProps, Istate> {
-  state = {
-    collapsed: !false,
-    active: '1'
+  constructor(props) {
+    super(props)
+    
+    this.state = {
+      collapsed: !false,
+      active: '1'
+    }
+    this.delCookie = this.delCookie.bind(this)
+    this.exitLogin = this.exitLogin.bind(this)
   }
+  
 
   toggle = () => {
     this.setState({
@@ -52,6 +60,36 @@ export default class SiderDemo extends Component<IProps, Istate> {
       <div>暂无...</div>
     )
   }
+  /** 读取cookie */
+  getCookie = (name) => {
+    let arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    if (arr = document.cookie.match(reg))
+      return unescape(arr[2]);
+    else
+      return null;
+  }
+  /** 删除cookie */
+  delCookie(name) {
+    const exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    const cval = this.getCookie(name);
+    if (cval != null)
+      document.cookie = name + "=" + cval + ";expires=" + exp.toUTCString() + ";Path=/";
+  }
+  /** 退出登录 */
+  exitLogin() {
+    const _this = this
+    confirm({
+      title: '嘿',
+      content: '确定要退出登录吗？',
+      okText: '确定',
+      cancelText: '取消',
+      onOk() {
+        _this.delCookie('Angelebaby')
+        _this.props.history.push('/login')
+      }
+    })
+  }
 
   render() {
     return (
@@ -78,12 +116,13 @@ export default class SiderDemo extends Component<IProps, Istate> {
           </Menu>
         </Sider>
         <Layout>
-          <Header style={{ background: '#fff', padding: 0 }}>
+          <Header style={{ background: '#fff', padding: 0, position: 'relative' }}>
             <Icon
               className="trigger"
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
             />
+            <Button type="primary" style={{position: 'absolute', right: '40px', top: '16px'}} onClick={this.exitLogin}>退出登录</Button>
           </Header>
           <Content style={{
             margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280,

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import client from '../../../../client'
 import Util from '../../../../util'
 import './index.scss'
-import { Input, DatePicker, Table, Divider, Tag, notification, Form, Select } from 'antd'
+import { Input, DatePicker, Table, Divider, Tag, notification, Form, Select, Popconfirm } from 'antd'
 import moment from 'moment'
 const Search = Input.Search
 const Option = Select.Option
@@ -110,6 +110,22 @@ export default class SiderDemo extends Component<IProps, Istate> {
     })
   }
 
+  /** 删除当前行 */
+  handleDeleteData = async (record) => {
+    const postData = {
+      id: record
+    }
+    const res = await client.post('manager/deleteOrder', postData)
+    if (!res) return
+    const code = res.data.errcode
+    if(code === 0) {
+      notification.success({
+        message: 'Great',
+        description: '删除成功了哦'
+      })
+      this.getList().catch()
+    }
+  }
   /** 生成部门待选项 */
   generateOpts = () => {
     return Util.deptTable.map((item) => <Option key={String(item.value)} value={item.value}>{item.label}</Option>)
@@ -156,9 +172,11 @@ export default class SiderDemo extends Component<IProps, Istate> {
       key: 'action',
       render: (text, record) => (
         <span>
-          <a href="javascript:;">编辑{record.id}</a>
+          <a>编辑{record.id}</a>
           <Divider type="vertical" />
-          <a href="javascript:;">删除</a>
+          <Popconfirm placement="topRight" onConfirm={() => this.handleDeleteData(record.id)} title="删除不可恢复，你确定要删除吗?" okText="Yes" cancelText="No">
+            <a>删除</a>
+          </Popconfirm>
         </span>
       )
     }]
@@ -182,7 +200,9 @@ export default class SiderDemo extends Component<IProps, Istate> {
             />
           </FormItem>
         </Form>
-        <Table dataSource={this.state.dataSource} columns={columns} />
+        {/* 对于 dataSource 默认将每列数据的 key 属性作为唯一的标识。
+        如果你的数据没有这个属性，务必使用 rowKey 来指定数据列的主键 */}
+        <Table dataSource={this.state.dataSource} columns={columns} rowKey={record => record.id} />
       </div>
     )
   }

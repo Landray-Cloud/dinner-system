@@ -48,7 +48,7 @@ const checkEngAndNum = (str: string) => {
 
 /** 部门对照表 */
 const deptTable = [{
-  value: 0,
+  value: 6,
   label: '用户体验部'
 }, {
   value: 1,

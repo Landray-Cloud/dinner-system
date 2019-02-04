@@ -2,7 +2,9 @@ import React, { Component } from 'react'
 import client from '../../../../client'
 import Util from '../../../../util'
 import './index.scss'
-import { Input, DatePicker, Table, Divider, Tag, notification, Form, Select, Popconfirm } from 'antd'
+import AddOrder from '../../components/order/index'
+
+import { Input, DatePicker, Table, Divider, Tag, notification, Form, Select, Popconfirm, Modal, Button } from 'antd'
 import moment from 'moment'
 const Search = Input.Search
 const Option = Select.Option
@@ -18,7 +20,8 @@ interface Istate {
   name: string,
   orderDate: string,
   department: string | number,
-  dataSource: any
+  dataSource: any,
+  visible: boolean
 }
 
 /** 返回状态的中文 */
@@ -47,7 +50,8 @@ export default class SiderDemo extends Component<IProps, Istate> {
     name: '',
     orderDate: '',
     department: '',
-    dataSource: []
+    dataSource: [],
+    visible: false
   }
 
   componentDidMount = () => {
@@ -126,6 +130,25 @@ export default class SiderDemo extends Component<IProps, Istate> {
       this.getList().catch()
     }
   }
+  
+  editModal = () => {
+    this.setState({
+      visible: true
+    })
+  }
+  handleEditCancel = (e) => {
+    this.setState({
+      visible: false
+    })
+  }
+
+  handleEditOk = (e) => {
+    console.log(e)
+    this.setState({
+      visible: false
+    })
+  }
+
   /** 生成部门待选项 */
   generateOpts = () => {
     return Util.deptTable.map((item) => <Option key={String(item.value)} value={item.value}>{item.label}</Option>)
@@ -172,7 +195,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
       key: 'action',
       render: (text, record) => (
         <span>
-          <a>编辑{record.id}</a>
+          <a onClick={this.editModal}>编辑{record.id}</a>
           <Divider type="vertical" />
           <Popconfirm placement="topRight" onConfirm={() => this.handleDeleteData(record.id)} title="删除不可恢复，你确定要删除吗?" okText="Yes" cancelText="No">
             <a>删除</a>
@@ -203,6 +226,13 @@ export default class SiderDemo extends Component<IProps, Istate> {
         {/* 对于 dataSource 默认将每列数据的 key 属性作为唯一的标识。
         如果你的数据没有这个属性，务必使用 rowKey 来指定数据列的主键 */}
         <Table dataSource={this.state.dataSource} columns={columns} rowKey={record => record.id} />
+        <Modal 
+          title="编辑订餐信息" 
+          visible={this.state.visible}
+          onCancel={this.handleEditCancel}
+          className='editModal' >
+          <AddOrder />
+        </Modal>
       </div>
     )
   }

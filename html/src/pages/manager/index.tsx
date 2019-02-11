@@ -62,7 +62,8 @@ export default class SiderDemo extends Component<IProps, Istate> {
   }
   /** 读取cookie */
   getCookie = (name) => {
-    let arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    let arr
+    const reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
     if (arr = document.cookie.match(reg))
       return unescape(arr[2]);
     else

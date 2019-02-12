@@ -11,6 +11,7 @@
     "quotemark": [true, "single", "jsx-double"],
     "no-debugger": false,
     "interface-name": [true, "never"],
-    "semicolon": [true, "never"]
+    "semicolon": [true, "never"],
+    "jsx-no-lambda": false
   }
 }

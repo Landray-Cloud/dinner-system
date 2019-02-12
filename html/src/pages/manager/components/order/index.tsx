@@ -15,23 +15,10 @@ interface IProps {
 }
 
 interface IState {
-  week: string,
-  name: string,
-  department: string,
-  orderStatus: string,
-  remarks: string,
-  form: {
-    [k: string]: string | number
-  }
 }
 
 class AddOrderForm extends Component<IProps, IState> {
-  constructor(props) {
-    super(props)
-    this.state = {
-      week: ''
-    }
-  }
+
   /** 生成部门待选项 */
   generateOpts = () => {
     return Util.deptTable.map((item) => <Option key={String(item.value)} value={item.value}>{item.label}</Option>)
@@ -66,29 +53,22 @@ class AddOrderForm extends Component<IProps, IState> {
       }
     })
   }
-
   /** 生成选项菜单 */
   resGenerateOpts() {
-    const week = this.state.week
-    let opts = [
+    const opts = [
       '真功夫(快餐)',
       '永和豆浆(快餐)',
       '米多面多',
       '潮梅里卤鹅',
       '马来一号',
-      '港岛记'
+      '港岛记',
+      '壹定食(快餐)',
+      '吃个汤(椰子汤)',
+      '金牌隆江猪脚烧腊(烧腊)',
+      '起家一头牛',
+      '盒悦',
+      '红荔村肠粉'
     ]
-
-    if (week === '星期四') {
-      opts = [
-        '壹定食(快餐)',
-        '吃个汤(椰子汤)',
-        '金牌隆江猪脚烧腊(烧腊)',
-        '起家一头牛',
-        '盒悦',
-        '红荔村肠粉'
-      ]
-    }
     return opts.map((text, idx) => <Option key={String(idx)} value={text}>{text}</Option>)
   }
 

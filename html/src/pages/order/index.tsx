@@ -70,7 +70,7 @@ export default class Order extends Component<IProps, IState>{
     }
     const department = localStorage.getItem('department')
     if (department) {
-      const form = Object.assign({}, this.state.form, { department: parseInt(department) })
+      const form = Object.assign({}, this.state.form, { department: parseInt(department, 10) }) // parseInt第二参数默认是10进制，解决tslint校验
       this.setState({ form })
     }
   }

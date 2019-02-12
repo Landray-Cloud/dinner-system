@@ -98,7 +98,6 @@ export default class SiderDemo extends Component<IProps, Istate> {
 
   /** 按下搜索按钮: 进行搜索请求列表 */
   handleSearchOnSublimt = (name: string) => {
-    // console.log('handleSearchOnSublimt', name)
     this.setState({ name }, () => {
       this.getList().catch()
     })
@@ -106,15 +105,13 @@ export default class SiderDemo extends Component<IProps, Istate> {
 
   /** 时间选择改变: 进行搜索请求列表 */
   handleDatePickerOnChange = (date: any, orderDate: string) => {
-    // console.log('handleDatePickerOnChange', date)
-    this.setState({ orderDate }, () => {
+    this.setState({ orderDate}, () => {
       this.getList().catch()
     })
   }
 
   /** 部门选择改变: 进行搜索请求列表 */
   handleDeptChange = (department) => {
-    // console.log('department', department)
     this.setState({ department }, () => {
       this.getList().catch()
     })

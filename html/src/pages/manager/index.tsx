@@ -25,7 +25,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
     super(props)
     
     this.state = {
-      collapsed: !false,
+      collapsed: false,
       active: '1'
     }
     this.delCookie = this.delCookie.bind(this)

@@ -15,6 +15,7 @@ interface IProps {
 }
 
 interface IState {
+  week: string,
   name: string,
   department: string,
   orderStatus: string,
@@ -25,7 +26,12 @@ interface IState {
 }
 
 class AddOrderForm extends Component<IProps, IState> {
-
+  constructor(props) {
+    super(props)
+    this.state = {
+      week: ''
+    }
+  }
   /** 生成部门待选项 */
   generateOpts = () => {
     return Util.deptTable.map((item) => <Option key={String(item.value)} value={item.value}>{item.label}</Option>)
@@ -61,9 +67,34 @@ class AddOrderForm extends Component<IProps, IState> {
     })
   }
 
+  /** 生成选项菜单 */
+  resGenerateOpts() {
+    const week = this.state.week
+    let opts = [
+      '真功夫(快餐)',
+      '永和豆浆(快餐)',
+      '米多面多',
+      '潮梅里卤鹅',
+      '马来一号',
+      '港岛记'
+    ]
+
+    if (week === '星期四') {
+      opts = [
+        '壹定食(快餐)',
+        '吃个汤(椰子汤)',
+        '金牌隆江猪脚烧腊(烧腊)',
+        '起家一头牛',
+        '盒悦',
+        '红荔村肠粉'
+      ]
+    }
+    return opts.map((text, idx) => <Option key={String(idx)} value={text}>{text}</Option>)
+  }
+
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const { formRecord } = this.props;
+    const { getFieldDecorator } = this.props.form
+    const { formRecord } = this.props
     const formItemLayout = {
       labelCol: { span: 3 },
       wrapperCol: { span: 21 }
@@ -74,7 +105,7 @@ class AddOrderForm extends Component<IProps, IState> {
           <FormItem label="姓名" {...formItemLayout}>
             {
               getFieldDecorator('name', {
-                initialValue: formRecord ? formRecord.name : "",
+                initialValue: formRecord ? formRecord.name : '',
                 rules: [{
                   required: true, message: '需要输入姓名哦'
                 }]
@@ -86,7 +117,7 @@ class AddOrderForm extends Component<IProps, IState> {
           <FormItem label="部门" {...formItemLayout}>
             {
               getFieldDecorator('department', {
-                initialValue: formRecord ? formRecord.department : "",
+                initialValue: formRecord ? formRecord.department : '',
                 rules: [{
                   required: true, message: '需要选择部门哦'
                 }]
@@ -97,10 +128,24 @@ class AddOrderForm extends Component<IProps, IState> {
               )
             }
           </FormItem>
+          <FormItem label="餐厅" {...formItemLayout}>
+            {
+              getFieldDecorator('restaurant', {
+                initialValue: formRecord ? formRecord.restaurant : '',
+                rules: [{
+                  required: true, message: '需要选择吃哪家哦'
+                }]
+              })(
+                <Select placeholder="请选择">
+                  {this.resGenerateOpts()}
+                </Select>
+              )
+            }
+          </FormItem>
           <FormItem label="订餐" {...formItemLayout}>
             {
               getFieldDecorator('orderStatus', {
-                initialValue: formRecord ? formRecord.orderStatus : "",
+                initialValue: formRecord ? formRecord.orderStatus : '',
                 rules: [{
                   required: true, message: '需要选择订餐状态哦'
                 }]
@@ -116,7 +161,7 @@ class AddOrderForm extends Component<IProps, IState> {
           <FormItem label="备注" {...formItemLayout}>
             {
               getFieldDecorator('remarks', {
-                initialValue: formRecord ? formRecord.remarks : "",
+                initialValue: formRecord ? formRecord.remarks : '',
               })(
                 <Input placeholder="因什么项目加班" allowClear={true}/>
               )

@@ -201,7 +201,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
       key: 'action',
       render: (text, record) => (
         <span>
-          <a onClick={() => this.editModal(record)}>编辑{record.id}</a>
+          <a onClick={() => this.editModal(record)}>编辑</a>
           <Divider type="vertical" />
           <Popconfirm placement="topRight" onConfirm={() => this.handleDeleteData(record.id)} title="删除不可恢复，你确定要删除吗?" okText="Yes" cancelText="No">
             <a>删除</a>

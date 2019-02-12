@@ -1,6 +1,6 @@
 const jwt = require('jsonWebToken')
-const SECRET = 'Leonardo'
-const localName = 'USER_INFO'
+const SECRET = 'Leonardo2.0'
+const localName = 'USER_INFO_2_0'
 
 /** 加密: 传入需要加密的内容 */
 const setToken = (data: string) => {

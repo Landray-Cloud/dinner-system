@@ -63,19 +63,22 @@ export default class SiderDemo extends Component<IProps, Istate> {
   /** 读取cookie */
   getCookie = (name) => {
     let arr
-    const reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
-    if (arr = document.cookie.match(reg))
-      return unescape(arr[2]);
-    else
-      return null;
+    const reg = new RegExp('(^| )' + name + '=([^;]*)(;|$)')
+    if (arr = document.cookie.match(reg)) {
+      return unescape(arr[2])
+    } else {
+      return null
+    }
+      
   }
   /** 删除cookie */
   delCookie(name) {
-    const exp = new Date();
-    exp.setTime(exp.getTime() - 1);
-    const cval = this.getCookie(name);
-    if (cval != null)
-      document.cookie = name + "=" + cval + ";expires=" + exp.toUTCString() + ";Path=/";
+    const exp = new Date()
+    exp.setTime(exp.getTime() - 1)
+    const cval = this.getCookie(name)
+    if (cval !== null) {
+      document.cookie = name + '=' + cval + ';expires=' + exp.toUTCString() + ';Path=/'
+    }
   }
   /** 退出登录 */
   exitLogin() {

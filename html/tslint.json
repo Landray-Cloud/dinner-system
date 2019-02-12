@@ -12,6 +12,7 @@
     "no-debugger": false,
     "interface-name": [true, "never"],
     "semicolon": [true, "never"],
-    "jsx-no-lambda": false
+    "jsx-no-lambda": false,
+    "no-conditional-assignment": false
   }
 }

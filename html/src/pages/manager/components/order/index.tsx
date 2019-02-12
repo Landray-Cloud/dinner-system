@@ -9,7 +9,7 @@ const FormItem = Form.Item
 
 interface IProps {
   history?: any,
-  formRecord: any,
+  formRecord?: any,
   form: any,
   submitOk?: any
 }
@@ -33,24 +33,24 @@ class AddOrderForm extends Component<IProps, IState> {
 
   /** 提交 */
   handleSubmit = (e) => {
-    this.props.form.validateFieldsAndScroll( async (err, values) => {
+    this.props.form.validateFieldsAndScroll(async (err, values) => {
       e.preventDefault()
       if (!err) {
         let res
-        if(this.props.formRecord && this.props.formRecord.id) {
-          res = await client.post('manager/updateDataById', { id:this.props.formRecord.id, ...values })
+        if (this.props.formRecord && this.props.formRecord.id) {
+          res = await client.post('manager/updateDataById', { id: this.props.formRecord.id, ...values })
           const code = res.data.errcode
-          if(code === 0) {
+          if (code === 0) {
             notification.success({
               message: '很棒',
               description: '修改成功了哦'
             }),
-            this.props.submitOk()
+              this.props.submitOk()
           }
         } else {
           res = await client.post('addOrder', values)
           const code = res.data.errcode
-          if(code === 0) {
+          if (code === 0) {
             notification.success({
               message: '很棒',
               description: '提交成功了哦'
@@ -79,7 +79,7 @@ class AddOrderForm extends Component<IProps, IState> {
                   required: true, message: '需要输入姓名哦'
                 }]
               })(
-                <Input placeholder="请输入姓名" allowClear={true}/>
+                <Input placeholder="请输入姓名" allowClear={true} />
               )
             }
           </FormItem>
@@ -118,7 +118,7 @@ class AddOrderForm extends Component<IProps, IState> {
               getFieldDecorator('remarks', {
                 initialValue: formRecord ? formRecord.remarks : "",
               })(
-                <Input placeholder="因什么项目加班" allowClear={true}/>
+                <Input placeholder="因什么项目加班" allowClear={true} />
               )
             }
           </FormItem>

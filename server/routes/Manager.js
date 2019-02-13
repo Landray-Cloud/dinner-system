@@ -70,4 +70,14 @@ router.get('/getStatusList', async (req, res, next) => {
   }
 })
 
+// 获取订餐数据列表（以部门为维度）
+router.get('/getListByDepartment', async (req, res, next) => {
+  if (!auth.checkToken(req.cookies.Angelebaby) && !__IS_DEV__) return
+  try {
+    res.send(await Manager.getListByDepartment(req.query))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
 module.exports = router

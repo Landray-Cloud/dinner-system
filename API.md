@@ -233,3 +233,63 @@ total            | Number | 总数
 ```
 
 ---
+
+## 12.获取以部门为纬度的订餐列表
+*   方法名: getListByDepartment
+*   请求: GET
+
+
+### 请求参数
+参数             | 是否必须 | 类型 | 描述
+----------------|-------|----------|---
+orderDate | false | String | 以日期/月份条件获取数据
+department | false | Number | 以部门条件用来获取数据
+
+*   示例: 
+    *   根据日期查询: /node/dinner/manager/getListByDepartment?orderDate=2018-02-13
+    *   根据月份查询: /node/dinner/manager/getListByDepartment?orderDate=2018-02
+    *   根据日期+部门查询: /node/dinner/manager/getListByDepartment?orderDate=2018-02-13&department=
+
+
+### 返回参数
+参数            | 类型 | 描述
+----------------|-------|---------
+department | Number | 部门：0，用户体验部；1，KM 产品部；2，蓝钉产品部；3，平台支持部；4，EKP 产品部；5，AIP 部门
+orderStatus | Number | 订餐状态, 1:加班订餐; 2:加班不订餐; 3:不加班不订餐
+total            | Number | 总数
+
+```json
+{
+    "errmsg": "ok",
+    "errcode": 0,
+    "data": [
+        {
+            "department": 1,
+            "orderStatus": 1,
+            "total": 672
+        },
+        {
+            "department": 1,
+            "orderStatus": 2,
+            "total": 2
+        },
+        {
+            "department": 1,
+            "orderStatus": 3,
+            "total": 12
+        },
+        {
+            "department": 4,
+            "orderStatus": 3,
+            "total": 1
+        },
+        {
+            "department": 5,
+            "orderStatus": 3,
+            "total": 1
+        }
+    ]
+}
+```
+
+---

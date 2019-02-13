@@ -105,7 +105,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
 
   /** 时间选择改变: 进行搜索请求列表 */
   handleDatePickerOnChange = (date: any, orderDate: string) => {
-    this.setState({ orderDate}, () => {
+    this.setState({ orderDate }, () => {
       this.getList().catch()
     })
   }
@@ -125,7 +125,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
     const res = await client.post('manager/deleteOrder', postData)
     if (!res) return
     const code = res.data.errcode
-    if(code === 0) {
+    if (code === 0) {
       notification.success({
         message: 'Great',
         description: '删除成功了哦'
@@ -133,7 +133,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
       this.getList().catch()
     }
   }
-  
+
   editModal = (record) => {
     this.setState({
       visible: true,
@@ -159,6 +159,9 @@ export default class SiderDemo extends Component<IProps, Istate> {
 
   render() {
     const columns = [{
+      title: '序号',
+      render: (text, record, index) => `${index + 1}`
+    }, {
       title: '姓名',
       dataIndex: 'name',
       key: 'name'
@@ -230,13 +233,13 @@ export default class SiderDemo extends Component<IProps, Istate> {
         如果你的数据没有这个属性，务必使用 rowKey 来指定数据列的主键 */}
         <Table dataSource={this.state.dataSource} columns={columns} rowKey={record => record.id} />
         {/* 编辑的弹出框 */}
-        {this.state.visible?<Modal 
-          title="编辑订餐信息" 
+        {this.state.visible ? <Modal
+          title="编辑订餐信息"
           visible={this.state.visible}
           onCancel={this.handleEditCancel}
           className="editModal" >
           <AddOrder formRecord={this.state.formRecord} submitOk={this.handleEditOk} />
-        </Modal>:null}
+        </Modal> : null}
       </div>
     )
   }

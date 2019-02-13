@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-// import client from '../../client'
-// import Util from '../../util'
 import './index.scss'
 import { Layout, Menu, Icon, Button, Modal } from 'antd'
 import DinnerTable from './components/table'
 import OnOff from './components/onoff'
 import AddOrder from './components/order'
+import Daily from './components/daily'
 // import { relative } from 'path';
 
 const { Header, Sider, Content } = Layout
@@ -50,10 +49,12 @@ export default class SiderDemo extends Component<IProps, Istate> {
   generateContent = () => {
     switch (this.state.active) {
       case '1':
-        return <DinnerTable />
+        return <Daily />
       case '2':
-        return <OnOff />
+        return <DinnerTable />
       case '3':
+        return <OnOff />
+      case '4':
         return <AddOrder />
     }
     return (
@@ -106,14 +107,18 @@ export default class SiderDemo extends Component<IProps, Istate> {
           <div className="logo" />
           <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} onClick={this.handleMenuItemOnClick}>
             <Menu.Item key="1">
-              <Icon type="bar-chart" />
-              <span>查看报表</span>
+              <Icon type="smile" />
+              <span>日常订餐</span>
             </Menu.Item>
             <Menu.Item key="2">
+              <Icon type="bar-chart" />
+              <span>查看明细</span>
+            </Menu.Item>
+            <Menu.Item key="3">
               <Icon type="poweroff" />
               <span>设置开关</span>
             </Menu.Item>
-            <Menu.Item key="3">
+            <Menu.Item key="4">
               <Icon type="upload" />
               <span>添加数据</span>
             </Menu.Item>

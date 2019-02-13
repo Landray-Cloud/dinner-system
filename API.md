@@ -188,7 +188,7 @@ remarks | false | String | 备注
 
 ---
 
-## 11.获取日常订餐数据列表
+## 11.获取日常订餐数据列表(以状态为维度)
 *   方法名: getStatusList
 *   请求: GET
 

@@ -200,9 +200,9 @@ orderDate | false | String | 以日期/月份条件获取数据
 department | false | Number | 以部门条件用来获取数据
 
 *   示例: 
-    *   根据日期查询: /node/dinner/manager/getList?orderDate=2018-02-13
-    *   根据月份查询: /node/dinner/manager/getList?orderDate=2018-02
-    *   根据日期+部门查询: /node/dinner/manager/getList?orderDate=2018-02-13&department=
+    *   根据日期查询: /node/dinner/manager/getStatusList?orderDate=2018-02-13
+    *   根据月份查询: /node/dinner/manager/getStatusList?orderDate=2018-02
+    *   根据日期+部门查询: /node/dinner/manager/getStatusList?orderDate=2018-02-13&department=
 
 
 ### 返回参数

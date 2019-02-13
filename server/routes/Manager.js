@@ -60,4 +60,14 @@ router.post('/deleteOrder', async (req, res) => {
   }
 })
 
+// 获取日常订餐数据列表
+router.get('/getStatusList', async (req, res, next) => {
+  if (!auth.checkToken(req.cookies.Angelebaby) && !__IS_DEV__) return
+  try {
+    res.send(await Manager.getStatusList(req.query))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
 module.exports = router

@@ -125,10 +125,45 @@ async function setSubmit(options) {
   })
 }
 
+/** 获取日常订餐数据列表 */
+async function getStatusList(options) {
+  let sqlExecute = 'SELECT orderStatus, COUNT(id) AS total FROM list '
+  let sqlParam = []
+
+  if (JSON.stringify(options) !== '{}') {
+    sqlExecute += ' WHERE '
+
+    const orderDate = options.orderDate
+    const department = options.department
+
+    if (orderDate) {
+      sqlExecute += ' orderDate LIKE ? '
+      sqlParam.push(`%${orderDate}%`)
+    }
+
+    if (department) {
+      if (sqlParam.length) sqlExecute += ' AND '
+      sqlExecute += ' department = ? '
+      sqlParam.push(department)
+    }
+  }
+
+  sqlExecute += ' GROUP BY orderStatus'
+
+  return new Promise((resolve, reject) => {
+    connectionDatabase(sqlExecute, sqlParam).then(succRes => {
+      resolve(Utils.writeSuccess(succRes))
+    }).catch(errRes => {
+      reject(Utils.writeError('getStatusList - 失败', errRes))
+    })
+  })
+}
+
 module.exports = {
   login,
   getList,
   updateDataById,
   deleteOrder,
-  setSubmit
+  setSubmit,
+  getStatusList
 }

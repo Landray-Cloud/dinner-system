@@ -188,3 +188,48 @@ remarks | false | String | 备注
 
 ---
 
+## 11.获取日常订餐数据列表
+*   方法名: getStatusList
+*   请求: GET
+
+
+### 请求参数
+参数             | 是否必须 | 类型 | 描述
+----------------|-------|----------|---
+orderDate | false | String | 以日期/月份条件获取数据
+department | false | Number | 以部门条件用来获取数据
+
+*   示例: 
+    *   根据日期查询: /node/dinner/manager/getList?orderDate=2018-02-13
+    *   根据月份查询: /node/dinner/manager/getList?orderDate=2018-02
+    *   根据日期+部门查询: /node/dinner/manager/getList?orderDate=2018-02-13&department=
+
+
+### 返回参数
+参数            | 类型 | 描述
+----------------|-------|---------
+orderStatus | Number | 订餐状态, 1:加班订餐; 2:加班不订餐; 3:不加班不订餐
+total            | Number | 总数
+
+```json
+{
+    "errmsg": "ok",
+    "errcode": 0,
+    "data": [
+        {
+            "orderStatus": 1,
+            "total": 672
+        },
+        {
+            "orderStatus": 2,
+            "total": 2
+        },
+        {
+            "orderStatus": 3,
+            "total": 13
+        }
+    ]
+}
+```
+
+---

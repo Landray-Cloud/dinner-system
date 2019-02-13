@@ -165,7 +165,11 @@ export default class Order extends Component<IProps, IState>{
   render() {
     const name = this.state.name
     const week = this.state.week
-    const adminName = '新梅'
+    const dept = this.state.form.department
+    let adminName = ''
+    if (dept) {
+      adminName = Util.getDeptAdminFromNum(dept)
+    }
     const formItemLayout = {
       labelCol: { span: 3 },
       wrapperCol: { span: 21 }

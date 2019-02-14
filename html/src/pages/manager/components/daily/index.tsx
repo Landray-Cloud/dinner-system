@@ -2,10 +2,13 @@ import React, { Component } from 'react'
 import client from '../../../../client'
 import './index.scss'
 import Util from '../../../../util'
-import { Table, Tag, Form, Select, DatePicker, notification, Radio } from 'antd'
+import { Table, Tag, Form, Select, DatePicker, notification, Radio, LocaleProvider } from 'antd'
+import zh_CN from 'antd/lib/locale-provider/zh_CN'
+import 'moment/locale/zh-cn'
+import moment from 'moment'
+const { MonthPicker } = DatePicker
 const Option = Select.Option
 const FormItem = Form.Item
-import moment from 'moment'
 const RadioGroup = Radio.Group
 
 interface IProps {
@@ -18,7 +21,7 @@ interface Istate {
   total: string | number,
   dataSource: any,
   mode: any,
-  dateFormat: string
+  radioDate: string
 }
 
 /** 返回状态的中文 */
@@ -51,11 +54,11 @@ export default class Daily extends Component<IProps, Istate> {
       total: '',
       dataSource: [],
       mode: 'date',
-      dateFormat: 'yyyy-MM-dd'
+      radioDate: ''
     }
   }
   componentDidMount = () => {
-    const orderDate = new Date().Format(this.state.dateFormat)
+    const orderDate = new Date().Format('yyyy-MM-dd')
     this.setState({ orderDate }, () => {
       this.getList().catch()
     })
@@ -86,16 +89,20 @@ export default class Daily extends Component<IProps, Istate> {
 
   handleRadioChange = (e) => {
     console.log('handleRadioChange', e.target.value)
-    const radioValue = e.target.value
-    let format
-    if(radioValue === 'date') {
-      format = 'yyyy-MM-dd'
-    } else {
-      format = 'yyyy-MM'
-    }
-    this.setState({
-      mode: e.target.value,
-      dateFormat: format
+    this.setState({ mode: e.target.value })
+  }
+
+  /** 时间选择改变: 进行搜索请求列表 */
+  handleDatePickerOnChange = (date: any, orderDate: string) => {
+    this.setState({ orderDate }, () => {
+      this.getList().catch()
+    })
+  }
+
+  /** 部门选择改变: 进行搜索请求列表 */
+  handleDeptChange = (department) => {
+    this.setState({ department }, () => {
+      this.getList().catch()
     })
   }
 
@@ -126,12 +133,18 @@ export default class Daily extends Component<IProps, Istate> {
       <div className="daily-wrapper">
         <Form layout="inline">
           <FormItem label="部门">
-            <Select className="table-select" allowClear={true} placeholder="请选择">
+            <Select className="table-select" allowClear={true} placeholder="请选择" onChange={this.handleDeptChange}>
               {this.generateOpts()}
             </Select>
           </FormItem>
           <FormItem label="日期">
-            <DatePicker defaultValue={moment(new Date(), this.state.dateFormat)} mode={this.state.mode}/>
+            <LocaleProvider locale={zh_CN}>
+              {
+                this.state.mode === 'date' ?
+                <DatePicker defaultValue={moment(new Date(), 'YYYY/MM/DD')} onChange={this.handleDatePickerOnChange}/>
+                : <MonthPicker onChange={this.handleDatePickerOnChange} defaultValue={moment(new Date(), 'YYYY/MM')}/>
+              }
+            </LocaleProvider>
           </FormItem>
           <FormItem>
           <RadioGroup onChange={this.handleRadioChange} value={this.state.mode}>

@@ -85,6 +85,26 @@ function getDeptAdminFromNum(dept: number | string) {
   return obj ? obj.adminName : ''
 }
 
+/** 返回状态的中文 */
+function generateStatusName(status: number) {
+  let text = ''
+  let color = ''
+  switch (status) {
+    case 1:
+      text = '加班订餐'
+      color = 'blue'
+      break
+    case 2:
+      text = '加班不订餐'
+      color = 'yellow'
+      break
+    case 3:
+      text = '不加班不订餐'
+      color = 'red'
+      break
+  }
+  return { text, color }
+}
 const Util = {
   setToken,
   getToken,
@@ -93,7 +113,8 @@ const Util = {
   checkEngAndNum,
   getDeptNameFromNum,
   getDeptAdminFromNum,
-  deptTable
+  deptTable,
+  generateStatusName
 }
 
 export default Util

@@ -5,6 +5,7 @@ import DinnerTable from './components/table'
 import OnOff from './components/onoff'
 import AddOrder from './components/order'
 import Daily from './components/daily'
+import Department from './components/department'
 // import { relative } from 'path';
 
 const { Header, Sider, Content } = Layout
@@ -53,8 +54,10 @@ export default class SiderDemo extends Component<IProps, Istate> {
       case '2':
         return <DinnerTable />
       case '3':
-        return <OnOff />
+        return <Department />
       case '4':
+        return <OnOff />
+      case '5':
         return <AddOrder />
     }
     return (
@@ -112,13 +115,17 @@ export default class SiderDemo extends Component<IProps, Istate> {
             </Menu.Item>
             <Menu.Item key="2">
               <Icon type="bar-chart" />
-              <span>查看明细</span>
+              <span>人员明细</span>
             </Menu.Item>
             <Menu.Item key="3">
+              <Icon type="line-chart" />
+              <span>部门明细</span>
+            </Menu.Item>
+            <Menu.Item key="4">
               <Icon type="poweroff" />
               <span>设置开关</span>
             </Menu.Item>
-            <Menu.Item key="4">
+            <Menu.Item key="5">
               <Icon type="upload" />
               <span>添加数据</span>
             </Menu.Item>

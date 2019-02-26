@@ -54,23 +54,23 @@ class AddOrderForm extends Component<IProps, IState> {
     })
   }
   /** 生成选项菜单 */
-  resGenerateOpts() {
-    const opts = [
-      '真功夫(快餐)',
-      '永和豆浆(快餐)',
-      '米多面多',
-      '潮梅里卤鹅',
-      '马来一号',
-      '港岛记',
-      '壹定食(快餐)',
-      '吃个汤(椰子汤)',
-      '金牌隆江猪脚烧腊(烧腊)',
-      '起家一头牛',
-      '盒悦',
-      '红荔村肠粉'
-    ]
-    return opts.map((text, idx) => <Option key={String(idx)} value={text}>{text}</Option>)
-  }
+  // resGenerateOpts() {
+  //   const opts = [
+  //     '真功夫(快餐)',
+  //     '永和豆浆(快餐)',
+  //     '米多面多',
+  //     '潮梅里卤鹅',
+  //     '马来一号',
+  //     '港岛记',
+  //     '壹定食(快餐)',
+  //     '吃个汤(椰子汤)',
+  //     '金牌隆江猪脚烧腊(烧腊)',
+  //     '起家一头牛',
+  //     '盒悦',
+  //     '红荔村肠粉'
+  //   ]
+  //   return opts.map((text, idx) => <Option key={String(idx)} value={text}>{text}</Option>)
+  // }
 
   render() {
     const { getFieldDecorator } = this.props.form
@@ -108,7 +108,7 @@ class AddOrderForm extends Component<IProps, IState> {
               )
             }
           </FormItem>
-          <FormItem label="餐厅" {...formItemLayout}>
+          {/* <FormItem label="餐厅" {...formItemLayout}>
             {
               getFieldDecorator('restaurant', {
                 initialValue: formRecord ? formRecord.restaurant : '',
@@ -121,7 +121,7 @@ class AddOrderForm extends Component<IProps, IState> {
                 </Select>
               )
             }
-          </FormItem>
+          </FormItem> */}
           <FormItem label="订餐" {...formItemLayout}>
             {
               getFieldDecorator('orderStatus', {

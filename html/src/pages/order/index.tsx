@@ -138,38 +138,38 @@ export default class Order extends Component<IProps, IState>{
   }
 
   /** 生成选项菜单 */
-  generateOpts() {
-    const week = this.state.week
-    let opts = [
-      '真功夫(快餐)',
-      '永和豆浆(快餐)',
-      '米多面多',
-      '潮梅里卤鹅',
-      '马来一号',
-      '港岛记'
-    ]
+  // generateOpts() {
+  //   const week = this.state.week
+  //   let opts = [
+  //     '真功夫(快餐)',
+  //     '永和豆浆(快餐)',
+  //     '米多面多',
+  //     '潮梅里卤鹅',
+  //     '马来一号',
+  //     '港岛记'
+  //   ]
 
-    if (week === '星期四') {
-      opts = [
-        '壹定食(快餐)',
-        '吃个汤(椰子汤)',
-        '金牌隆江猪脚烧腊(烧腊)',
-        '起家一头牛',
-        '盒悦',
-        '红荔村肠粉'
-      ]
-    }
-    return opts.map((text, idx) => <Option key={String(idx)} value={text}>{text}</Option>)
-  }
+  //   if (week === '星期四') {
+  //     opts = [
+  //       '壹定食(快餐)',
+  //       '吃个汤(椰子汤)',
+  //       '金牌隆江猪脚烧腊(烧腊)',
+  //       '起家一头牛',
+  //       '盒悦',
+  //       '红荔村肠粉'
+  //     ]
+  //   }
+  //   return opts.map((text, idx) => <Option key={String(idx)} value={text}>{text}</Option>)
+  // }
 
   render() {
     const name = this.state.name
     const week = this.state.week
-    const dept = this.state.form.department
-    let adminName = ''
-    if (dept) {
-      adminName = Util.getDeptAdminFromNum(dept)
-    }
+    // const dept = this.state.form.department
+    // let adminName = ''
+    // if (dept) {
+    //   adminName = Util.getDeptAdminFromNum(dept)
+    // }
     const formItemLayout = {
       labelCol: { span: 3 },
       wrapperCol: { span: 21 }
@@ -183,12 +183,12 @@ export default class Order extends Component<IProps, IState>{
             <Option value={3}>不加班不订餐</Option>
           </Select>
         </FormItem>
-        <FormItem label="吃啥" {...formItemLayout}>
+        {/* <FormItem label="吃啥" {...formItemLayout}>
           <Select placeholder="请选择" onChange={this.handleRestaurantChange}>
             {this.generateOpts()}
           </Select>
-        </FormItem>
-        <FormItem label="备注" {...formItemLayout}>
+        </FormItem> */}
+        <FormItem label="项目" {...formItemLayout}>
           <Input data-id="remarks" placeholder="可以写写因啥事加班?" allowClear={true} value={this.state.form.remarks} onChange={this.handleRemarksChange} />
         </FormItem>
         <FormItem>
@@ -213,7 +213,8 @@ export default class Order extends Component<IProps, IState>{
           break
       }
       bodyJSX = (
-        <p className="tips-text">今天你<span>{orderText}</span>，如有变动，请联系{adminName}。</p>
+        // <p className="tips-text">今天你<span>{orderText}</span>，如有变动，请联系{adminName}。</p>
+        <p className="tips-text">今天你<span>{orderText}</span>，如有变动，请联系订餐负责人。</p>
       )
     }
 
@@ -221,7 +222,8 @@ export default class Order extends Component<IProps, IState>{
     const submitStatus = this.state.submitStatus
     if (submitStatus === 0) {
       bodyJSX = (
-        <p className="tips-text">现在<span>不许下单</span>啦，如有疑问，请联系{adminName}。</p>
+        // <p className="tips-text">现在<span>不许下单</span>啦，如有疑问，请联系{adminName}。</p>
+        <p className="tips-text">现在<span>不许下单</span>啦，如有疑问，请联系订餐负责人。</p>
       )
     }
 

@@ -63,8 +63,8 @@ export default class Home extends Component<IProps, Istate> {
     }
 
     const department = this.state.department
-
-    if (!department) {
+    
+    if (department === '') {
       flag = false
       notification.error({
         message: '乖~~',
@@ -106,7 +106,7 @@ export default class Home extends Component<IProps, Istate> {
 
   /** 部门选择改变: 进行搜索请求列表 */
   handleDeptChange = (department) => {
-    // console.log('department', department)
+    console.log('department', department)
     this.setState({ department })
   }
 

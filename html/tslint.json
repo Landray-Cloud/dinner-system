@@ -10,7 +10,7 @@
     "prefer-const": true,
     "quotemark": [true, "single", "jsx-double"],
     "no-debugger": false,
-    "interface-name": [true, "never"],
+    "interface-name": false,
     "semicolon": [true, "never"],
     "jsx-no-lambda": false,
     "no-conditional-assignment": false

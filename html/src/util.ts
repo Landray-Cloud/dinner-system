@@ -67,10 +67,6 @@ const deptTable = [{
   value: 4,
   label: 'EKP产品部',
   adminName: '娜娜'
-}, {
-  value: 5,
-  label: 'AIP部门',
-  adminName: '娜娜'
 }]
 
 /** 传入数字 返回 部门的中文名字 */

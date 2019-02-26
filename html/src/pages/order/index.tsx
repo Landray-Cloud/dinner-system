@@ -113,8 +113,7 @@ export default class Order extends Component<IProps, IState>{
       })
       return false
     }
-
-    if (!form.remarks) {
+    if (!form.remarks && form.orderStatus !== 3) {
       notification.error({
         message: '嘿',
         description: '要在备注里写上加班原因哦'

@@ -88,7 +88,7 @@ export default class Home extends Component<IProps, Istate> {
     const department = this.state.department
     confirm({
       title: '温馨提示',
-      content: '姓名别乱输哦，以后不改给了哦!',
+      content: '姓名别乱输哦，以后不给改了哦!',
       cancelText: '我还是改一下吧',
       okText: '确认',
       onOk: () => {

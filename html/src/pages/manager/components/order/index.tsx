@@ -48,6 +48,13 @@ class AddOrderForm extends Component<IProps, IState> {
               message: '很棒',
               description: '提交成功了哦'
             })
+            // 提交成功后置空
+            this.props.form.setFields({
+              name: '',
+              department: '',
+              orderStatus: '',
+              remarks: ''
+            })
           }
         }
       }

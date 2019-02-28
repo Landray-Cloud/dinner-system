@@ -21,7 +21,8 @@ interface Istate {
   total: string | number,
   dataSource: any,
   mode: any,
-  radioDate: string
+  inDay: any,
+  inMonth: any
 }
 
 
@@ -34,12 +35,27 @@ export default class Daily extends Component<IProps, Istate> {
       total: '',
       dataSource: [],
       mode: 'date',
-      radioDate: ''
+      inDay: moment(new Date(), 'yyyy-MM-dd'),
+      inMonth: moment(new Date(), 'yyyy-MM')
     }
   }
   componentDidMount = () => {
     const orderDate = new Date().Format('yyyy-MM-dd')
-    this.setState({ orderDate }, () => {
+    this.setState({orderDate}, () => {
+      this.getList().catch()
+    })
+  }
+  
+
+  handleRadioChange = (e) => {
+    const mode = e.target.value
+    let orderDate
+    if(mode === 'date') {
+      orderDate = new Date().Format('yyyy-MM-dd')
+    } else if (mode === 'month') {
+      orderDate = new Date().Format('yyyy-MM')
+    }
+    this.setState({ mode, orderDate }, () => {
       this.getList().catch()
     })
   }
@@ -51,7 +67,7 @@ export default class Daily extends Component<IProps, Istate> {
     if (department && orderDate) {
       ajaxURL += `?department=${department}&orderDate=${orderDate}`
     } else if (typeof department !== 'undefined' && department !== '') {
-      ajaxURL += `&department=${department}`
+      ajaxURL += `?department=${department}`
     } else if (orderDate) {
       ajaxURL += `?orderDate=${orderDate}`
     } else {
@@ -65,10 +81,6 @@ export default class Daily extends Component<IProps, Istate> {
     const res = await client.get(ajaxURL)
     const dataSource = res.data.data
     this.setState({ dataSource })
-  }
-
-  handleRadioChange = (e) => {
-    this.setState({ mode: e.target.value })
   }
 
   /** 时间选择改变: 进行搜索请求列表 */
@@ -120,8 +132,8 @@ export default class Daily extends Component<IProps, Istate> {
             <LocaleProvider locale={zh_CN}>
               {
                 this.state.mode === 'date' ?
-                <DatePicker defaultValue={moment(new Date(), 'YYYY/MM/DD')} onChange={this.handleDatePickerOnChange}/>
-                : <MonthPicker defaultValue={moment(new Date(), 'YYYY/MM')} onChange={this.handleDatePickerOnChange}/>
+                <DatePicker defaultValue={this.state.inDay} onChange={this.handleDatePickerOnChange}/>
+                : <MonthPicker defaultValue={this.state.inMonth} onChange={this.handleDatePickerOnChange}/>
               }
             </LocaleProvider>
           </FormItem>

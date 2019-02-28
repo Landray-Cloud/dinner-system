@@ -68,7 +68,7 @@ export default class Department extends Component<IProps, Istate> {
     if (department && orderDate) {
       ajaxURL += `?department=${department}&orderDate=${orderDate}`
     } else if (typeof department !== 'undefined' && department !== '') {
-      ajaxURL += `&department=${department}`
+      ajaxURL += `?department=${department}`
     } else if (orderDate) {
       ajaxURL += `?orderDate=${orderDate}`
     } else {

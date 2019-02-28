@@ -70,7 +70,6 @@ export default class SiderDemo extends Component<IProps, Istate> {
   getList = async () => {
     const orderDate = this.state.orderDate
     const name = this.state.name
-
     let ajaxURL = 'manager/getList'
     if (name && orderDate) {
       ajaxURL += `?name=${name}&orderDate=${orderDate}`

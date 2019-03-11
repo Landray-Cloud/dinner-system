@@ -16,6 +16,7 @@ interface IState {
   name: string,
   orderStatusModel: string | number,
   submitStatus: any,
+  loading: boolean,
   form: {
     [k: string]: string | number
   }
@@ -30,6 +31,7 @@ export default class Order extends Component<IProps, IState>{
       name: '',
       orderStatusModel: 0, // 本地用
       submitStatus: '', // 当前是否允许提交的状态
+      loading: false,
       form: {
         orderStatus: 0, // 提交用
         restaurant: '', // 选择了的餐厅
@@ -127,13 +129,13 @@ export default class Order extends Component<IProps, IState>{
   /** 提交 */
   async handleSubmit(e) {
     e.preventDefault()
+    this.setState({ loading: true })
     if (!this.checkForm()) return
     const postData = this.state.form
     postData.name = this.state.name
-    // console.log('postData', postData)
     const res = await client.post('addOrder', postData)
     if (!res) return
-    this.setState({ orderStatusModel: postData.orderStatus })
+    this.setState({ orderStatusModel: postData.orderStatus, loading: false })
   }
 
   /** 生成选项菜单 */
@@ -191,7 +193,7 @@ export default class Order extends Component<IProps, IState>{
           <Input data-id="remarks" placeholder="可以写写因啥事加班?" allowClear={true} value={this.state.form.remarks} onChange={this.handleRemarksChange} />
         </FormItem>
         <FormItem>
-          <Button type="primary" htmlType="submit">提交</Button>
+          <Button type="primary" htmlType="submit" loading={this.state.loading}>提交</Button>
         </FormItem>
       </Form>
     )

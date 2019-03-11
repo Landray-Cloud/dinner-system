@@ -33,16 +33,26 @@ async function addOrder(options) {
 
   const restaurant = options.restaurant || ''
   const remarks = options.remarks || ''
+
   const _Date = new Date()
-  const orderDate = _Date.Format('yyyy-MM-dd')
-  const orderTime = parseInt(_Date.getTime())
+  let orderDate = _Date.Format('yyyy-MM-dd')
+  let orderTime = parseInt(_Date.getTime())
+
+  // 用于后台插入数据
+  const d = options.d
+  const t = options.t
+  if (d && t) {
+    orderDate = d
+    orderTime = t
+  }
+
   const sqlExecute = $sql.insertOrder
   const sqlParam = [name, orderStatus, orderDate, orderTime, remarks, department, restaurant]
 
   const resRepeat = await checkRepeat([name, department, orderDate])
   const resRepeatCount = resRepeat[0].total || 0
   if (resRepeatCount > 0) {
-    return Utils.writeError(`今天${name}已经提交过了`)
+    return Utils.writeError(`${name}在${orderDate}已经提交过记录了`)
   }
 
   return new Promise((resolve, reject) => {

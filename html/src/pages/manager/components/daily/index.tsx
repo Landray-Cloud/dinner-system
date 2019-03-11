@@ -79,7 +79,11 @@ export default class Daily extends Component<IProps, Istate> {
     }
 
     const res = await client.get(ajaxURL)
-    const dataSource = res.data.data
+    const data = res.data.data
+    data.map((item, index) => {
+      item.key = index
+    })
+    const dataSource = data
     this.setState({ dataSource })
   }
 
@@ -145,7 +149,7 @@ export default class Daily extends Component<IProps, Istate> {
           </FormItem>
         </Form>
 
-        <Table dataSource={this.state.dataSource} columns={columns} rowKey={record => record.id} />
+        <Table dataSource={this.state.dataSource} columns={columns} rowKey="key" />
       </div>
     )
   }

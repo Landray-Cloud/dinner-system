@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Form, Input, Button, Select, notification } from 'antd'
+import { Form, Input, Button, Select, notification, DatePicker, LocaleProvider } from 'antd'
 import './index.scss'
 import Util from '../../../../util'
 import client from '../../../../client'
-
+import zh_CN from 'antd/lib/locale-provider/zh_CN'
+import 'moment/locale/zh-cn'
 const Option = Select.Option
 const FormItem = Form.Item
 
@@ -15,15 +16,23 @@ interface IProps {
 }
 
 interface IState {
+  orderDate: string
 }
 
 class AddOrderForm extends Component<IProps, IState> {
-
+  state = {
+    orderDate: ''
+  }
   /** 生成部门待选项 */
   generateOpts = () => {
     return Util.deptTable.map((item) => <Option key={String(item.value)} value={item.value}>{item.label}</Option>)
   }
-
+  /** 切换时间选择框 */
+  handleDatePickerOnChange = (data: any,orderDate: string) => {
+    this.setState({
+      orderDate: orderDate
+    })
+  }
   /** 提交 */
   handleSubmit = (e) => {
     this.props.form.validateFieldsAndScroll(async (err, values) => {
@@ -41,6 +50,11 @@ class AddOrderForm extends Component<IProps, IState> {
               this.props.submitOk()
           }
         } else {
+          values.d = new Date().Format('yyyy-MM-dd')
+          if(this.state.orderDate !== '') {
+            values.d = this.state.orderDate
+          }
+          values.t = new Date().getTime()
           res = await client.post('addOrder', values)
           const code = res.data.errcode
           if (code === 0) {
@@ -52,8 +66,10 @@ class AddOrderForm extends Component<IProps, IState> {
             this.props.form.setFields({
               name: '',
               department: '',
-              orderStatus: '',
-              remarks: ''
+              orderStatus: ''
+            })
+            this.setState({
+              orderDate: ''
             })
           }
         }
@@ -144,6 +160,11 @@ class AddOrderForm extends Component<IProps, IState> {
                 </Select>
               )
             }
+          </FormItem>
+          <FormItem label="时间" {...formItemLayout}>
+            <LocaleProvider locale={zh_CN}>
+              <DatePicker className="orderdate" onChange={this.handleDatePickerOnChange}/>
+            </LocaleProvider>
           </FormItem>
           <FormItem label="备注" {...formItemLayout}>
             {

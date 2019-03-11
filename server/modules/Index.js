@@ -6,14 +6,26 @@ const log4js = require('log4js')
 const logger = log4js.getLogger()
 logger.level = 'debug'
 
+/** 检查是否已经存在此数据 */
+async function checkRepeat(sql) {
+  const sqlExecute = $sql.checkRepeat
+  const sqlParam = sql
+
+  return new Promise((resolve, reject) => {
+    connectionDatabase(sqlExecute, sqlParam).then(succRes => {
+      resolve(succRes)
+    }).catch(errRes => {
+      reject(Utils.writeError('checkRepeat - 失败', errRes))
+    })
+  })
+}
+
 // 插入数据
 async function addOrder(options) {
   const name = options.name
   const department = options.department
   const orderStatus = options.orderStatus
 
-  // if (!name || !department || !orderStatus) {
-  // 开发期间，先把department参数弄成非必填
   if (!name || !orderStatus) {
     Utils.writeError('addOrder: name、department、orderStatus是必须参数')
     return
@@ -21,11 +33,27 @@ async function addOrder(options) {
 
   const restaurant = options.restaurant || ''
   const remarks = options.remarks || ''
+
   const _Date = new Date()
-  const orderDate = _Date.Format('yyyy-MM-dd')
-  const orderTime = parseInt(_Date.getTime())
+  let orderDate = _Date.Format('yyyy-MM-dd')
+  let orderTime = parseInt(_Date.getTime())
+
+  // 用于后台插入数据
+  const d = options.d
+  const t = options.t
+  if (d && t) {
+    orderDate = d
+    orderTime = t
+  }
+
   const sqlExecute = $sql.insertOrder
   const sqlParam = [name, orderStatus, orderDate, orderTime, remarks, department, restaurant]
+
+  const resRepeat = await checkRepeat([name, department, orderDate])
+  const resRepeatCount = resRepeat[0].total || 0
+  if (resRepeatCount > 0) {
+    return Utils.writeError(`${name}在${orderDate}已经提交过记录了`)
+  }
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {

@@ -11,7 +11,7 @@ router.post('/login', async (req, res) => {
     const r = await Manager.login(req.body)
     const token = auth.setToken(r.data.user)
     // console.log('插入cookie的token:', token)
-    res.cookie('Angelebaby', token);
+    res.cookie('Angelebaby', token)
     res.send(r)
   } catch (err) {
     res.send(err)

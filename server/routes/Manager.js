@@ -3,7 +3,7 @@ const router = express.Router()
 const Manager = require('../modules/Manager')
 const auth = require('../components/auth')
 const AUTH_ERROR = { auth: 0 } // 统一登录失败
-const __IS_DEV__ = true
+const __IS_DEV__ = false
 
 // 后台登录
 router.post('/login', async (req, res) => {
@@ -20,9 +20,7 @@ router.post('/login', async (req, res) => {
 
 // 获取数据列表
 router.get('/getList', async (req, res, next) => {
-  const token = req.cookies.Angelebaby
-  // console.log('从cookie读取到的token:', token)
-  if (!auth.checkToken(token) && !__IS_DEV__) return res.send(AUTH_ERROR)
+  if (!auth.checkToken(req.cookies.Angelebaby) && !__IS_DEV__) return res.send(AUTH_ERROR)
   try {
     res.send(await Manager.getList(req.query))
   } catch (err) {
@@ -62,7 +60,7 @@ router.post('/deleteOrder', async (req, res) => {
 
 // 获取日常订餐数据列表
 router.get('/getStatusList', async (req, res, next) => {
-  if (!auth.checkToken(req.cookies.Angelebaby) && !__IS_DEV__) return
+  if (!auth.checkToken(req.cookies.Angelebaby) && !__IS_DEV__) return res.send(AUTH_ERROR)
   try {
     res.send(await Manager.getStatusList(req.query))
   } catch (err) {
@@ -72,7 +70,7 @@ router.get('/getStatusList', async (req, res, next) => {
 
 // 获取订餐数据列表（以部门为维度）
 router.get('/getListByDepartment', async (req, res, next) => {
-  if (!auth.checkToken(req.cookies.Angelebaby) && !__IS_DEV__) return
+  if (!auth.checkToken(req.cookies.Angelebaby) && !__IS_DEV__) return res.send(AUTH_ERROR)
   try {
     res.send(await Manager.getListByDepartment(req.query))
   } catch (err) {

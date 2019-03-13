@@ -122,15 +122,14 @@ export default class Order extends Component<IProps, IState>{
       })
       return false
     }
-
     return true
   }
 
   /** 提交 */
   async handleSubmit(e) {
     e.preventDefault()
-    this.setState({ loading: true })
     if (!this.checkForm()) return
+    this.setState({ loading: true })
     const postData = this.state.form
     postData.name = this.state.name
     const res = await client.post('addOrder', postData)

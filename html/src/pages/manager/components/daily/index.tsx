@@ -80,9 +80,11 @@ export default class Daily extends Component<IProps, Istate> {
 
     const res = await client.get(ajaxURL)
     const data = res.data.data
-    data.map((item, index) => {
-      item.key = index
-    })
+    if(data) {
+      data.map((item, index) => {
+        item.key = index
+      })
+    }
     const dataSource = data
     this.setState({ dataSource })
   }

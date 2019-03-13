@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import { Form, Input, Button, Select, notification, DatePicker, LocaleProvider } from 'antd'
+import { Form, Input, Button, Select, notification, DatePicker } from 'antd'
+import locale from 'antd/lib/date-picker/locale/zh_CN'
 import './index.scss'
 import Util from '../../../../util'
 import client from '../../../../client'
-import zh_CN from 'antd/lib/locale-provider/zh_CN'
-import 'moment/locale/zh-cn'
+import moment from 'moment'
 const Option = Select.Option
 const FormItem = Form.Item
 
@@ -16,12 +16,23 @@ interface IProps {
 }
 
 interface IState {
-  orderDate: string
+  orderDate: any,
+  datepicker: any
 }
 
 class AddOrderForm extends Component<IProps, IState> {
   state = {
-    orderDate: ''
+    orderDate: '',
+    datepicker: moment(new Date(), 'yyyy-MM-dd')
+  }
+  componentDidMount() {
+    const propsDate = new Date().Format('yyyy-MM-dd')
+    if(propsDate) {
+      const parse = Date.parse(propsDate)
+      this.state.orderDate = propsDate
+      this.state.datepicker = moment(parse)
+      console.log(moment(parse))
+    }
   }
   /** 生成部门待选项 */
   generateOpts = () => {
@@ -38,6 +49,11 @@ class AddOrderForm extends Component<IProps, IState> {
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       e.preventDefault()
       if (!err) {
+        values.d = new Date().Format('yyyy-MM-dd')
+        if(this.state.orderDate !== '') {
+          values.d = this.state.orderDate
+        }
+        values.t = new Date().getTime()
         let res
         if (this.props.formRecord && this.props.formRecord.id) {
           res = await client.post('manager/updateDataById', { id: this.props.formRecord.id, ...values })
@@ -50,11 +66,6 @@ class AddOrderForm extends Component<IProps, IState> {
               this.props.submitOk()
           }
         } else {
-          values.d = new Date().Format('yyyy-MM-dd')
-          if(this.state.orderDate !== '') {
-            values.d = this.state.orderDate
-          }
-          values.t = new Date().getTime()
           res = await client.post('addOrder', values)
           const code = res.data.errcode
           if (code === 0) {
@@ -66,10 +77,8 @@ class AddOrderForm extends Component<IProps, IState> {
             this.props.form.setFields({
               name: '',
               department: '',
-              orderStatus: ''
-            })
-            this.setState({
-              orderDate: ''
+              orderStatus: '',
+              datepicker: moment(new Date(), 'yyyy-MM-dd')
             })
           }
         }
@@ -162,9 +171,12 @@ class AddOrderForm extends Component<IProps, IState> {
             }
           </FormItem>
           <FormItem label="时间" {...formItemLayout}>
-            <LocaleProvider locale={zh_CN}>
-              <DatePicker className="orderdate" onChange={this.handleDatePickerOnChange}/>
-            </LocaleProvider>
+            <DatePicker 
+              className="orderdate" 
+              locale={locale} 
+              value={this.state.datepicker}
+              onChange={this.handleDatePickerOnChange}
+            />
           </FormItem>
           <FormItem label="备注" {...formItemLayout}>
             {

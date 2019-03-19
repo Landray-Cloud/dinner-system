@@ -22,7 +22,6 @@ yarn run build
 # build for production and view the bundle analyzer report
 yarn run build --report
 ```
-
 # Server
 ``` bash
 1. cd 进 server 目录

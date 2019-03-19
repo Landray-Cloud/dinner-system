@@ -1,0 +1,19 @@
+.order-wrap {
+  // width: 500px;
+  // min-height: 300px;
+  // position: absolute;
+  // top: 50%;
+  // left: 50%;
+  // transform: translate(-50%) translateY(-50%);
+  border-radius: 6px;
+  background: #ffffff;
+  overflow: hidden;
+  padding: 20px 20px 0 20px;
+  text-align: center;
+}
+.order-wrap .ant-row.ant-form-item {
+  width: 400px;
+}
+.orderdate{
+  width: 100%;
+}

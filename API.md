@@ -26,10 +26,11 @@ orderDate | false | String | 以日期检索数据
 ---|---|---|---
 id | Number | 
 name | String | 名字
+department | Number | 部门：0，用户体验部；1，KM 产品部；2，蓝钉产品部；3，平台支持部；4，EKP 产品部；5，AIP 部门
 orderStatus | Number | 订餐状态, 1:加班订餐; 2:加班不订餐; 3:不加班不订餐
 orderDate | String | 订餐日期："2018-01-15"
 orderTime | Number | 订餐时间戳： 1516000813994
-
+restaurant | String | 吃哪家
 
 ---
 
@@ -47,6 +48,8 @@ name | true | String | 名字
 ---
 
 ## 3.用户今天是否已做了选择
+用处貌似不大，用获取点餐状态接口orderStatus也能实现
+
 *   方法名: isAction
 *   请求: GET
 *   示例: /node/dinner/isAction?name=leo666&orderDate=2018-01-12
@@ -62,7 +65,6 @@ name | true | String | 名字
 参数 | 类型 | 描述
 ---|---|---|---
 isAction | Boolean | true: 已操作，false: 未操作
-
 
 ---
 
@@ -82,7 +84,6 @@ name | true | String | 名字
 参数 | 类型 | 描述
 ---|---|---|---
 orderStatus | Number | 1:加班订餐; 2:加班不订餐; 3:不加班不订餐
-
 
 ---
 
@@ -105,7 +106,6 @@ errcode | Number | -1: 登陆不成功, 0: 登陆成功
 
 
 
-
 ---
 
 ## 6.获取某日是否可以提交加班订餐记录
@@ -123,7 +123,6 @@ date | true | String | 日期，格式：2018-01-16
 参数 | 类型 | 描述
 ---|---|---|---
 status | Number | 0: 不允许, 1: 允许
-
 
 ---
 
@@ -151,8 +150,10 @@ status | true | Number | 0: 不允许, 1: 允许
 参数 | 是否必须 | 类型 | 描述
 ---|---|---|---
 id | true | Number | 记录ID
-orderStatus | true | String | 订餐状态
+department | true | Number | 部门：0，用户体验部；1，KM 产品部；2，蓝钉产品部；3，平台支持部；4，EKP 产品部；5，AIP 部门
 name | true | String | 名字
+orderStatus | true | String | 订餐状态
+restaurant | false | String | 吃哪家
 remarks | false | String | 备注
 
 ---
@@ -168,7 +169,6 @@ remarks | false | String | 备注
 ---|---|---|---
 id | true | Number | 记录ID
 
-
 ---
 
 
@@ -181,8 +181,115 @@ id | true | Number | 记录ID
 参数 | 是否必须 | 类型 | 描述
 ---|---|---|---
 name | true | String | 名字
+department | true | Number | 部门：0，用户体验部；1，KM 产品部；2，蓝钉产品部；3，平台支持部；4，EKP 产品部；5，AIP 部门
 orderStatus | true | String | 订餐状态
+restaurant | false | String | 吃哪家
 remarks | false | String | 备注
 
+---
+
+## 11.获取日常订餐数据列表(以状态为维度)
+*   方法名: getStatusList
+*   请求: GET
+
+
+### 请求参数
+参数             | 是否必须 | 类型 | 描述
+----------------|-------|----------|---
+orderDate | false | String | 以日期/月份条件获取数据
+department | false | Number | 以部门条件用来获取数据
+
+*   示例: 
+    *   根据日期查询: /node/dinner/manager/getStatusList?orderDate=2018-02-13
+    *   根据月份查询: /node/dinner/manager/getStatusList?orderDate=2018-02
+    *   根据日期+部门查询: /node/dinner/manager/getStatusList?orderDate=2018-02-13&department=
+
+
+### 返回参数
+参数            | 类型 | 描述
+----------------|-------|---------
+orderStatus | Number | 订餐状态, 1:加班订餐; 2:加班不订餐; 3:不加班不订餐
+total            | Number | 总数
+
+```json
+{
+    "errmsg": "ok",
+    "errcode": 0,
+    "data": [
+        {
+            "orderStatus": 1,
+            "total": 672
+        },
+        {
+            "orderStatus": 2,
+            "total": 2
+        },
+        {
+            "orderStatus": 3,
+            "total": 13
+        }
+    ]
+}
+```
+
+---
+
+## 12.获取以部门为纬度的订餐列表
+*   方法名: getListByDepartment
+*   请求: GET
+
+
+### 请求参数
+参数             | 是否必须 | 类型 | 描述
+----------------|-------|----------|---
+orderDate | false | String | 以日期/月份条件获取数据
+department | false | Number | 以部门条件用来获取数据
+
+*   示例: 
+    *   根据日期查询: /node/dinner/manager/getListByDepartment?orderDate=2018-02-13
+    *   根据月份查询: /node/dinner/manager/getListByDepartment?orderDate=2018-02
+    *   根据日期+部门查询: /node/dinner/manager/getListByDepartment?orderDate=2018-02-13&department=
+
+
+### 返回参数
+参数            | 类型 | 描述
+----------------|-------|---------
+department | Number | 部门：0，用户体验部；1，KM 产品部；2，蓝钉产品部；3，平台支持部；4，EKP 产品部；5，AIP 部门
+orderStatus | Number | 订餐状态, 1:加班订餐; 2:加班不订餐; 3:不加班不订餐
+total            | Number | 总数
+
+```json
+{
+    "errmsg": "ok",
+    "errcode": 0,
+    "data": [
+        {
+            "department": 1,
+            "orderStatus": 1,
+            "total": 672
+        },
+        {
+            "department": 1,
+            "orderStatus": 2,
+            "total": 2
+        },
+        {
+            "department": 1,
+            "orderStatus": 3,
+            "total": 12
+        },
+        {
+            "department": 4,
+            "orderStatus": 3,
+            "total": 1
+        },
+        {
+            "department": 5,
+            "orderStatus": 3,
+            "total": 1
+        }
+    ]
+}
+```
 
 ---

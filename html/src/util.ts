@@ -1,3 +1,4 @@
+import client from './client'
 const jwt = require('jsonWebToken')
 const SECRET = 'Leonardo2.0'
 const localName = 'USER_INFO_2_0'
@@ -75,12 +76,6 @@ function getDeptNameFromNum(dept: number) {
   return obj ? obj.label : ''
 }
 
-/** 传入数字 返回 部门的管理员名字 */
-function getDeptAdminFromNum(dept: number | string) {
-  const obj = deptTable[dept]
-  return obj ? obj.adminName : ''
-}
-
 /** 返回状态的中文 */
 function generateStatusName(status: number) {
   let text = ''
@@ -101,6 +96,15 @@ function generateStatusName(status: number) {
   }
   return { text, color }
 }
+
+/** 获取订餐负责人名字 */
+const getDinnerManager = async () => {
+  const ajaxURL = 'getDinnerManager'
+  const res = await client.get(ajaxURL)
+  const dinnerManager = res.data.data.name || ''
+  return dinnerManager
+}
+
 const Util = {
   setToken,
   getToken,
@@ -108,9 +112,9 @@ const Util = {
   setNameToLocal,
   checkEngAndNum,
   getDeptNameFromNum,
-  getDeptAdminFromNum,
   deptTable,
-  generateStatusName
+  generateStatusName,
+  getDinnerManager
 }
 
 export default Util

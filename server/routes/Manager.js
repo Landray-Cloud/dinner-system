@@ -78,4 +78,14 @@ router.get('/getListByDepartment', async (req, res, next) => {
   }
 })
 
+// 设置订餐管理员名字
+router.post('/setDinnerManager', async (req, res) => {
+  if (!auth.checkToken(req.cookies.Angelebaby) && !__IS_DEV__) return res.send(AUTH_ERROR)
+  try {
+    res.send(await Manager.setDinnerManager(req.body))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
 module.exports = router

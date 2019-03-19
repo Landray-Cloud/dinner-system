@@ -17,6 +17,7 @@ interface IState {
   orderStatusModel: string | number,
   submitStatus: any,
   loading: boolean,
+  dinnerManager: string,
   form: {
     [k: string]: string | number
   }
@@ -32,6 +33,7 @@ export default class Order extends Component<IProps, IState>{
       orderStatusModel: 0, // 本地用
       submitStatus: '', // 当前是否允许提交的状态
       loading: false,
+      dinnerManager: '',
       form: {
         orderStatus: 0, // 提交用
         restaurant: '', // 选择了的餐厅
@@ -55,6 +57,7 @@ export default class Order extends Component<IProps, IState>{
         this.getSubmitStatus().catch()
         this.getOrderStatus().catch()
       })
+      this.getDinnerManager().catch()
     } else {
       this.props.history.push('/')
     }
@@ -84,6 +87,13 @@ export default class Order extends Component<IProps, IState>{
     const res = await client.get(ajaxURL)
     const submitStatus = res.data.data.status
     this.setState({ submitStatus })
+  }
+
+  /** 获取订餐负责人名字 */
+  async getDinnerManager() {
+    let dinnerManager = await Util.getDinnerManager()
+    if (!dinnerManager || dinnerManager === '') dinnerManager = '订餐负责人'
+    this.setState({ dinnerManager })
   }
 
   /** 加班状态赋值 */
@@ -165,11 +175,7 @@ export default class Order extends Component<IProps, IState>{
   render() {
     const name = this.state.name
     const week = this.state.week
-    // const dept = this.state.form.department
-    // let adminName = ''
-    // if (dept) {
-    //   adminName = Util.getDeptAdminFromNum(dept)
-    // }
+    const dinnerManager = this.state.dinnerManager
     const formItemLayout = {
       labelCol: { span: 3 },
       wrapperCol: { span: 21 }
@@ -188,7 +194,7 @@ export default class Order extends Component<IProps, IState>{
             {this.generateOpts()}
           </Select>
         </FormItem> */}
-        <FormItem label="项目" {...formItemLayout}>
+        <FormItem label="事由" {...formItemLayout}>
           <Input data-id="remarks" placeholder="可以写写因啥事加班?" allowClear={true} value={this.state.form.remarks} onChange={this.handleRemarksChange} />
         </FormItem>
         {/* <FormItem label="时间" {...formItemLayout}>
@@ -218,8 +224,7 @@ export default class Order extends Component<IProps, IState>{
           break
       }
       bodyJSX = (
-        // <p className="tips-text">今天你<span>{orderText}</span>，如有变动，请联系{adminName}。</p>
-        <p className="tips-text">今天你<span>{orderText}</span>，如有变动，请联系订餐负责人。</p>
+        <p className="tips-text">今天你<span>{orderText}</span>，如有变动，请联系{dinnerManager}。</p>
       )
     }
 
@@ -227,8 +232,7 @@ export default class Order extends Component<IProps, IState>{
     const submitStatus = this.state.submitStatus
     if (submitStatus === 0) {
       bodyJSX = (
-        // <p className="tips-text">现在<span>不许下单</span>啦，如有疑问，请联系{adminName}。</p>
-        <p className="tips-text">现在<span>不许下单</span>啦，如有疑问，请联系订餐负责人。</p>
+        <p className="tips-text">现在<span>不许下单</span>啦，如有疑问，请联系{dinnerManager}。</p>
       )
     }
 

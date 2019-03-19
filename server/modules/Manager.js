@@ -193,6 +193,24 @@ async function getListByDepartment(options) {
   })
 }
 
+// 设置订餐管理员名字
+async function setDinnerManager(options) {
+  const name = options.name
+
+  if (!name || typeof name === 'undefined') return Utils.writeError('setDinnerManager: name是必须参数')
+
+  const sqlExecute = $sql.setDinnerManager
+  const sqlParam = [name]
+
+  return new Promise((resolve, reject) => {
+    connectionDatabase(sqlExecute, sqlParam).then(succRes => {
+      resolve(Utils.writeSuccess())
+    }).catch(errRes => {
+      reject(Utils.writeError('setDinnerManager - 失败', errRes))
+    })
+  })
+}
+
 module.exports = {
   login,
   getList,
@@ -200,5 +218,6 @@ module.exports = {
   deleteOrder,
   setSubmit,
   getStatusList,
-  getListByDepartment
+  getListByDepartment,
+  setDinnerManager
 }

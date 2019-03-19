@@ -6,6 +6,7 @@ import OnOff from './components/onoff'
 import AddOrder from './components/order'
 import Daily from './components/daily'
 import Department from './components/department'
+import DinnerManager from './components/dinnerManager'
 // import { relative } from 'path';
 
 const { Header, Sider, Content } = Layout
@@ -23,7 +24,7 @@ interface Istate {
 export default class SiderDemo extends Component<IProps, Istate> {
   constructor(props) {
     super(props)
-    
+
     this.state = {
       collapsed: false,
       active: '1'
@@ -31,7 +32,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
     this.delCookie = this.delCookie.bind(this)
     this.exitLogin = this.exitLogin.bind(this)
   }
-  
+
 
   toggle = () => {
     this.setState({
@@ -59,6 +60,8 @@ export default class SiderDemo extends Component<IProps, Istate> {
         return <OnOff />
       case '5':
         return <AddOrder />
+      case '6':
+        return <DinnerManager />
     }
     return (
       <div>暂无...</div>
@@ -73,7 +76,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
     } else {
       return null
     }
-      
+
   }
   /** 删除cookie */
   delCookie(name) {
@@ -123,11 +126,15 @@ export default class SiderDemo extends Component<IProps, Istate> {
             </Menu.Item>
             <Menu.Item key="4">
               <Icon type="poweroff" />
-              <span>设置开关</span>
+              <span>订餐开关</span>
             </Menu.Item>
             <Menu.Item key="5">
               <Icon type="upload" />
               <span>添加数据</span>
+            </Menu.Item>
+            <Menu.Item key="6">
+              <Icon type="user" />
+              <span>订餐管理员</span>
             </Menu.Item>
           </Menu>
         </Sider>
@@ -138,7 +145,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
             />
-            <Button type="primary" style={{position: 'absolute', right: '40px', top: '16px'}} onClick={this.exitLogin}>退出登录</Button>
+            <Button type="primary" style={{ position: 'absolute', right: '40px', top: '16px' }} onClick={this.exitLogin}>退出登录</Button>
           </Header>
           <Content style={{
             margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280,

@@ -16,32 +16,33 @@ interface IProps {
 }
 
 interface IState {
-  orderDate: any,
-  datepicker: any
+  orderDate: string
 }
 
 class AddOrderForm extends Component<IProps, IState> {
-  state = {
-    orderDate: '',
-    datepicker: moment(new Date(), 'yyyy-MM-dd')
-  }
-  componentDidMount() {
-    const propsDate = new Date().Format('yyyy-MM-dd')
-    if(propsDate) {
-      const parse = Date.parse(propsDate)
-      this.state.orderDate = propsDate
-      this.state.datepicker = moment(parse)
-      console.log(moment(parse))
+  constructor(props) {
+    super(props)
+    this.state = {
+      orderDate: new Date().Format('yyyy-MM-dd'),
+    }
+    if(this.props.formRecord) {
+      const orderDate = this.props.formRecord.orderDate
+      this.state = {
+        orderDate
+      }
     }
   }
+  
   /** 生成部门待选项 */
   generateOpts = () => {
     return Util.deptTable.map((item) => <Option key={String(item.value)} value={item.value}>{item.label}</Option>)
   }
   /** 切换时间选择框 */
-  handleDatePickerOnChange = (data: any,orderDate: string) => {
-    this.setState({
-      orderDate: orderDate
+  handleDatePickerOnChange = (date: any,orderDate: string) => {
+    setTimeout(() => {
+      this.setState({
+        orderDate: orderDate
+      })
     })
   }
   /** 提交 */
@@ -49,13 +50,11 @@ class AddOrderForm extends Component<IProps, IState> {
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       e.preventDefault()
       if (!err) {
-        values.d = new Date().Format('yyyy-MM-dd')
-        if(this.state.orderDate !== '') {
-          values.d = this.state.orderDate
-        }
+        values.d = this.state.orderDate
         values.t = new Date().getTime()
         let res
         if (this.props.formRecord && this.props.formRecord.id) {
+          values.orderDate = this.state.orderDate
           res = await client.post('manager/updateDataById', { id: this.props.formRecord.id, ...values })
           const code = res.data.errcode
           if (code === 0) {
@@ -78,32 +77,13 @@ class AddOrderForm extends Component<IProps, IState> {
               name: '',
               department: '',
               orderStatus: '',
-              datepicker: moment(new Date(), 'yyyy-MM-dd')
+              orderDate: ''
             })
           }
         }
       }
     })
   }
-  /** 生成选项菜单 */
-  // resGenerateOpts() {
-  //   const opts = [
-  //     '真功夫(快餐)',
-  //     '永和豆浆(快餐)',
-  //     '米多面多',
-  //     '潮梅里卤鹅',
-  //     '马来一号',
-  //     '港岛记',
-  //     '壹定食(快餐)',
-  //     '吃个汤(椰子汤)',
-  //     '金牌隆江猪脚烧腊(烧腊)',
-  //     '起家一头牛',
-  //     '盒悦',
-  //     '红荔村肠粉'
-  //   ]
-  //   return opts.map((text, idx) => <Option key={String(idx)} value={text}>{text}</Option>)
-  // }
-
   render() {
     const { getFieldDecorator } = this.props.form
     const { formRecord } = this.props
@@ -112,8 +92,8 @@ class AddOrderForm extends Component<IProps, IState> {
       wrapperCol: { span: 21 }
     }
     return (
-      <div className="order-wrap">
-        <Form className="order-form" layout="horizontal">
+      <div className="orderwrap">
+        <Form className="order-form" layout="horizontal" onSubmit={this.handleSubmit}>
           <FormItem label="姓名" {...formItemLayout}>
             {
               getFieldDecorator('name', {
@@ -140,20 +120,6 @@ class AddOrderForm extends Component<IProps, IState> {
               )
             }
           </FormItem>
-          {/* <FormItem label="餐厅" {...formItemLayout}>
-            {
-              getFieldDecorator('restaurant', {
-                initialValue: formRecord ? formRecord.restaurant : '',
-                rules: [{
-                  required: true, message: '需要选择吃哪家哦'
-                }]
-              })(
-                <Select placeholder="请选择">
-                  {this.resGenerateOpts()}
-                </Select>
-              )
-            }
-          </FormItem> */}
           <FormItem label="订餐" {...formItemLayout}>
             {
               getFieldDecorator('orderStatus', {
@@ -171,10 +137,20 @@ class AddOrderForm extends Component<IProps, IState> {
             }
           </FormItem>
           <FormItem label="时间" {...formItemLayout}>
+            {/* {
+              getFieldDecorator('orderDate', {
+                initialValue: formRecord ? moment(formRecord.orderDate) : moment(new Date(), 'yyyy-MM-dd')
+              })(
+                <DatePicker 
+                  className="orderdate" 
+                  locale={locale}
+                />
+              )
+            } */}
             <DatePicker 
               className="orderdate" 
-              locale={locale} 
-              value={this.state.datepicker}
+              locale={locale}
+              value={moment(this.state.orderDate)}
               onChange={this.handleDatePickerOnChange}
             />
           </FormItem>
@@ -188,7 +164,7 @@ class AddOrderForm extends Component<IProps, IState> {
             }
           </FormItem>
           <FormItem>
-            <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>提交</Button>
+            <Button type="primary" htmlType="submit">提交</Button>
           </FormItem>
         </Form>
       </div>

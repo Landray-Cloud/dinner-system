@@ -191,6 +191,11 @@ export default class Order extends Component<IProps, IState>{
         <FormItem label="项目" {...formItemLayout}>
           <Input data-id="remarks" placeholder="可以写写因啥事加班?" allowClear={true} value={this.state.form.remarks} onChange={this.handleRemarksChange} />
         </FormItem>
+        {/* <FormItem label="时间" {...formItemLayout}>
+          <DatePicker 
+            className="orderdate" 
+          />
+        </FormItem> */}
         <FormItem>
           <Button type="primary" htmlType="submit" loading={this.state.loading}>提交</Button>
         </FormItem>

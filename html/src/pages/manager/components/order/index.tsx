@@ -23,14 +23,15 @@ class AddOrderForm extends Component<IProps, IState> {
   constructor(props) {
     super(props)
     this.state = {
-      orderDate: new Date().Format('yyyy-MM-dd'),
+      orderDate: new Date().Format('yyyy-MM-dd hh:mm:ss'),
     }
-    if(this.props.formRecord) {
-      const orderDate = this.props.formRecord.orderDate
-      this.state = {
-        orderDate
-      }
-    }
+    // if(this.props.formRecord) {
+    //   const orderTime = this.props.formRecord.orderTime
+    //   const recordTime = Util.dateFormat(orderTime)
+    //   this.state = {
+    //     orderDate: recordTime
+    //   }
+    // }
   }
   
   /** 生成部门待选项 */
@@ -50,11 +51,12 @@ class AddOrderForm extends Component<IProps, IState> {
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       e.preventDefault()
       if (!err) {
-        values.d = this.state.orderDate
-        values.t = new Date().getTime()
+        const orderd = this.state.orderDate
+        values.d = orderd.substring(0,10)
+        const ordertime = new Date(orderd)
+        values.t = ordertime.getTime() / 1000
         let res
         if (this.props.formRecord && this.props.formRecord.id) {
-          values.orderDate = this.state.orderDate
           res = await client.post('manager/updateDataById', { id: this.props.formRecord.id, ...values })
           const code = res.data.errcode
           if (code === 0) {
@@ -77,7 +79,7 @@ class AddOrderForm extends Component<IProps, IState> {
               name: '',
               department: '',
               orderStatus: '',
-              orderDate: ''
+              orderDate: new Date().Format('yyyy-MM-dd hh:mm:ss')
             })
           }
         }
@@ -137,22 +139,27 @@ class AddOrderForm extends Component<IProps, IState> {
             }
           </FormItem>
           <FormItem label="时间" {...formItemLayout}>
-            {/* {
+            {
               getFieldDecorator('orderDate', {
-                initialValue: formRecord ? moment(formRecord.orderDate) : moment(new Date(), 'yyyy-MM-dd')
+                initialValue: formRecord ? moment(Util.dateFormat(formRecord.orderTime)) : moment(new Date(), 'yyyy-MM-dd hh:mm:ss')
               })(
                 <DatePicker 
                   className="orderdate" 
                   locale={locale}
+                  showTime={{ defaultValue: moment('2019-01-01 00:00:00', 'yyyy-MM-dd hh:mm:ss') }}
+                  showToday={false}
+                  onChange={this.handleDatePickerOnChange}
                 />
               )
-            } */}
-            <DatePicker 
+            }
+            {/* <DatePicker 
               className="orderdate" 
               locale={locale}
               value={moment(this.state.orderDate)}
+              showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+              showToday={false}
               onChange={this.handleDatePickerOnChange}
-            />
+            /> */}
           </FormItem>
           <FormItem label="备注" {...formItemLayout}>
             {

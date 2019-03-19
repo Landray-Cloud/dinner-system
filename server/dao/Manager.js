@@ -8,5 +8,6 @@ module.exports = {
   updateById: 'UPDATE list SET orderStatus=?, name=?, remarks=?, department=?, restaurant=? WHERE id=?',
   deleteById: 'DELETE from list where id=?',
   login: 'SELECT * FROM admin WHERE user=? AND pass=?',
-  setSubmitUpdate: 'UPDATE submit_order SET status=? WHERE date=?'
+  setSubmitUpdate: 'UPDATE submit_order SET status=? WHERE date=?',
+  setDinnerManager: 'UPDATE dinner_manager SET name=?'
 }

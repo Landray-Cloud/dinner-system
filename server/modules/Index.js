@@ -144,9 +144,24 @@ async function getSubmit(options) {
   })
 }
 
+// 获取订餐管理员名字
+async function getDinnerManager(options) {
+  const sqlExecute = $sql.getDinnerManager
+
+  return new Promise((resolve, reject) => {
+    connectionDatabase(sqlExecute).then(succRes => {
+      const name = succRes[0] ? succRes[0].name : ''
+      resolve(Utils.writeSuccess({ name }))
+    }).catch(errRes => {
+      reject(Utils.writeError('getDinnerManager - 失败', errRes))
+    })
+  })
+}
+
 module.exports = {
   addOrder,
   isAction,
   orderStatus,
-  getSubmit
+  getSubmit,
+  getDinnerManager
 }

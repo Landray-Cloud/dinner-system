@@ -3,7 +3,7 @@ const router = express.Router()
 const Manager = require('../modules/Manager')
 const auth = require('../components/auth')
 const AUTH_ERROR = { auth: 0 } // 统一登录失败
-const __IS_DEV__ = false
+const __IS_DEV__ = !true
 
 // 后台登录
 router.post('/login', async (req, res) => {
@@ -73,6 +73,16 @@ router.get('/getListByDepartment', async (req, res, next) => {
   if (!auth.checkToken(req.cookies.Angelebaby) && !__IS_DEV__) return res.send(AUTH_ERROR)
   try {
     res.send(await Manager.getListByDepartment(req.query))
+  } catch (err) {
+    res.send(err)
+  }
+})
+
+// 设置订餐管理员名字
+router.post('/setDinnerManager', async (req, res) => {
+  if (!auth.checkToken(req.cookies.Angelebaby) && !__IS_DEV__) return res.send(AUTH_ERROR)
+  try {
+    res.send(await Manager.setDinnerManager(req.body))
   } catch (err) {
     res.send(err)
   }

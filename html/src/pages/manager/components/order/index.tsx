@@ -36,12 +36,13 @@ class AddOrderForm extends Component<IProps, IState> {
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       e.preventDefault()
       if (!err) {
-        const orderd = moment(values.d).format()
-        values.d = orderd.substring(0,10)
-        const ordertime = new Date(orderd)
-        values.t = ordertime.getTime()
         let res
         if (this.props.formRecord && this.props.formRecord.id) {
+          // 编辑要穿
+          const orderd = moment(values.orderDate).format()
+          const ordertime = new Date(orderd)
+          values.orderDate = orderd.substring(0,10)
+          values.orderTime = ordertime.getTime()
           res = await client.post('manager/updateDataById', { id: this.props.formRecord.id, ...values })
           const code = res.data.errcode
           if (code === 0) {
@@ -52,6 +53,10 @@ class AddOrderForm extends Component<IProps, IState> {
               this.props.submitOk()
           }
         } else {
+          const orderd = moment(values.orderDate).format()
+          const ordertime = new Date(orderd)
+          values.d = orderd.substring(0,10)
+          values.t = ordertime.getTime()
           res = await client.post('addOrder', values)
           const code = res.data.errcode
           if (code === 0) {
@@ -64,7 +69,7 @@ class AddOrderForm extends Component<IProps, IState> {
               name: '',
               department: '',
               orderStatus: '',
-              d: moment(new Date(), 'yyyy-MM-dd hh:mm:ss'),
+              orderDate: moment(new Date(), 'yyyy-MM-dd hh:mm:ss'),
               remarks: ''
             })
           }
@@ -126,7 +131,7 @@ class AddOrderForm extends Component<IProps, IState> {
           </FormItem>
           <FormItem label="时间" {...formItemLayout}>
             {
-              getFieldDecorator('d', {
+              getFieldDecorator('orderDate', {
                 initialValue: formRecord ? moment(new Date(formRecord.orderTime).Format('yyyy-MM-dd hh:mm')) : moment(new Date(), 'yyyy-MM-dd hh:mm')
               })(
                 <DatePicker 

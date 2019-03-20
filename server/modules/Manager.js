@@ -73,8 +73,10 @@ async function updateDataById(options) {
   const remarks = options.remarks || ''
   const department = options.department
   const restaurant = options.restaurant || ''
+  const orderDate = options.orderDate
+  const orderTime = options.orderTime
   const sqlExecute = $sql.updateById
-  const sqlParam = [orderStatus, name, remarks, department, restaurant, id]
+  const sqlParam = [orderStatus, name, remarks, department, restaurant, orderDate, orderTime, id]
 
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {

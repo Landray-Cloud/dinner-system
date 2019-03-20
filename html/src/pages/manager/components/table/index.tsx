@@ -171,11 +171,13 @@ export default class SiderDemo extends Component<IProps, Istate> {
       render: (orderTime: number) => (
         <span>{new Date(orderTime).Format('yyyy-MM-dd hh:mm')}</span>
       )
-    }, {
-      title: '吃哪家',
-      dataIndex: 'restaurant',
-      key: 'restaurant'
-    }, {
+    }, 
+    // {
+    //   title: '吃哪家',
+    //   dataIndex: 'restaurant',
+    //   key: 'restaurant'
+    // },
+    {
       title: '部门',
       dataIndex: 'department',
       key: 'department',

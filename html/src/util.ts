@@ -104,20 +104,6 @@ const getDinnerManager = async () => {
   const dinnerManager = res.data.data.name || ''
   return dinnerManager
 }
-function add0(m){
-  return m < 10 ? '0' + m: m
-} 
-/** 时间戳转成 yyyy-mm-dd hh:mm:ss */
-function dateFormat(timestamp) {
-  const time = new Date(timestamp)
-  const year = time.getFullYear()
-  const month = time.getMonth() + 1
-  const day = time.getDate()
-  const hour = time.getHours()
-  const minute = time.getMinutes()
-  const second = time.getSeconds()
-  return  year+'-'+add0(month)+'-'+ add0(day)+' '+add0(hour)+':'+add0(minute)+':'+add0(second)  
-}
 
 const Util = {
   setToken,
@@ -128,8 +114,7 @@ const Util = {
   getDeptNameFromNum,
   deptTable,
   generateStatusName,
-  getDinnerManager,
-  dateFormat
+  getDinnerManager
 }
 
 export default Util

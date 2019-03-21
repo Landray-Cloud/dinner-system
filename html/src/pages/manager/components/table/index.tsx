@@ -20,7 +20,7 @@ interface IProps {
 interface Istate {
   name: string,
   orderDate: string,
-  department: string | number,
+  department: string | number | undefined,
   dataSource: any,
   visible: boolean,
   formRecord: object
@@ -70,6 +70,8 @@ export default class SiderDemo extends Component<IProps, Istate> {
   getList = async () => {
     const orderDate = this.state.orderDate
     const name = this.state.name
+    const department = this.state.department
+    console.log(name + 'async')
     let ajaxURL = 'manager/getList'
     if (name && orderDate) {
       ajaxURL += `?name=${name}&orderDate=${orderDate}`
@@ -84,12 +86,9 @@ export default class SiderDemo extends Component<IProps, Istate> {
       })
       return
     }
-    const department = this.state.department
-
     if (typeof department !== 'undefined' && department !== '') {
       ajaxURL += `&department=${department}`
     }
-
     const res = await client.get(ajaxURL)
     const dataSource = res.data.data
     this.setState({ dataSource })
@@ -101,7 +100,15 @@ export default class SiderDemo extends Component<IProps, Istate> {
       this.getList().catch()
     })
   }
-
+  /** 监听input框值 */
+  handleChangeName = (e) => {
+    console.log(e)
+    const name = e.target.value
+    console.log(name + 'change')
+    this.setState({ name }, () => {
+      this.getList().catch()
+    })
+  }
   /** 时间选择改变: 进行搜索请求列表 */
   handleDatePickerOnChange = (date: any, orderDate: string) => {
     this.setState({ orderDate }, () => {
@@ -215,7 +222,12 @@ export default class SiderDemo extends Component<IProps, Istate> {
       <div>
         <Form layout="inline">
           <FormItem label="部门">
-            <Select className="table-select" allowClear={true} placeholder="请选择" onChange={this.handleDeptChange}>
+            <Select 
+                className="table-select" 
+                allowClear={true} 
+                placeholder="请选择" 
+                onChange={this.handleDeptChange}
+            >
               {this.generateOpts()}
             </Select>
           </FormItem>
@@ -226,7 +238,9 @@ export default class SiderDemo extends Component<IProps, Istate> {
             <Search
               placeholder="按名字搜索"
               onSearch={this.handleSearchOnSublimt}
+              onChange={this.handleChangeName}
               enterButton={true}
+              allowClear={true}
             />
           </FormItem>
         </Form>

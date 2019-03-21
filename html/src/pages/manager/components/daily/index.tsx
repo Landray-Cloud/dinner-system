@@ -17,7 +17,7 @@ interface IProps {
 
 interface Istate {
   orderDate: string,
-  department: string | number,
+  department: string | number | undefined,
   total: string | number,
   dataSource: any,
   mode: any,
@@ -64,7 +64,7 @@ export default class Daily extends Component<IProps, Istate> {
     const orderDate = this.state.orderDate
     const department = this.state.department
     let ajaxURL = 'manager/getStatusList'
-    if (department && orderDate) {
+    if (typeof department === 'number' && orderDate) {
       ajaxURL += `?department=${department}&orderDate=${orderDate}`
     } else if (typeof department !== 'undefined' && department !== '') {
       ajaxURL += `?department=${department}`

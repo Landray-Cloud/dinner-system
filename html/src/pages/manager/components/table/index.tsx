@@ -19,7 +19,7 @@ interface IProps {
 interface Istate {
   name: string,
   orderDate: string,
-  department: string | number,
+  department: string | number | undefined,
   dataSource: any,
   visible: boolean,
   formRecord: object
@@ -83,12 +83,11 @@ export default class SiderDemo extends Component<IProps, Istate> {
       })
       return
     }
-    const department = this.state.department
 
+    const department = this.state.department
     if (typeof department !== 'undefined' && department !== '') {
       ajaxURL += `&department=${department}`
     }
-
     const res = await client.get(ajaxURL)
     const dataSource = res.data.data
     this.setState({ dataSource })
@@ -216,7 +215,12 @@ export default class SiderDemo extends Component<IProps, Istate> {
       <div>
         <Form layout="inline">
           <FormItem label="部门">
-            <Select className="table-select" allowClear={true} placeholder="请选择" onChange={this.handleDeptChange}>
+            <Select
+              className="table-select"
+              allowClear={true}
+              placeholder="请选择"
+              onChange={this.handleDeptChange}
+            >
               {this.generateOpts()}
             </Select>
           </FormItem>

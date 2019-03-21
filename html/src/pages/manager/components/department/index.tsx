@@ -14,7 +14,7 @@ interface IProps {
 }
 interface Istate {
   orderDate: string,
-  department: string | number,
+  department: string | number | undefined,
   total: string | number,
   dataSource: any,
   filteredInfo: any
@@ -65,7 +65,7 @@ export default class Department extends Component<IProps, Istate> {
     const orderDate = this.state.orderDate
     const department = this.state.department
     let ajaxURL = 'manager/getListByDepartment'
-    if (department && orderDate) {
+    if (typeof department === 'number' && orderDate) {
       ajaxURL += `?department=${department}&orderDate=${orderDate}`
     } else if (typeof department !== 'undefined' && department !== '') {
       ajaxURL += `?department=${department}`

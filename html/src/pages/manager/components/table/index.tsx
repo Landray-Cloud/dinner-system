@@ -6,7 +6,6 @@ import AddOrder from '../../components/order/index'
 
 import { Input, DatePicker, Table, Divider, Tag, notification, Form, Select, Popconfirm, Modal } from 'antd'
 import moment from 'moment'
-const Search = Input.Search
 const Option = Select.Option
 const FormItem = Form.Item
 
@@ -95,13 +94,6 @@ export default class SiderDemo extends Component<IProps, Istate> {
     this.setState({ dataSource })
   }
 
-  /** 按下搜索按钮: 进行搜索请求列表 */
-  handleSearchOnSublimt = (name: string) => {
-    this.setState({ name }, () => {
-      this.getList().catch()
-    })
-  }
-
   /** 时间选择改变: 进行搜索请求列表 */
   handleDatePickerOnChange = (date: any, orderDate: string) => {
     this.setState({ orderDate }, () => {
@@ -112,6 +104,14 @@ export default class SiderDemo extends Component<IProps, Istate> {
   /** 部门选择改变: 进行搜索请求列表 */
   handleDeptChange = (department) => {
     this.setState({ department }, () => {
+      this.getList().catch()
+    })
+  }
+
+  /** 输入姓名改变: 进行搜索请求列表 */
+  handleNameInputChange = (e) => {
+    const name = e.target.value
+    this.setState({ name }, () => {
       this.getList().catch()
     })
   }
@@ -139,6 +139,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
       formRecord: record
     })
   }
+
   handleEditCancel = (e) => {
     this.setState({
       visible: false
@@ -171,7 +172,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
       render: (orderTime: number) => (
         <span>{new Date(orderTime).Format('yyyy-MM-dd hh:mm')}</span>
       )
-    }, 
+    },
     // {
     //   title: '吃哪家',
     //   dataIndex: 'restaurant',
@@ -219,15 +220,11 @@ export default class SiderDemo extends Component<IProps, Istate> {
               {this.generateOpts()}
             </Select>
           </FormItem>
-          <FormItem label="提交日期">
-            <DatePicker defaultValue={moment(new Date(), dateFormat)} onChange={this.handleDatePickerOnChange} />
+          <FormItem label="日期筛选">
+            <DatePicker defaultValue={moment(new Date(), dateFormat)} placeholder="请选择" onChange={this.handleDatePickerOnChange} />
           </FormItem>
-          <FormItem>
-            <Search
-              placeholder="按名字搜索"
-              onSearch={this.handleSearchOnSublimt}
-              enterButton={true}
-            />
+          <FormItem label="姓名筛选">
+            <Input placeholder="请输入" onChange={this.handleNameInputChange} allowClear={true} />
           </FormItem>
         </Form>
         {/* 对于 dataSource 默认将每列数据的 key 属性作为唯一的标识。

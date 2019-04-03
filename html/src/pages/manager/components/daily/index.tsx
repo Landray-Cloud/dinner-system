@@ -6,7 +6,7 @@ import { Table, Tag, Form, Select, DatePicker, notification, Radio, LocaleProvid
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import 'moment/locale/zh-cn'
 import moment from 'moment'
-const { MonthPicker } = DatePicker
+const { MonthPicker, RangePicker } = DatePicker
 const Option = Select.Option
 const FormItem = Form.Item
 const RadioGroup = Radio.Group
@@ -16,16 +16,33 @@ interface IProps {
 }
 
 interface Istate {
-  orderDate: string,
+  orderDate: any,
   department: string | number | undefined,
   total: string | number,
   dataSource: any,
+  managerList: any,
   mode: any,
   inDay: any,
-  inMonth: any
+  inMonth: any,
+  inRange: any
 }
 
-
+/** 返回状态的中文 */
+function generateStatusName(status: number) {
+  let text = ''
+  switch (status) {
+    case 1:
+      text = '加班订餐'
+      break
+    case 2:
+      text = '加班不订餐'
+      break
+    case 3:
+      text = '不加班不订餐'
+      break
+  }
+  return text
+}
 export default class Daily extends Component<IProps, Istate> {
   constructor(props) {
     super(props)
@@ -34,9 +51,11 @@ export default class Daily extends Component<IProps, Istate> {
       department: '',
       total: '',
       dataSource: [],
+      managerList: [],
       mode: 'date',
       inDay: moment(new Date(), 'yyyy-MM-dd'),
-      inMonth: moment(new Date(), 'yyyy-MM')
+      inMonth: moment(new Date(), 'yyyy-MM'),
+      inRange: [moment(new Date(), 'yyyy-MM-dd'), moment(new Date(), 'yyyy-MM-dd')]
     }
   }
   componentDidMount = () => {
@@ -45,7 +64,7 @@ export default class Daily extends Component<IProps, Istate> {
       this.getList().catch()
     })
   }
-  
+
 
   handleRadioChange = (e) => {
     const mode = e.target.value
@@ -54,6 +73,8 @@ export default class Daily extends Component<IProps, Istate> {
       orderDate = new Date().Format('yyyy-MM-dd')
     } else if (mode === 'month') {
       orderDate = new Date().Format('yyyy-MM')
+    } else if (mode === 'section') {
+      orderDate = [new Date().Format('yyyy-MM-dd'), new Date().Format('yyyy-MM-dd')]
     }
     this.setState({ mode, orderDate }, () => {
       this.getList().catch()
@@ -64,12 +85,20 @@ export default class Daily extends Component<IProps, Istate> {
     const orderDate = this.state.orderDate
     const department = this.state.department
     let ajaxURL = 'manager/getStatusList'
+    let managerListURL = 'manager/getList'
+    let dateParam = ''
+    if (orderDate) {
+      dateParam = typeof orderDate === 'string' ? `orderDate=${orderDate}` : `startDate=${new Date(orderDate[0] + ' 0:0:0').getTime()}&endDate=${new Date(orderDate[1]+' 23:59:59').getTime()}`
+    }
     if (typeof department === 'number' && orderDate) {
-      ajaxURL += `?department=${department}&orderDate=${orderDate}`
+      ajaxURL += `?department=${department}&${dateParam}`
+      managerListURL += `?department=${department}&${dateParam}`
     } else if (typeof department !== 'undefined' && department !== '') {
       ajaxURL += `?department=${department}`
+      managerListURL += `?department=${department}`
     } else if (orderDate) {
-      ajaxURL += `?orderDate=${orderDate}`
+      ajaxURL += `?${dateParam}`
+      managerListURL += `?${dateParam}`
     } else {
       notification.error({
         message: '嘿',
@@ -79,14 +108,19 @@ export default class Daily extends Component<IProps, Istate> {
     }
 
     const res = await client.get(ajaxURL)
+    const listRes = await client.get(managerListURL)
     const data = res.data.data
+    const managerList = (listRes && listRes.data && listRes.data.data) || []
     if(data) {
       data.map((item, index) => {
         item.key = index
       })
     }
     const dataSource = data
-    this.setState({ dataSource })
+    this.setState({
+      dataSource,
+      managerList
+    })
   }
 
   /** 时间选择改变: 进行搜索请求列表 */
@@ -95,7 +129,14 @@ export default class Daily extends Component<IProps, Istate> {
       this.getList().catch()
     })
   }
-
+  // 区间选择
+  private handleRangePickerOnChange = (dates: any, orderDate: [string, string]) => {
+    this.setState({
+      orderDate
+    }, () => {
+      this.getList().catch()
+    })
+  }
   /** 部门选择改变: 进行搜索请求列表 */
   handleDeptChange = (department) => {
     this.setState({ department }, () => {
@@ -106,6 +147,30 @@ export default class Daily extends Component<IProps, Istate> {
   /** 生成部门待选项 */
   generateOpts = () => {
     return Util.deptTable.map((item) => <Option key={String(item.value)} value={item.value}>{item.label}</Option>)
+  }
+  private exportCsv = (orderStatus: number) => {
+    const { managerList, orderDate, department } = this.state
+    let csvStr = `姓名,提交时间,部门,备注,是否订餐\n`
+    for(let i = 0 ; i < managerList.length ; i++ ){
+      if (managerList[i] && managerList[i].orderStatus && +managerList[i].orderStatus === +orderStatus) {
+        csvStr+=`${managerList[i]['name'] + '\t'},`
+        csvStr+=`${new Date(managerList[i]['orderTime']).Format('yyyy-MM-dd hh:mm') + '\t'},`
+        csvStr+=`${Util.getDeptNameFromNum(managerList[i]['department']) + '\t'},`
+        csvStr+=`${managerList[i]['remarks'] + '\t'},`
+        csvStr+=`${generateStatusName(managerList[i]['orderStatus']) + '\t'},`
+        csvStr+='\n'
+      }
+    }
+    // encodeURIComponent解决中文乱码
+    const uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(csvStr)
+    // 通过创建a标签实现
+    const link = document.createElement('a')
+    link.href = uri
+    // 对下载的文件命名
+    link.download =  `${typeof department === 'number' ? Util.getDeptNameFromNum(department) : '全部部门'}${Object.prototype.toString.call(orderDate) === '[object Array]' ? orderDate.join('到') : orderDate}${generateStatusName(orderStatus)}.csv`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
   }
   render() {
     const columns = [{
@@ -124,6 +189,12 @@ export default class Daily extends Component<IProps, Istate> {
       title: '人数',
       dataIndex: 'total',
       key: 'total'
+    }, {
+      title: '操作',
+      key: 'action',
+      render: ({orderStatus}:{orderStatus: number}) => {
+        return <a href="javascript:;" onClick={() => this.exportCsv(orderStatus)}>导出</a>
+      }
     }]
 
     return (
@@ -139,7 +210,9 @@ export default class Daily extends Component<IProps, Istate> {
               {
                 this.state.mode === 'date' ?
                 <DatePicker defaultValue={this.state.inDay} onChange={this.handleDatePickerOnChange}/>
-                : <MonthPicker defaultValue={this.state.inMonth} onChange={this.handleDatePickerOnChange}/>
+                : this.state.mode === 'month' ?
+                  <MonthPicker defaultValue={this.state.inMonth} onChange={this.handleDatePickerOnChange}/>
+                  : <RangePicker defaultValue={this.state.inRange} onChange={this.handleRangePickerOnChange} />
               }
             </LocaleProvider>
           </FormItem>
@@ -147,6 +220,7 @@ export default class Daily extends Component<IProps, Istate> {
           <RadioGroup onChange={this.handleRadioChange} value={this.state.mode}>
             <Radio value="date">按天</Radio>
             <Radio value="month">按月</Radio>
+            <Radio value="section">按区间</Radio>
           </RadioGroup>
           </FormItem>
         </Form>

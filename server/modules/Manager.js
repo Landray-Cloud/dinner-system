@@ -37,22 +37,36 @@ async function getList(options) {
   const name = options.name
   const orderDate = options.orderDate
   const department = options.department
+  const startDate = options.startDate
+  const endDate = options.endDate
 
   if (name && orderDate && department) { // 同时查询 日期 名字 部门
     sqlExecute = $sql.queryListByNameAndDateAndDept
-    sqlParam = [name, orderDate, department]
+    sqlParam = [name, `%${orderDate}%`, department]
+  } else if (name && department && !orderDate &&  startDate && endDate) {
+    sqlExecute = $sql.queryListByNameAndRangeDateAndDept
+    sqlParam = [name, startDate, endDate, department]
   } else if (department && orderDate) { // 同时查询 日期 部门
     sqlExecute = $sql.queryListByDateAndDept
-    sqlParam = [orderDate, department]
+    sqlParam = [`%${orderDate}%`, department]
+  } else if (department && !orderDate &&  startDate && endDate) { // 同时查询 日期 部门
+    sqlExecute = $sql.queryListByRangeDateAndDept
+    sqlParam = [startDate, endDate, department]
   } else if (name && orderDate) { // 同时查询 日期 名字
     sqlExecute = $sql.queryListByNameAndDate
-    sqlParam = [name, orderDate]
+    sqlParam = [name, `%${orderDate}%`]
+  } else if (name && !orderDate &&  startDate && endDate) { // 同时查询 日期 名字
+    sqlExecute = $sql.queryListByNameAndRangeDate
+    sqlParam = [name, startDate, endDate]
   } else if (name) { // 查询名字
     sqlExecute = $sql.queryListByName
     sqlParam = '%' + name + '%'
   } else if (orderDate) { // 查询日期
     sqlExecute = $sql.queryListByDate
-    sqlParam = orderDate
+    sqlParam = `%${orderDate}%`
+  } else if (!orderDate && startDate && endDate) {
+    sqlExecute = $sql.queryListByRangeDate
+    sqlParam = [startDate, endDate]
   }
 
   return new Promise((resolve, reject) => {
@@ -136,11 +150,16 @@ async function getStatusList(options) {
     sqlExecute += ' WHERE '
 
     const orderDate = options.orderDate
+    const startDate = options.startDate
+    const endDate = options.endDate
     const department = options.department
 
     if (orderDate) {
       sqlExecute += ' orderDate LIKE ? '
       sqlParam.push(`%${orderDate}%`)
+    } else if (!orderDate && startDate && endDate) {
+      sqlExecute += ' orderTime between ? and ? '
+      sqlParam.push(startDate, endDate)
     }
 
     if (department) {
@@ -151,7 +170,6 @@ async function getStatusList(options) {
   }
 
   sqlExecute += ' GROUP BY orderStatus'
-
   return new Promise((resolve, reject) => {
     connectionDatabase(sqlExecute, sqlParam).then(succRes => {
       resolve(Utils.writeSuccess(succRes))

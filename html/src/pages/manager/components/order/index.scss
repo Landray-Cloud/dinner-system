@@ -1,4 +1,4 @@
-.order-wrap {
+.orderwrap {
   // width: 500px;
   // min-height: 300px;
   // position: absolute;
@@ -11,9 +11,9 @@
   padding: 20px 20px 0 20px;
   text-align: center;
 }
-.order-wrap .ant-row.ant-form-item {
+.orderwrap .ant-row.ant-form-item {
   width: 400px;
 }
-.orderdate{
-  width: 100%;
+.orderwrap .orderdate{
+  width: 100% !important;
 }

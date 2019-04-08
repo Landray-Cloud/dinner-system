@@ -6,7 +6,6 @@ import AddOrder from '../../components/order/index'
 
 import { Input, DatePicker, Table, Divider, Tag, notification, Form, Select, Popconfirm, Modal } from 'antd'
 import moment from 'moment'
-const Search = Input.Search
 const Option = Select.Option
 const FormItem = Form.Item
 
@@ -20,7 +19,7 @@ interface IProps {
 interface Istate {
   name: string,
   orderDate: string,
-  department: string | number,
+  department: string | number | undefined,
   dataSource: any,
   visible: boolean,
   formRecord: object
@@ -84,22 +83,14 @@ export default class SiderDemo extends Component<IProps, Istate> {
       })
       return
     }
-    const department = this.state.department
 
+    const department = this.state.department
     if (typeof department !== 'undefined' && department !== '') {
       ajaxURL += `&department=${department}`
     }
-
     const res = await client.get(ajaxURL)
     const dataSource = res.data.data
     this.setState({ dataSource })
-  }
-
-  /** 按下搜索按钮: 进行搜索请求列表 */
-  handleSearchOnSublimt = (name: string) => {
-    this.setState({ name }, () => {
-      this.getList().catch()
-    })
   }
 
   /** 时间选择改变: 进行搜索请求列表 */
@@ -112,6 +103,14 @@ export default class SiderDemo extends Component<IProps, Istate> {
   /** 部门选择改变: 进行搜索请求列表 */
   handleDeptChange = (department) => {
     this.setState({ department }, () => {
+      this.getList().catch()
+    })
+  }
+
+  /** 输入姓名改变: 进行搜索请求列表 */
+  handleNameInputChange = (e) => {
+    const name = e.target.value
+    this.setState({ name }, () => {
       this.getList().catch()
     })
   }
@@ -139,6 +138,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
       formRecord: record
     })
   }
+
   handleEditCancel = (e) => {
     this.setState({
       visible: false
@@ -171,11 +171,13 @@ export default class SiderDemo extends Component<IProps, Istate> {
       render: (orderTime: number) => (
         <span>{new Date(orderTime).Format('yyyy-MM-dd hh:mm')}</span>
       )
-    }, {
-      title: '吃哪家',
-      dataIndex: 'restaurant',
-      key: 'restaurant'
-    }, {
+    },
+    // {
+    //   title: '吃哪家',
+    //   dataIndex: 'restaurant',
+    //   key: 'restaurant'
+    // },
+    {
       title: '部门',
       dataIndex: 'department',
       key: 'department',
@@ -213,19 +215,20 @@ export default class SiderDemo extends Component<IProps, Istate> {
       <div>
         <Form layout="inline">
           <FormItem label="部门">
-            <Select className="table-select" allowClear={true} placeholder="请选择" onChange={this.handleDeptChange}>
+            <Select
+              className="table-select"
+              allowClear={true}
+              placeholder="请选择"
+              onChange={this.handleDeptChange}
+            >
               {this.generateOpts()}
             </Select>
           </FormItem>
-          <FormItem label="提交日期">
-            <DatePicker defaultValue={moment(new Date(), dateFormat)} onChange={this.handleDatePickerOnChange} />
+          <FormItem label="日期筛选">
+            <DatePicker defaultValue={moment(new Date(), dateFormat)} placeholder="请选择" onChange={this.handleDatePickerOnChange} />
           </FormItem>
-          <FormItem>
-            <Search
-              placeholder="按名字搜索"
-              onSearch={this.handleSearchOnSublimt}
-              enterButton={true}
-            />
+          <FormItem label="姓名筛选">
+            <Input placeholder="请输入" onChange={this.handleNameInputChange} allowClear={true} />
           </FormItem>
         </Form>
         {/* 对于 dataSource 默认将每列数据的 key 属性作为唯一的标识。

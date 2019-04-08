@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import client from '../../client'
 import Util from '../../util'
 import './index.scss'
-import { Form, Input, Button, Select, notification } from 'antd'
+import { Form, Input, Button, Select, notification, Popover } from 'antd'
 const Option = Select.Option
 const FormItem = Form.Item
 
@@ -180,6 +180,11 @@ export default class Order extends Component<IProps, IState>{
       labelCol: { span: 3 },
       wrapperCol: { span: 21 }
     }
+
+    const popoverContent = (
+      <img src={require('../../assets/images/qrcode.jpg')} alt="微信小程序'决定'" />
+    )
+
     let bodyJSX = (
       <Form className="order-form" layout="horizontal" onSubmit={this.handleSubmit}>
         <FormItem label="加班" {...formItemLayout}>
@@ -197,7 +202,15 @@ export default class Order extends Component<IProps, IState>{
         <FormItem label="事由" {...formItemLayout}>
           <Input data-id="remarks" placeholder="可以写写因啥事加班?" allowClear={true} value={this.state.form.remarks} onChange={this.handleRemarksChange} />
         </FormItem>
-        <FormItem>
+        {/* <FormItem label="时间" {...formItemLayout}>
+          <DatePicker 
+            className="orderdate" 
+          />
+        </FormItem> */}
+        <FormItem className="action-item">
+          <Popover content={popoverContent} title="来呀，快用微信扫我呀！">
+            <span className="order-tips">纠结要不要加班?</span>
+          </Popover>
           <Button type="primary" htmlType="submit" loading={this.state.loading}>提交</Button>
         </FormItem>
       </Form>

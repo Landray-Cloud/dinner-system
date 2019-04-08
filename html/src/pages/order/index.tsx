@@ -113,7 +113,7 @@ export default class Order extends Component<IProps, IState>{
   handleDeptChange(department) {
     confirm({
       title: '温馨提示',
-      content: '真的要更改部门？',
+      content: '这个功能是给调整了组织架构的同学使用的，你确定要更改部门？',
       cancelText: '取消，我手滑了',
       okText: '确认',
       onOk: () => {

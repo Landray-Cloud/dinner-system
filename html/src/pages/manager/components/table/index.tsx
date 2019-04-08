@@ -216,7 +216,7 @@ export default class SiderDemo extends Component<IProps, Istate> {
         <Form layout="inline">
           <FormItem label="部门">
             <Select
-              className="table-select"
+              className="table-select comm-dept-select-warp"
               allowClear={true}
               placeholder="请选择"
               onChange={this.handleDeptChange}

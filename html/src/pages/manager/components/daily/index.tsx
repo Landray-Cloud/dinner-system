@@ -60,7 +60,7 @@ export default class Daily extends Component<IProps, Istate> {
   }
   componentDidMount = () => {
     const orderDate = new Date().Format('yyyy-MM-dd')
-    this.setState({orderDate}, () => {
+    this.setState({ orderDate }, () => {
       this.getList().catch()
     })
   }
@@ -69,7 +69,7 @@ export default class Daily extends Component<IProps, Istate> {
   handleRadioChange = (e) => {
     const mode = e.target.value
     let orderDate
-    if(mode === 'date') {
+    if (mode === 'date') {
       orderDate = new Date().Format('yyyy-MM-dd')
     } else if (mode === 'month') {
       orderDate = new Date().Format('yyyy-MM')
@@ -88,7 +88,7 @@ export default class Daily extends Component<IProps, Istate> {
     let managerListURL = 'manager/getList'
     let dateParam = ''
     if (orderDate) {
-      dateParam = typeof orderDate === 'string' ? `orderDate=${orderDate}` : `startDate=${new Date(orderDate[0] + ' 0:0:0').getTime()}&endDate=${new Date(orderDate[1]+' 23:59:59').getTime()}`
+      dateParam = typeof orderDate === 'string' ? `orderDate=${orderDate}` : `startDate=${new Date(orderDate[0] + ' 0:0:0').getTime()}&endDate=${new Date(orderDate[1] + ' 23:59:59').getTime()}`
     }
     if (typeof department === 'number' && orderDate) {
       ajaxURL += `?department=${department}&${dateParam}`
@@ -111,7 +111,7 @@ export default class Daily extends Component<IProps, Istate> {
     const listRes = await client.get(managerListURL)
     const data = res.data.data
     const managerList = (listRes && listRes.data && listRes.data.data) || []
-    if(data) {
+    if (data) {
       data.map((item, index) => {
         item.key = index
       })
@@ -151,14 +151,14 @@ export default class Daily extends Component<IProps, Istate> {
   private exportCsv = (orderStatus: number) => {
     const { managerList, orderDate, department } = this.state
     let csvStr = `姓名,提交时间,部门,备注,是否订餐\n`
-    for(let i = 0 ; i < managerList.length ; i++ ){
+    for (let i = 0; i < managerList.length; i++) {
       if (managerList[i] && managerList[i].orderStatus && +managerList[i].orderStatus === +orderStatus) {
-        csvStr+=`${managerList[i]['name'] + '\t'},`
-        csvStr+=`${new Date(managerList[i]['orderTime']).Format('yyyy-MM-dd hh:mm') + '\t'},`
-        csvStr+=`${Util.getDeptNameFromNum(managerList[i]['department']) + '\t'},`
-        csvStr+=`${managerList[i]['remarks'] + '\t'},`
-        csvStr+=`${generateStatusName(managerList[i]['orderStatus']) + '\t'},`
-        csvStr+='\n'
+        csvStr += `${managerList[i]['name'] + '\t'},`
+        csvStr += `${new Date(managerList[i]['orderTime']).Format('yyyy-MM-dd hh:mm') + '\t'},`
+        csvStr += `${Util.getDeptNameFromNum(managerList[i]['department']) + '\t'},`
+        csvStr += `${managerList[i]['remarks'] + '\t'},`
+        csvStr += `${generateStatusName(managerList[i]['orderStatus']) + '\t'},`
+        csvStr += '\n'
       }
     }
     // encodeURIComponent解决中文乱码
@@ -167,7 +167,7 @@ export default class Daily extends Component<IProps, Istate> {
     const link = document.createElement('a')
     link.href = uri
     // 对下载的文件命名
-    link.download =  `${typeof department === 'number' ? Util.getDeptNameFromNum(department) : '全部部门'}${Object.prototype.toString.call(orderDate) === '[object Array]' ? orderDate.join('到') : orderDate}${generateStatusName(orderStatus)}.csv`
+    link.download = `${typeof department === 'number' ? Util.getDeptNameFromNum(department) : '全部部门'}${Object.prototype.toString.call(orderDate) === '[object Array]' ? orderDate.join('到') : orderDate}${generateStatusName(orderStatus)}.csv`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -192,7 +192,7 @@ export default class Daily extends Component<IProps, Istate> {
     }, {
       title: '操作',
       key: 'action',
-      render: ({orderStatus}:{orderStatus: number}) => {
+      render: ({ orderStatus }: { orderStatus: number }) => {
         return <a href="javascript:;" onClick={() => this.exportCsv(orderStatus)}>导出</a>
       }
     }]
@@ -201,7 +201,7 @@ export default class Daily extends Component<IProps, Istate> {
       <div className="daily-wrapper">
         <Form layout="inline">
           <FormItem label="部门">
-            <Select className="table-select" allowClear={true} placeholder="请选择" onChange={this.handleDeptChange}>
+            <Select className="table-select comm-dept-select-warp" allowClear={true} placeholder="请选择" onChange={this.handleDeptChange}>
               {this.generateOpts()}
             </Select>
           </FormItem>
@@ -209,19 +209,19 @@ export default class Daily extends Component<IProps, Istate> {
             <LocaleProvider locale={zh_CN}>
               {
                 this.state.mode === 'date' ?
-                <DatePicker defaultValue={this.state.inDay} onChange={this.handleDatePickerOnChange}/>
-                : this.state.mode === 'month' ?
-                  <MonthPicker defaultValue={this.state.inMonth} onChange={this.handleDatePickerOnChange}/>
-                  : <RangePicker defaultValue={this.state.inRange} onChange={this.handleRangePickerOnChange} />
+                  <DatePicker defaultValue={this.state.inDay} onChange={this.handleDatePickerOnChange} />
+                  : this.state.mode === 'month' ?
+                    <MonthPicker defaultValue={this.state.inMonth} onChange={this.handleDatePickerOnChange} />
+                    : <RangePicker defaultValue={this.state.inRange} onChange={this.handleRangePickerOnChange} />
               }
             </LocaleProvider>
           </FormItem>
           <FormItem>
-          <RadioGroup onChange={this.handleRadioChange} value={this.state.mode}>
-            <Radio value="date">按天</Radio>
-            <Radio value="month">按月</Radio>
-            <Radio value="section">按区间</Radio>
-          </RadioGroup>
+            <RadioGroup onChange={this.handleRadioChange} value={this.state.mode}>
+              <Radio value="date">按天</Radio>
+              <Radio value="month">按月</Radio>
+              <Radio value="section">按区间</Radio>
+            </RadioGroup>
           </FormItem>
         </Form>
 

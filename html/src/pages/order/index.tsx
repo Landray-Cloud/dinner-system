@@ -2,9 +2,10 @@ import React, { Component } from 'react'
 import client from '../../client'
 import Util from '../../util'
 import './index.scss'
-import { Form, Input, Button, Select, notification, Popover } from 'antd'
+import { Form, Input, Button, Select, notification, Popover, Modal } from 'antd'
 const Option = Select.Option
 const FormItem = Form.Item
+const confirm = Modal.confirm
 
 interface IProps {
   history: any
@@ -44,6 +45,7 @@ export default class Order extends Component<IProps, IState>{
     this.handleOrderStatusChange = this.handleOrderStatusChange.bind(this)
     this.handleRestaurantChange = this.handleRestaurantChange.bind(this)
     this.handleRemarksChange = this.handleRemarksChange.bind(this)
+    this.handleDeptChange = this.handleDeptChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
@@ -58,6 +60,7 @@ export default class Order extends Component<IProps, IState>{
         this.getOrderStatus().catch()
       })
       this.getDinnerManager().catch()
+      this.getLocalDept()
     } else {
       this.props.history.push('/')
     }
@@ -73,6 +76,10 @@ export default class Order extends Component<IProps, IState>{
     if (orderStatusModel) {
       this.setState({ orderStatusModel })
     }
+  }
+
+  /** 查询缓存中的部门值 */
+  getLocalDept() {
     const department = localStorage.getItem('department')
     if (department) {
       const form = Object.assign({}, this.state.form, { department: parseInt(department, 10) }) // parseInt第二参数默认是10进制，解决tslint校验
@@ -100,6 +107,21 @@ export default class Order extends Component<IProps, IState>{
   handleOrderStatusChange(orderStatus) {
     const form = Object.assign({}, this.state.form, { orderStatus })
     this.setState({ form })
+  }
+
+  /** 选择部门赋值 */
+  handleDeptChange(department) {
+    confirm({
+      title: '温馨提示',
+      content: '这个功能是给调整了组织架构的同学使用的，你确定要更改部门？',
+      cancelText: '取消，我手滑了',
+      okText: '确认',
+      onOk: () => {
+        localStorage.setItem('department', department)
+        const form = Object.assign({}, this.state.form, { department: parseInt(department, 10) })
+        this.setState({ form })
+      }
+    })
   }
 
   /** 选择订餐厅赋值 */
@@ -142,9 +164,18 @@ export default class Order extends Component<IProps, IState>{
     this.setState({ loading: true })
     const postData = this.state.form
     postData.name = this.state.name
+    // console.log('postData', postData)
     const res = await client.post('addOrder', postData)
-    if (!res) return
+    if (!res) {
+      this.setState({ loading: false })
+      return
+    }
     this.setState({ orderStatusModel: postData.orderStatus, loading: false })
+  }
+
+  /** 生成部门选项 */
+  generateDepts() {
+    return Util.deptTable.map((item) => <Option key={String(item.value)} value={item.value}>{item.label}</Option>)
   }
 
   /** 生成选项菜单 */
@@ -187,6 +218,11 @@ export default class Order extends Component<IProps, IState>{
 
     let bodyJSX = (
       <Form className="order-form" layout="horizontal" onSubmit={this.handleSubmit}>
+        <FormItem label="部门" {...formItemLayout}>
+          <Select placeholder="请选择" value={this.state.form.department} onChange={this.handleDeptChange}>
+            {this.generateDepts()}
+          </Select>
+        </FormItem>
         <FormItem label="加班" {...formItemLayout}>
           <Select placeholder="请选择" onChange={this.handleOrderStatusChange}>
             <Option value={1}>加班订餐</Option>

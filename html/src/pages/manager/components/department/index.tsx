@@ -57,7 +57,7 @@ export default class Department extends Component<IProps, Istate> {
     })
   }
 
-  handleTableChange = ( filters ) => {
+  handleTableChange = (filters) => {
     console.log(filters)
     // this.setState({ filteredInfo: filters })
   }
@@ -120,21 +120,21 @@ export default class Department extends Component<IProps, Istate> {
     }]
     return (
       <div className="daily-wrapper">
-        
+
         <Form layout="inline">
           <FormItem label="部门">
-            <Select className="table-select" allowClear={true} placeholder="请选择" onChange={this.handleDeptChange}>
+            <Select className="table-select comm-dept-select-warp" allowClear={true} placeholder="请选择" onChange={this.handleDeptChange}>
               {this.generateOpts()}
             </Select>
           </FormItem>
           <FormItem label="日期">
             <LocaleProvider locale={zh_CN}>
-              <DatePicker defaultValue={moment(new Date(), 'YYYY/MM/DD')} onChange={this.handleDatePickerOnChange}/>
+              <DatePicker defaultValue={moment(new Date(), 'YYYY/MM/DD')} onChange={this.handleDatePickerOnChange} />
             </LocaleProvider>
           </FormItem>
         </Form>
         <LocaleProvider locale={zh_CN}>
-          <Table dataSource={this.state.dataSource} columns={columns} rowKey={record => record.id}/>
+          <Table dataSource={this.state.dataSource} columns={columns} rowKey={record => record.id} />
         </LocaleProvider>
       </div>
     )

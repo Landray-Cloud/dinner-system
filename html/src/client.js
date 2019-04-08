@@ -12,11 +12,11 @@ axiosInstance.interceptors.response.use((response) => {
     location.replace('#/login')
   }
   // 如果接口请求成功，但是返回errcode: -1，弹出errmsg
-  if(response.data.errcode === -1) {
+  if (response.data.errcode === -1) {
     notification.error({ message: `${response.data.errmsg}` })
   }
   return response;
-  
+
 }, (err) => {
   if (err && err.response) {
     switch (err.response.status) {

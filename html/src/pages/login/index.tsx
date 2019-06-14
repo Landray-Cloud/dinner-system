@@ -1,18 +1,17 @@
 import React, { Component, FormEvent } from 'react'
 import client from '../../client'
 import './index.scss'
-import { Card, Input, Button, notification, Modal } from 'antd'
+import { Card, Input, Button, notification } from 'antd'
 
-const confirm = Modal.confirm
 interface Istate {
   user: string,
-  pwd: string,
-  loading: boolean
+    pwd: string,
+    loading: boolean
 }
 interface IProps {
   history: any
 }
-export default class Login extends Component<IProps, Istate> {
+export default class Login extends Component < IProps, Istate > {
   constructor(props) {
     super(props)
     this.state = {
@@ -22,13 +21,13 @@ export default class Login extends Component<IProps, Istate> {
     }
   }
 
-  handleUserChange = (e: FormEvent<HTMLInputElement>) => {
+  handleUserChange = (e: FormEvent < HTMLInputElement > ) => {
     this.setState({
       user: (e.target as HTMLInputElement).value
     })
   }
 
-  handlePwdChange = (e: FormEvent<HTMLInputElement>) => {
+  handlePwdChange = (e: FormEvent < HTMLInputElement > ) => {
     this.setState({
       pwd: (e.target as HTMLInputElement).value
     })
@@ -86,14 +85,14 @@ export default class Login extends Component<IProps, Istate> {
       const _status = res.data.data.status
       // 当前订餐处于打开状态
       if (Boolean(_status)) {
-        let  lastCloseTime: any = localStorage.getItem('WARN_CLOSE_ORDER')
+        let lastCloseTime: any = localStorage.getItem('WARN_CLOSE_ORDER')
         if (!lastCloseTime) {
           this.gotoManager()
           return
         } else {
           lastCloseTime = new Date(+lastCloseTime)
           if (lastCloseTime.Format('yyyy-MM-dd') !== now.Format('yyyy-MM-dd')) {
-            // 弹框
+            // 直接处理订餐状态
             this.gotoManager()
             return
           }
@@ -103,36 +102,26 @@ export default class Login extends Component<IProps, Istate> {
     this.props.history.push('/manager')
   }
 
-  private gotoManager () {
+  private async gotoManager() {
     const now = new Date
     localStorage.setItem('WARN_CLOSE_ORDER', now.getTime() + '')
-    confirm({
-      title: '温馨提示',
-      content: '已经到了订餐下单截止时间啦，是否需要关闭下单入口',
-      okText: '确定',
-      cancelText: '取消',
-      mask: true,
-      onOk: async () => {
-        const status =  0
-        const date = new Date().Format('yyyy-MM-dd')
-        const postData = {
-          status,
-          date
-        }
-        const res = await client.post(`manager/setSubmit`, postData)
-        const code = res.data.errcode
-        if(code === 0) {
-          notification.success({
-            message: '点餐状态修改成功',
-          })
-        }
-        this.props.history.push('/manager')
-      },
-      onCancel: () => {
-        this.props.history.push('/manager')
-      },
-    })
+    const status = 0
+    const date = new Date().Format('yyyy-MM-dd')
+    const postData = {
+      status,
+      date
+    }
+    const res = await client.post(`manager/setSubmit`, postData)
+    const code = res.data.errcode
+    if (code === 0) {
+      notification.success({
+        message: '已经到了订餐截止时间啦~~',
+        description: '系统已经自动帮您关闭下单入口'
+      })
+    }
+    this.props.history.push('/manager')
   }
+  
   render() {
     return (
       <div className=" mainBg">

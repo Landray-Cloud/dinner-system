@@ -11,7 +11,7 @@ interface IProps {
 }
 
 interface Istate {
-  uname: string,
+  uname: string
   department: any
 }
 
@@ -63,7 +63,7 @@ export default class Home extends Component<IProps, Istate> {
     }
 
     const department = this.state.department
-    
+
     if (department === '') {
       flag = false
       notification.error({
@@ -81,7 +81,7 @@ export default class Home extends Component<IProps, Istate> {
     })
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = e => {
     e.preventDefault()
     if (!this.checkData()) return
     const uname = this.state.uname
@@ -101,11 +101,15 @@ export default class Home extends Component<IProps, Istate> {
 
   /** 生成部门待选项 */
   generateOpts = () => {
-    return Util.deptTable.map((item) => <Option key={String(item.value)} value={item.value}>{item.label}</Option>)
+    return Util.deptTable.map(item => (
+      <Option key={String(item.value)} value={item.value}>
+        {item.label}
+      </Option>
+    ))
   }
 
   /** 部门选择改变: 进行搜索请求列表 */
-  handleDeptChange = (department) => {
+  handleDeptChange = department => {
     console.log('department', department)
     this.setState({ department })
   }
@@ -113,7 +117,7 @@ export default class Home extends Component<IProps, Istate> {
   render() {
     return (
       <div className="form-warp">
-        <h1>加班点餐系统</h1>
+        <h1>加班订餐系统</h1>
         <Form layout="inline" onSubmit={this.handleSubmit}>
           <FormItem>
             <Input placeholder="你的名字" value={this.state.uname} onChange={this.handleInputChange} />
@@ -124,7 +128,9 @@ export default class Home extends Component<IProps, Istate> {
             </Select>
           </FormItem>
           <FormItem>
-            <Button type="primary" htmlType="submit">提交</Button>
+            <Button type="primary" htmlType="submit">
+              提交
+            </Button>
           </FormItem>
         </Form>
       </div>

@@ -6,25 +6,26 @@ import { Form, Input, Button, Select, notification, Popover, Modal } from 'antd'
 const Option = Select.Option
 const FormItem = Form.Item
 const confirm = Modal.confirm
+let isSubmitting: boolean = false
 
 interface IProps {
   history: any
 }
 
 interface IState {
-  week: string,
-  orderDate: string,
-  name: string,
-  orderStatusModel: string | number,
-  submitStatus: any,
-  loading: boolean,
-  dinnerManager: string,
+  week: string
+  orderDate: string
+  name: string
+  orderStatusModel: string | number
+  submitStatus: any
+  loading: boolean
+  dinnerManager: string
   form: {
     [k: string]: string | number
   }
 }
 
-export default class Order extends Component<IProps, IState>{
+export default class Order extends Component<IProps, IState> {
   constructor(props) {
     super(props)
     this.state = {
@@ -159,23 +160,37 @@ export default class Order extends Component<IProps, IState>{
 
   /** 提交 */
   async handleSubmit(e) {
+    if (isSubmitting) return
     e.preventDefault()
     if (!this.checkForm()) return
     this.setState({ loading: true })
     const postData = this.state.form
     postData.name = this.state.name
     // console.log('postData', postData)
-    const res = await client.post('addOrder', postData)
-    if (!res) {
-      this.setState({ loading: false })
-      return
-    }
-    this.setState({ orderStatusModel: postData.orderStatus, loading: false })
+    isSubmitting = true
+    let t: any = null
+    t = setTimeout(async () => {
+      try {
+        clearTimeout(t)
+        await client.post('addOrder', postData)
+        isSubmitting = false
+        this.setState({ orderStatusModel: postData.orderStatus, loading: false })
+      } catch (error) {
+        console.log(error)
+        clearTimeout(t)
+        isSubmitting = false
+        this.setState({ loading: false })
+      }
+    }, 400)
   }
 
   /** 生成部门选项 */
   generateDepts() {
-    return Util.deptTable.map((item) => <Option key={String(item.value)} value={item.value}>{item.label}</Option>)
+    return Util.deptTable.map(item => (
+      <Option key={String(item.value)} value={item.value}>
+        {item.label}
+      </Option>
+    ))
   }
 
   /** 生成选项菜单 */
@@ -212,9 +227,7 @@ export default class Order extends Component<IProps, IState>{
       wrapperCol: { span: 21 }
     }
 
-    const popoverContent = (
-      <img src={require('../../assets/images/qrcode.jpg')} alt="微信小程序'决定'" />
-    )
+    const popoverContent = <img src={require('../../assets/images/qrcode.jpg')} alt="微信小程序'决定'" />
 
     let bodyJSX = (
       <Form className="order-form" layout="horizontal" onSubmit={this.handleSubmit}>
@@ -247,10 +260,22 @@ export default class Order extends Component<IProps, IState>{
           <Popover content={popoverContent} title="来呀，快用微信扫我呀！">
             <span className="order-tips">纠结要不要加班?</span>
           </Popover>
-          <Button type="primary" htmlType="submit" loading={this.state.loading}>提交</Button>
+          <Button type="primary" htmlType="submit" loading={this.state.loading}>
+            提交
+          </Button>
         </FormItem>
       </Form>
     )
+
+    // 如果当前不给点餐
+    const submitStatus = this.state.submitStatus
+    if (submitStatus === 0) {
+      bodyJSX = (
+        <p className="tips-text">
+          现已<span>截止提交</span>啦，如需加单，请联系{dinnerManager}。
+        </p>
+      )
+    }
 
     // 如果点餐过了
     const orderStatusModel = this.state.orderStatusModel
@@ -268,21 +293,17 @@ export default class Order extends Component<IProps, IState>{
           break
       }
       bodyJSX = (
-        <p className="tips-text">今天你<span>{orderText}</span>，如有变动，请联系{dinnerManager}。</p>
-      )
-    }
-
-    // 如果当前不给点餐
-    const submitStatus = this.state.submitStatus
-    if (submitStatus === 0) {
-      bodyJSX = (
-        <p className="tips-text">现在<span>不许下单</span>啦，如有疑问，请联系{dinnerManager}。</p>
+        <p className="tips-text">
+          今天你<span>{orderText}</span>，如有变动，请联系{dinnerManager}。
+        </p>
       )
     }
 
     return (
       <div className="form-warp">
-        <h2>你好呀，{name}。今天是 {week}</h2>
+        <h2>
+          你好呀，{name}。今天是 {week}
+        </h2>
         {bodyJSX}
       </div>
     )
